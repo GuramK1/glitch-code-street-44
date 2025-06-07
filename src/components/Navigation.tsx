@@ -1,6 +1,6 @@
 
 import { useState, useEffect, useRef } from 'react';
-import { Search, User, ShoppingBag, X } from 'lucide-react';
+import { Search, User, ShoppingBag, X, Trash2, Plus, Minus } from 'lucide-react';
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,11 +13,11 @@ const Navigation = () => {
   const cartRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
 
-  // Mock cart items for demo
-  const cartItems = [
+  // Mock cart items for demo - now with state for quantity updates
+  const [cartItems, setCartItems] = useState([
     { id: 1, name: "404 Hoodie", price: 89, qty: 1, image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=100&h=100&fit=crop" },
     { id: 2, name: "Glitch Tee", price: 45, qty: 2, image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=100&h=100&fit=crop" }
-  ];
+  ]);
 
   // Handle scroll effect for navbar
   useEffect(() => {
@@ -59,6 +59,21 @@ const Navigation = () => {
 
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isSearchOpen]);
+
+  // Cart functions
+  const updateQuantity = (id: number, change: number) => {
+    setCartItems(items => 
+      items.map(item => 
+        item.id === id 
+          ? { ...item, qty: Math.max(0, item.qty + change) }
+          : item
+      ).filter(item => item.qty > 0)
+    );
+  };
+
+  const removeItem = (id: number) => {
+    setCartItems(items => items.filter(item => item.id !== id));
+  };
 
   const totalCartItems = cartItems.reduce((sum, item) => sum + item.qty, 0);
   const totalCartPrice = cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
@@ -114,7 +129,7 @@ const Navigation = () => {
                 </button>
                 
                 {isProfileOpen && (
-                  <div className="absolute top-full right-0 mt-2 bg-white shadow-xl rounded-xl p-4 space-y-2 z-50 min-w-[150px] border border-gray-100">
+                  <div className="absolute top-full right-0 mt-2 bg-white shadow-xl rounded-xl p-4 space-y-2 z-50 min-w-[150px] border border-gray-100 animate-fade-in">
                     <button className="w-full text-left px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors duration-200 text-sm font-medium">
                       Sign In
                     </button>
@@ -140,7 +155,7 @@ const Navigation = () => {
                 </button>
 
                 {isCartOpen && (
-                  <div className="absolute top-full right-0 mt-2 bg-white shadow-xl rounded-xl p-4 z-50 w-80 border border-gray-100">
+                  <div className="absolute top-full right-0 mt-2 bg-white shadow-xl rounded-xl p-4 z-50 w-80 border border-gray-100 animate-fade-in">
                     <h3 className="text-lg font-semibold text-gray-900 mb-4">Your Bag</h3>
                     
                     {cartItems.length === 0 ? (
@@ -150,12 +165,34 @@ const Navigation = () => {
                         <div className="space-y-3 max-h-60 overflow-y-auto">
                           {cartItems.map((item) => (
                             <div key={item.id} className="flex items-center space-x-3 p-2 hover:bg-gray-50 rounded-lg">
-                              <img src={item.image} alt={item.name} className="w-12 h-12 object-cover rounded-lg" />
-                              <div className="flex-1">
-                                <p className="text-sm font-medium text-gray-900">{item.name}</p>
-                                <p className="text-xs text-gray-500">Qty: {item.qty}</p>
+                              <img src={item.image} alt={item.name} className="w-12 h-12 object-cover rounded-lg flex-shrink-0" />
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-medium text-gray-900 truncate">{item.name}</p>
+                                <div className="flex items-center space-x-2 mt-1">
+                                  <button 
+                                    onClick={() => updateQuantity(item.id, -1)}
+                                    className="w-6 h-6 bg-gray-200 rounded hover:bg-gray-300 transition-colors duration-200 flex items-center justify-center"
+                                  >
+                                    <Minus className="w-3 h-3" />
+                                  </button>
+                                  <span className="text-xs font-medium min-w-[20px] text-center">{item.qty}</span>
+                                  <button 
+                                    onClick={() => updateQuantity(item.id, 1)}
+                                    className="w-6 h-6 bg-gray-200 rounded hover:bg-gray-300 transition-colors duration-200 flex items-center justify-center"
+                                  >
+                                    <Plus className="w-3 h-3" />
+                                  </button>
+                                </div>
                               </div>
-                              <p className="text-sm font-semibold text-gray-900">${item.price}</p>
+                              <div className="flex items-center space-x-2 flex-shrink-0">
+                                <p className="text-sm font-semibold text-gray-900">${item.price}</p>
+                                <button 
+                                  onClick={() => removeItem(item.id)}
+                                  className="text-red-500 hover:text-red-700 transition-colors duration-200"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              </div>
                             </div>
                           ))}
                         </div>
@@ -211,10 +248,10 @@ const Navigation = () => {
         </div>
       </nav>
 
-      {/* Search Modal */}
+      {/* Premium Search Modal */}
       {isSearchOpen && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl p-8 relative">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-start justify-center z-50 p-4 pt-[15vh]">
+          <div className="bg-white/95 backdrop-blur-lg rounded-2xl shadow-2xl w-full max-w-2xl p-8 relative transform transition-all duration-300 scale-100 hover:scale-[1.02]">
             <button
               onClick={() => setIsSearchOpen(false)}
               className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors duration-200"
@@ -233,7 +270,7 @@ const Navigation = () => {
                 ref={searchRef}
                 type="text"
                 placeholder="Search products, collections..."
-                className="w-full pl-12 pr-4 py-4 text-lg border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent"
+                className="w-full pl-12 pr-4 py-4 text-lg border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent bg-white/80 backdrop-blur"
               />
             </div>
             
