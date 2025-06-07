@@ -165,7 +165,7 @@ const Navigation = () => {
                             setIsSignInOpen(true);
                             setIsProfileOpen(false);
                           }}
-                          className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm font-medium text-red-500 hover:bg-zinc-800 rounded-md transition-all duration-200 ease-in-out"
+                          className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm font-medium text-white hover:bg-zinc-800 rounded-md transition-all duration-200 ease-in-out"
                         >
                           <UserCircle className="w-4 h-4" />
                           Sign In
@@ -176,7 +176,7 @@ const Navigation = () => {
                             setIsRegisterOpen(true);
                             setIsProfileOpen(false);
                           }}
-                          className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-red-500 hover:bg-zinc-800 rounded-md transition-all duration-200 ease-in-out"
+                          className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-white hover:bg-zinc-800 rounded-md transition-all duration-200 ease-in-out"
                         >
                           <UserPlus className="w-4 h-4" />
                           Register
@@ -188,18 +188,18 @@ const Navigation = () => {
                           <p className="text-sm font-medium text-white">Hello, {user?.username}!</p>
                           <p className="text-xs text-zinc-400">{user?.email}</p>
                         </div>
-                        <button className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-red-500 hover:bg-zinc-800 rounded-md transition-all duration-200 ease-in-out">
+                        <button className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-white hover:bg-zinc-800 rounded-md transition-all duration-200 ease-in-out">
                           <UserCircle className="w-4 h-4" />
                           My Profile
                         </button>
-                        <button className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-red-500 hover:bg-zinc-800 rounded-md transition-all duration-200 ease-in-out">
+                        <button className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-white hover:bg-zinc-800 rounded-md transition-all duration-200 ease-in-out">
                           <Settings className="w-4 h-4" />
                           Settings
                         </button>
                         <hr className="border-t border-zinc-700 my-1" />
                         <button 
                           onClick={handleLogout}
-                          className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-red-500 hover:bg-zinc-800 rounded-md transition-all duration-200 ease-in-out"
+                          className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-white hover:bg-zinc-800 rounded-md transition-all duration-200 ease-in-out"
                         >
                           <LogOut className="w-4 h-4" />
                           Logout

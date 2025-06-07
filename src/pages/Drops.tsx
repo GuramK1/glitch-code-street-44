@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { Clock, Star, Flame } from 'lucide-react';
 import Navigation from '../components/Navigation';
@@ -178,7 +177,8 @@ const Drops = () => {
                       </span>
                     </div>
 
-                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center rounded-xl z-10">
+                    {/* Fixed hover overlay to cover entire image area */}
+                    <div className="absolute inset-0 bg-black/60 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center z-10">
                       <button className="text-white border border-white px-6 py-3 rounded-full text-sm font-medium hover:bg-white hover:text-black transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
                         Quick View
                       </button>
@@ -225,7 +225,8 @@ const Drops = () => {
                       </span>
                     </div>
 
-                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center rounded-xl z-10">
+                    {/* Fixed hover overlay to cover entire image area */}
+                    <div className="absolute inset-0 bg-black/60 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center z-10">
                       <button className="text-white border border-white px-6 py-3 rounded-full text-sm font-medium hover:bg-white hover:text-black transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
                         Quick View
                       </button>

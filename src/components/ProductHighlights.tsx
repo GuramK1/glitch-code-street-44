@@ -88,21 +88,22 @@ const ProductHighlights = () => {
                 </span>
               </div>
 
-              {/* Enhanced Hover Overlay */}
+              {/* Fixed Hover Overlay - now covers entire card area */}
               <div className="absolute inset-0 bg-black/60 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center rounded-xl z-10">
                 <button className="text-white border border-white px-6 py-3 rounded-full text-sm font-medium hover:bg-white hover:text-black transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
                   Quick View
                 </button>
               </div>
-            </div>
 
-            <div className="mt-4 space-y-2">
-              <h3 className="text-lg font-semibold text-black group-hover:text-signal-red transition-colors duration-300">
-                {product.name}
-              </h3>
-              <p className="text-gray-600 font-medium">
-                ${product.price}
-              </p>
+              {/* Product info overlay */}
+              <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent z-15">
+                <h3 className="text-lg font-semibold text-white group-hover:text-signal-red transition-colors duration-300">
+                  {product.name}
+                </h3>
+                <p className="text-gray-300 font-medium">
+                  ${product.price}
+                </p>
+              </div>
             </div>
           </div>
         ))}
