@@ -155,14 +155,14 @@ const Drops = () => {
               {limitedEdition.map((product, index) => (
                 <div 
                   key={product.id}
-                  className={`group bg-zinc-900 rounded-xl overflow-hidden card-hover transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+                  className={`bg-zinc-900 rounded-xl overflow-hidden card-hover transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                   style={{ transitionDelay: `${index * 150}ms` }}
                 >
-                  <div className="relative">
+                  <div className="relative rounded-xl overflow-hidden group">
                     <img
                       src={product.image}
                       alt={product.name}
-                      className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700"
+                      className="w-full h-80 object-cover"
                     />
                     
                     <div className="absolute top-4 left-4 z-20">
@@ -178,7 +178,7 @@ const Drops = () => {
                     </div>
 
                     {/* Fixed hover overlay to cover entire image area */}
-                    <div className="absolute inset-0 bg-black/60 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center z-10">
+                    <div className="absolute inset-0 bg-black/60 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
                       <button className="text-white border border-white px-6 py-3 rounded-full text-sm font-medium hover:bg-white hover:text-black transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
                         Quick View
                       </button>
@@ -186,7 +186,7 @@ const Drops = () => {
                   </div>
 
                   <div className="p-6">
-                    <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-red-400 transition-colors duration-300">
+                    <h3 className="text-xl font-semibold text-white mb-2">
                       {product.name}
                     </h3>
                     <div className="flex items-center gap-3">
@@ -209,14 +209,14 @@ const Drops = () => {
               {onSale.map((product, index) => (
                 <div 
                   key={product.id}
-                  className={`group bg-zinc-900 rounded-xl overflow-hidden card-hover transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+                  className={`bg-zinc-900 rounded-xl overflow-hidden card-hover transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                   style={{ transitionDelay: `${(index + 3) * 150}ms` }}
                 >
-                  <div className="relative">
+                  <div className="relative rounded-xl overflow-hidden group">
                     <img
                       src={product.image}
                       alt={product.name}
-                      className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700"
+                      className="w-full h-80 object-cover"
                     />
                     
                     <div className="absolute top-4 left-4 z-20">
@@ -226,7 +226,7 @@ const Drops = () => {
                     </div>
 
                     {/* Fixed hover overlay to cover entire image area */}
-                    <div className="absolute inset-0 bg-black/60 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center z-10">
+                    <div className="absolute inset-0 bg-black/60 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
                       <button className="text-white border border-white px-6 py-3 rounded-full text-sm font-medium hover:bg-white hover:text-black transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
                         Quick View
                       </button>
@@ -234,7 +234,7 @@ const Drops = () => {
                   </div>
 
                   <div className="p-6">
-                    <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-red-400 transition-colors duration-300">
+                    <h3 className="text-xl font-semibold text-white mb-2">
                       {product.name}
                     </h3>
                     <div className="flex items-center gap-3">

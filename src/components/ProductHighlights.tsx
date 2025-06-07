@@ -71,33 +71,35 @@ const ProductHighlights = () => {
         {products.map((product, index) => (
           <div 
             key={product.id}
-            className={`group card-hover transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+            className={`card-hover transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
             style={{ transitionDelay: `${index * 150}ms` }}
           >
-            <div className="relative overflow-hidden rounded-xl bg-carbon-grey">
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700"
-              />
-              
-              {/* Badge */}
-              <div className="absolute top-4 left-4 z-20">
-                <span className="bg-signal-red text-white px-3 py-1 text-xs font-bold tracking-wider uppercase rounded-lg">
-                  {product.badge}
-                </span>
+            <div className="rounded-xl overflow-hidden bg-carbon-grey">
+              <div className="relative group">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-700"
+                />
+                
+                {/* Badge */}
+                <div className="absolute top-4 left-4 z-20">
+                  <span className="bg-signal-red text-white px-3 py-1 text-xs font-bold tracking-wider uppercase rounded-lg">
+                    {product.badge}
+                  </span>
+                </div>
+
+                {/* Fixed Hover Overlay - covers entire image area */}
+                <div className="absolute inset-0 bg-black/60 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center z-10">
+                  <button className="text-white border border-white px-6 py-3 rounded-full text-sm font-medium hover:bg-white hover:text-black transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                    Quick View
+                  </button>
+                </div>
               </div>
 
-              {/* Fixed Hover Overlay - now covers entire card area */}
-              <div className="absolute inset-0 bg-black/60 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center rounded-xl z-10">
-                <button className="text-white border border-white px-6 py-3 rounded-full text-sm font-medium hover:bg-white hover:text-black transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
-                  Quick View
-                </button>
-              </div>
-
-              {/* Product info overlay */}
-              <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent z-15">
-                <h3 className="text-lg font-semibold text-white group-hover:text-signal-red transition-colors duration-300">
+              {/* Product info - outside hover group */}
+              <div className="p-4 bg-carbon-grey">
+                <h3 className="text-lg font-semibold text-white">
                   {product.name}
                 </h3>
                 <p className="text-gray-300 font-medium">
