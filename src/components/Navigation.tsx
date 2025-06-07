@@ -1,13 +1,18 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { Search, User, ShoppingBag, X, Trash2, Plus, Minus, UserCircle, UserPlus } from 'lucide-react';
+import SignInModal from './SignInModal';
+import RegisterModal from './RegisterModal';
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isSignInOpen, setIsSignInOpen] = useState(false);
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [searchIsClosing, setSearchIsClosing] = useState(false);
   
   const profileRef = useRef<HTMLDivElement>(null);
   const cartRef = useRef<HTMLDivElement>(null);
@@ -40,7 +45,7 @@ const Navigation = () => {
         setIsCartOpen(false);
       }
       if (searchModalRef.current && !searchModalRef.current.contains(event.target as Node)) {
-        setIsSearchOpen(false);
+        handleCloseSearch();
       }
     };
 
@@ -52,7 +57,7 @@ const Navigation = () => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        setIsSearchOpen(false);
+        handleCloseSearch();
       }
     };
 
@@ -63,6 +68,15 @@ const Navigation = () => {
 
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isSearchOpen]);
+
+  // Enhanced search modal close with animation
+  const handleCloseSearch = () => {
+    setSearchIsClosing(true);
+    setTimeout(() => {
+      setSearchIsClosing(false);
+      setIsSearchOpen(false);
+    }, 300);
+  };
 
   // Cart functions
   const updateQuantity = (id: number, change: number) => {
@@ -134,12 +148,24 @@ const Navigation = () => {
                 
                 {isProfileOpen && (
                   <div className="absolute top-full right-0 mt-2 w-48 bg-white shadow-xl rounded-xl backdrop-blur-md p-3 space-y-2 z-50 border border-gray-100 animate-fade-in">
-                    <button className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200 ease-in-out">
+                    <button 
+                      onClick={() => {
+                        setIsSignInOpen(true);
+                        setIsProfileOpen(false);
+                      }}
+                      className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200 ease-in-out"
+                    >
                       <UserCircle className="w-4 h-4" />
                       Sign In
                     </button>
                     <hr className="border-t border-gray-200 my-1" />
-                    <button className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200 ease-in-out">
+                    <button 
+                      onClick={() => {
+                        setIsRegisterOpen(true);
+                        setIsProfileOpen(false);
+                      }}
+                      className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200 ease-in-out"
+                    >
                       <UserPlus className="w-4 h-4" />
                       Register
                     </button>
@@ -255,15 +281,15 @@ const Navigation = () => {
         </div>
       </nav>
 
-      {/* Premium Search Modal */}
+      {/* Enhanced Search Modal with Better Animations */}
       {isSearchOpen && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-lg flex items-start justify-center z-50 p-4 pt-[20vh]">
+        <div className={`fixed inset-0 bg-black/60 backdrop-blur-lg flex items-start justify-center z-50 p-4 pt-[20vh] ${searchIsClosing ? 'animate-fade-out' : 'animate-fade-in'}`}>
           <div 
             ref={searchModalRef}
-            className="bg-zinc-950/90 backdrop-blur-xl shadow-2xl border border-zinc-800 rounded-2xl p-6 w-[90%] max-w-lg transform transition-all duration-300 scale-100 hover:scale-[1.02]"
+            className={`bg-zinc-950/90 backdrop-blur-xl shadow-2xl border border-zinc-800 rounded-2xl p-6 w-[90%] max-w-lg transform transition-all duration-300 ${searchIsClosing ? 'animate-slide-out-down' : 'animate-slide-in-up'}`}
           >
             <button
-              onClick={() => setIsSearchOpen(false)}
+              onClick={handleCloseSearch}
               className="absolute top-4 right-4 text-zinc-400 hover:text-white transition-colors duration-200"
             >
               <X className="w-6 h-6" />
@@ -298,6 +324,12 @@ const Navigation = () => {
           </div>
         </div>
       )}
+
+      {/* Sign In Modal */}
+      <SignInModal isOpen={isSignInOpen} onClose={() => setIsSignInOpen(false)} />
+
+      {/* Register Modal */}
+      <RegisterModal isOpen={isRegisterOpen} onClose={() => setIsRegisterOpen(false)} />
     </>
   );
 };

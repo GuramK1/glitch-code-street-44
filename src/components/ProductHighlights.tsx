@@ -82,15 +82,15 @@ const ProductHighlights = () => {
               />
               
               {/* Badge */}
-              <div className="absolute top-4 left-4">
+              <div className="absolute top-4 left-4 z-20">
                 <span className="bg-signal-red text-white px-3 py-1 text-xs font-bold tracking-wider uppercase rounded-lg">
                   {product.badge}
                 </span>
               </div>
 
-              {/* Hover Overlay */}
-              <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                <button className="btn-secondary transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+              {/* Enhanced Hover Overlay */}
+              <div className="absolute inset-0 bg-black/60 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center rounded-xl z-10">
+                <button className="text-white border border-white px-6 py-3 rounded-full text-sm font-medium hover:bg-white hover:text-black transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
                   Quick View
                 </button>
               </div>
