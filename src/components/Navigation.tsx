@@ -1,6 +1,6 @@
 
 import { useState, useEffect, useRef } from 'react';
-import { Search, User, ShoppingBag, X, Trash2, Plus, Minus } from 'lucide-react';
+import { Search, User, ShoppingBag, X, Trash2, Plus, Minus, UserCircle, UserPlus } from 'lucide-react';
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,6 +12,7 @@ const Navigation = () => {
   const profileRef = useRef<HTMLDivElement>(null);
   const cartRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
+  const searchModalRef = useRef<HTMLDivElement>(null);
 
   // Mock cart items for demo - now with state for quantity updates
   const [cartItems, setCartItems] = useState([
@@ -37,6 +38,9 @@ const Navigation = () => {
       }
       if (cartRef.current && !cartRef.current.contains(event.target as Node)) {
         setIsCartOpen(false);
+      }
+      if (searchModalRef.current && !searchModalRef.current.contains(event.target as Node)) {
+        setIsSearchOpen(false);
       }
     };
 
@@ -129,11 +133,14 @@ const Navigation = () => {
                 </button>
                 
                 {isProfileOpen && (
-                  <div className="absolute top-full right-0 mt-2 bg-white shadow-xl rounded-xl p-4 space-y-2 z-50 min-w-[150px] border border-gray-100 animate-fade-in">
-                    <button className="w-full text-left px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors duration-200 text-sm font-medium">
+                  <div className="absolute top-full right-0 mt-2 w-48 bg-white shadow-xl rounded-xl backdrop-blur-md p-3 space-y-2 z-50 border border-gray-100 animate-fade-in">
+                    <button className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200 ease-in-out">
+                      <UserCircle className="w-4 h-4" />
                       Sign In
                     </button>
-                    <button className="w-full text-left px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-lg transition-colors duration-200 text-sm font-medium">
+                    <hr className="border-t border-gray-200 my-1" />
+                    <button className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200 ease-in-out">
+                      <UserPlus className="w-4 h-4" />
                       Register
                     </button>
                   </div>
@@ -250,32 +257,43 @@ const Navigation = () => {
 
       {/* Premium Search Modal */}
       {isSearchOpen && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-start justify-center z-50 p-4 pt-[15vh]">
-          <div className="bg-white/95 backdrop-blur-lg rounded-2xl shadow-2xl w-full max-w-2xl p-8 relative transform transition-all duration-300 scale-100 hover:scale-[1.02]">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-lg flex items-start justify-center z-50 p-4 pt-[20vh]">
+          <div 
+            ref={searchModalRef}
+            className="bg-zinc-950/90 backdrop-blur-xl shadow-2xl border border-zinc-800 rounded-2xl p-6 w-[90%] max-w-lg transform transition-all duration-300 scale-100 hover:scale-[1.02]"
+          >
             <button
               onClick={() => setIsSearchOpen(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors duration-200"
+              className="absolute top-4 right-4 text-zinc-400 hover:text-white transition-colors duration-200"
             >
               <X className="w-6 h-6" />
             </button>
             
             <div className="mb-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Search 404 Fit</h2>
-              <p className="text-gray-500">Find your perfect streetwear piece</p>
+              <h2 className="text-white text-xl font-semibold mb-2">Search 404 Fit</h2>
+              <p className="text-zinc-400 text-sm">Find your perfect streetwear piece</p>
             </div>
             
-            <div className="relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <div className="relative mb-4">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-500 w-5 h-5" />
               <input
                 ref={searchRef}
                 type="text"
-                placeholder="Search products, collections..."
-                className="w-full pl-12 pr-4 py-4 text-lg border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent bg-white/80 backdrop-blur"
+                placeholder="Search hoodies, drop 001..."
+                className="w-full pl-12 pr-4 py-3 rounded-full bg-zinc-800 text-white placeholder-zinc-500 border border-zinc-700 focus:border-signal-red focus:ring-2 focus:ring-signal-red focus:outline-none transition-all duration-200"
               />
             </div>
             
-            <div className="mt-6 text-sm text-gray-500">
-              <p>Try: "hoodies", "drop 001", "streetwear"</p>
+            <div className="flex flex-wrap gap-2 text-sm">
+              <span className="px-3 py-1 bg-zinc-800 text-zinc-300 rounded-full hover:bg-zinc-700 hover:text-white transition cursor-pointer">
+                "hoodies"
+              </span>
+              <span className="px-3 py-1 bg-zinc-800 text-zinc-300 rounded-full hover:bg-zinc-700 hover:text-white transition cursor-pointer">
+                "drop 001"
+              </span>
+              <span className="px-3 py-1 bg-zinc-800 text-zinc-300 rounded-full hover:bg-zinc-700 hover:text-white transition cursor-pointer">
+                "streetwear"
+              </span>
             </div>
           </div>
         </div>
