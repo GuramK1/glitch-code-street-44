@@ -71,7 +71,7 @@ const ProductHighlights = () => {
         {products.map((product, index) => (
           <div 
             key={product.id}
-            className={`card-hover transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+            className={`transition-all duration-1000 hover:scale-105 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
             style={{ transitionDelay: `${index * 150}ms` }}
           >
             <div className="rounded-xl overflow-hidden bg-carbon-grey">
@@ -79,7 +79,7 @@ const ProductHighlights = () => {
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-full h-80 object-cover group-hover:scale-110 group-hover:blur-sm transition-all duration-700"
+                  className="w-full h-80 object-cover group-hover:scale-110 group-hover:blur-md transform-gpu transition-all duration-700"
                 />
                 
                 {/* Badge */}
@@ -90,7 +90,7 @@ const ProductHighlights = () => {
                 </div>
 
                 {/* Fixed Hover Overlay - covers entire image area */}
-                <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center z-10">
+                <div className="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center z-10">
                   <button className="text-white border border-white px-6 py-3 rounded-full text-sm font-medium hover:bg-white hover:text-black transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
                     Quick View
                   </button>
