@@ -1,6 +1,7 @@
-
 import { useState, useEffect, useRef } from 'react';
-import { Search, User, ShoppingBag, X, Trash2, Plus, Minus, UserCircle, UserPlus } from 'lucide-react';
+import { Search, User, ShoppingBag, X, Trash2, Plus, Minus, UserCircle, UserPlus, Settings, LogOut } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import SignInModal from './SignInModal';
 import RegisterModal from './RegisterModal';
 
@@ -18,6 +19,8 @@ const Navigation = () => {
   const cartRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
   const searchModalRef = useRef<HTMLDivElement>(null);
+
+  const { isAuthenticated, user, logout } = useAuth();
 
   // Mock cart items for demo - now with state for quantity updates
   const [cartItems, setCartItems] = useState([
@@ -93,6 +96,11 @@ const Navigation = () => {
     setCartItems(items => items.filter(item => item.id !== id));
   };
 
+  const handleLogout = () => {
+    logout();
+    setIsProfileOpen(false);
+  };
+
   const totalCartItems = cartItems.reduce((sum, item) => sum + item.qty, 0);
   const totalCartPrice = cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
@@ -103,18 +111,20 @@ const Navigation = () => {
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex-shrink-0">
-              <h1 className="text-2xl font-bold tracking-tight">
-                <span className="text-signal-red">404</span>
-                <span className={`transition-colors duration-300 ${isScrolled ? 'text-black' : 'text-white'}`}> FIT</span>
-              </h1>
+              <Link to="/">
+                <h1 className="text-2xl font-bold tracking-tight">
+                  <span className="text-signal-red">404</span>
+                  <span className={`transition-colors duration-300 ${isScrolled ? 'text-black' : 'text-white'}`}> FIT</span>
+                </h1>
+              </Link>
             </div>
 
             {/* Desktop Navigation */}
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-8">
-                <a href="#" className={`transition-colors duration-300 text-sm font-medium tracking-wider uppercase hover:text-neon-blue ${isScrolled ? 'text-gray-700 hover:text-neon-blue' : 'text-zinc-300 hover:text-neon-blue'}`}>
+                <Link to="/drops" className={`transition-colors duration-300 text-sm font-medium tracking-wider uppercase hover:text-neon-blue ${isScrolled ? 'text-gray-700 hover:text-neon-blue' : 'text-zinc-300 hover:text-neon-blue'}`}>
                   Drops
-                </a>
+                </Link>
                 <a href="#" className={`transition-colors duration-300 text-sm font-medium tracking-wider uppercase hover:text-neon-blue ${isScrolled ? 'text-gray-700 hover:text-neon-blue' : 'text-zinc-300 hover:text-neon-blue'}`}>
                   Shop
                 </a>
@@ -148,27 +158,54 @@ const Navigation = () => {
                 
                 {isProfileOpen && (
                   <div className="absolute top-full right-0 mt-2 w-48 bg-white shadow-xl rounded-xl backdrop-blur-md p-3 space-y-2 z-50 border border-gray-100 animate-fade-in">
-                    <button 
-                      onClick={() => {
-                        setIsSignInOpen(true);
-                        setIsProfileOpen(false);
-                      }}
-                      className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200 ease-in-out"
-                    >
-                      <UserCircle className="w-4 h-4" />
-                      Sign In
-                    </button>
-                    <hr className="border-t border-gray-200 my-1" />
-                    <button 
-                      onClick={() => {
-                        setIsRegisterOpen(true);
-                        setIsProfileOpen(false);
-                      }}
-                      className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200 ease-in-out"
-                    >
-                      <UserPlus className="w-4 h-4" />
-                      Register
-                    </button>
+                    {!isAuthenticated ? (
+                      <>
+                        <button 
+                          onClick={() => {
+                            setIsSignInOpen(true);
+                            setIsProfileOpen(false);
+                          }}
+                          className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200 ease-in-out"
+                        >
+                          <UserCircle className="w-4 h-4" />
+                          Sign In
+                        </button>
+                        <hr className="border-t border-gray-200 my-1" />
+                        <button 
+                          onClick={() => {
+                            setIsRegisterOpen(true);
+                            setIsProfileOpen(false);
+                          }}
+                          className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200 ease-in-out"
+                        >
+                          <UserPlus className="w-4 h-4" />
+                          Register
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <div className="px-3 py-2 border-b border-gray-200">
+                          <p className="text-sm font-medium text-gray-900">Hello, {user?.username}!</p>
+                          <p className="text-xs text-gray-500">{user?.email}</p>
+                        </div>
+                        <button className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200 ease-in-out">
+                          <UserCircle className="w-4 h-4" />
+                          My Profile
+                        </button>
+                        <button className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200 ease-in-out">
+                          <Settings className="w-4 h-4" />
+                          Settings
+                        </button>
+                        <hr className="border-t border-gray-200 my-1" />
+                        <button 
+                          onClick={handleLogout}
+                          className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-100 rounded-md transition-all duration-200 ease-in-out"
+                        >
+                          <LogOut className="w-4 h-4" />
+                          Logout
+                        </button>
+                      </>
+                    )}
                   </div>
                 )}
               </div>
@@ -263,9 +300,9 @@ const Navigation = () => {
           {isMenuOpen && (
             <div className="md:hidden">
               <div className="px-2 pt-2 pb-3 space-y-1 border-t border-border bg-background/95 backdrop-blur-sm">
-                <a href="#" className={`block px-3 py-2 transition-colors duration-300 text-sm font-medium tracking-wider uppercase hover:text-neon-blue ${isScrolled ? 'text-gray-700' : 'text-zinc-300'}`}>
+                <Link to="/drops" className={`block px-3 py-2 transition-colors duration-300 text-sm font-medium tracking-wider uppercase hover:text-neon-blue ${isScrolled ? 'text-gray-700' : 'text-zinc-300'}`}>
                   Drops
-                </a>
+                </Link>
                 <a href="#" className={`block px-3 py-2 transition-colors duration-300 text-sm font-medium tracking-wider uppercase hover:text-neon-blue ${isScrolled ? 'text-gray-700' : 'text-zinc-300'}`}>
                   Shop
                 </a>

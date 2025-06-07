@@ -1,6 +1,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { X, Eye, EyeOff } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 interface SignInModalProps {
   isOpen: boolean;
@@ -12,7 +13,9 @@ const SignInModal = ({ isOpen, onClose }: SignInModalProps) => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [error, setError] = useState('');
   const modalRef = useRef<HTMLDivElement>(null);
+  const { login } = useAuth();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -44,15 +47,24 @@ const SignInModal = ({ isOpen, onClose }: SignInModalProps) => {
     setIsClosing(true);
     setTimeout(() => {
       setIsClosing(false);
+      setError('');
+      setEmail('');
+      setPassword('');
       onClose();
     }, 300);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Sign in with:', { email, password });
-    // Handle sign in logic here
-    handleClose();
+    setError('');
+    
+    const success = login(email, password);
+    if (success) {
+      console.log('Sign in successful');
+      handleClose();
+    } else {
+      setError('Invalid email or password');
+    }
   };
 
   if (!isOpen) return null;
@@ -72,6 +84,12 @@ const SignInModal = ({ isOpen, onClose }: SignInModalProps) => {
             <X className="w-5 h-5" />
           </button>
         </div>
+
+        {error && (
+          <div className="mb-4 p-3 bg-red-600/20 border border-red-600/30 rounded-lg text-red-400 text-sm">
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>

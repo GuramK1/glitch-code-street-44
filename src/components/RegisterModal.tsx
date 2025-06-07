@@ -1,6 +1,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { X, Eye, EyeOff } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 interface RegisterModalProps {
   isOpen: boolean;
@@ -15,7 +16,9 @@ const RegisterModal = ({ isOpen, onClose }: RegisterModalProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const [error, setError] = useState('');
   const modalRef = useRef<HTMLDivElement>(null);
+  const { register } = useAuth();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -47,19 +50,31 @@ const RegisterModal = ({ isOpen, onClose }: RegisterModalProps) => {
     setIsClosing(true);
     setTimeout(() => {
       setIsClosing(false);
+      setError('');
+      setUsername('');
+      setEmail('');
+      setPassword('');
+      setConfirmPassword('');
       onClose();
     }, 300);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
+    
     if (password !== confirmPassword) {
-      alert('Passwords do not match');
+      setError('Passwords do not match');
       return;
     }
-    console.log('Register with:', { username, email, password });
-    // Handle registration logic here
-    handleClose();
+    
+    const success = register(username, email, password);
+    if (success) {
+      console.log('Registration successful');
+      handleClose();
+    } else {
+      setError('User with this email already exists');
+    }
   };
 
   if (!isOpen) return null;
@@ -79,6 +94,12 @@ const RegisterModal = ({ isOpen, onClose }: RegisterModalProps) => {
             <X className="w-5 h-5" />
           </button>
         </div>
+
+        {error && (
+          <div className="mb-4 p-3 bg-red-600/20 border border-red-600/30 rounded-lg text-red-400 text-sm">
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
