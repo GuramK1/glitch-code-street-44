@@ -112,7 +112,7 @@ const About = () => {
             <h2 className="text-3xl font-bold text-white mb-8 text-center">What We Stand For</h2>
             <div className="space-y-6">
               <div className="flex items-start gap-4">
-                <span className="text-red-500 text-xl font-mono">></span>
+                <span className="text-red-500 text-xl font-mono">{'>'}</span>
                 <div>
                   <h3 className="text-white font-semibold mb-1">Authenticity Over Algorithm</h3>
                   <p className="text-zinc-400">Real style can't be coded. We celebrate genuine expression over viral trends.</p>
@@ -120,7 +120,7 @@ const About = () => {
               </div>
               
               <div className="flex items-start gap-4">
-                <span className="text-red-500 text-xl font-mono">></span>
+                <span className="text-red-500 text-xl font-mono">{'>'}</span>
                 <div>
                   <h3 className="text-white font-semibold mb-1">Quality Over Quantity</h3>
                   <p className="text-zinc-400">Every piece is crafted to last, designed to tell a story, built to be worn with pride.</p>
@@ -128,7 +128,7 @@ const About = () => {
               </div>
               
               <div className="flex items-start gap-4">
-                <span className="text-red-500 text-xl font-mono">></span>
+                <span className="text-red-500 text-xl font-mono">{'>'}</span>
                 <div>
                   <h3 className="text-white font-semibold mb-1">Community Over Commerce</h3>
                   <p className="text-zinc-400">We're building a culture, not just selling clothes. The 404 Club is family.</p>
@@ -136,7 +136,7 @@ const About = () => {
               </div>
               
               <div className="flex items-start gap-4">
-                <span className="text-red-500 text-xl font-mono">></span>
+                <span className="text-red-500 text-xl font-mono">{'>'}</span>
                 <div>
                   <h3 className="text-white font-semibold mb-1">Innovation Over Imitation</h3>
                   <p className="text-zinc-400">We create the unexpected, design the undefined, and wear the impossible.</p>
