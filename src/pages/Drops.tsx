@@ -162,7 +162,7 @@ const Drops = () => {
                     <img
                       src={product.image}
                       alt={product.name}
-                      className="w-full h-80 object-cover"
+                      className="w-full h-80 object-cover group-hover:blur-sm transition-all duration-300"
                     />
                     
                     <div className="absolute top-4 left-4 z-20">
@@ -178,7 +178,7 @@ const Drops = () => {
                     </div>
 
                     {/* Fixed hover overlay to cover entire image area */}
-                    <div className="absolute inset-0 bg-black/60 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
                       <button className="text-white border border-white px-6 py-3 rounded-full text-sm font-medium hover:bg-white hover:text-black transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
                         Quick View
                       </button>
@@ -216,7 +216,7 @@ const Drops = () => {
                     <img
                       src={product.image}
                       alt={product.name}
-                      className="w-full h-80 object-cover"
+                      className="w-full h-80 object-cover group-hover:blur-sm transition-all duration-300"
                     />
                     
                     <div className="absolute top-4 left-4 z-20">
@@ -226,7 +226,7 @@ const Drops = () => {
                     </div>
 
                     {/* Fixed hover overlay to cover entire image area */}
-                    <div className="absolute inset-0 bg-black/60 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
                       <button className="text-white border border-white px-6 py-3 rounded-full text-sm font-medium hover:bg-white hover:text-black transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
                         Quick View
                       </button>
