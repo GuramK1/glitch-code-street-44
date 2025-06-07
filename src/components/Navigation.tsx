@@ -125,15 +125,15 @@ const Navigation = () => {
                 <Link to="/drops" className={`transition-colors duration-300 text-sm font-medium tracking-wider uppercase hover:text-neon-blue ${isScrolled ? 'text-gray-700 hover:text-neon-blue' : 'text-zinc-300 hover:text-neon-blue'}`}>
                   Drops
                 </Link>
-                <a href="#" className={`transition-colors duration-300 text-sm font-medium tracking-wider uppercase hover:text-neon-blue ${isScrolled ? 'text-gray-700 hover:text-neon-blue' : 'text-zinc-300 hover:text-neon-blue'}`}>
+                <Link to="/shop" className={`transition-colors duration-300 text-sm font-medium tracking-wider uppercase hover:text-neon-blue ${isScrolled ? 'text-gray-700 hover:text-neon-blue' : 'text-zinc-300 hover:text-neon-blue'}`}>
                   Shop
-                </a>
-                <a href="#" className={`transition-colors duration-300 text-sm font-medium tracking-wider uppercase hover:text-neon-blue ${isScrolled ? 'text-gray-700 hover:text-neon-blue' : 'text-zinc-300 hover:text-neon-blue'}`}>
+                </Link>
+                <Link to="/404-club" className={`transition-colors duration-300 text-sm font-medium tracking-wider uppercase hover:text-neon-blue ${isScrolled ? 'text-gray-700 hover:text-neon-blue' : 'text-zinc-300 hover:text-neon-blue'}`}>
                   404 Club
-                </a>
-                <a href="#" className={`transition-colors duration-300 text-sm font-medium tracking-wider uppercase hover:text-neon-blue ${isScrolled ? 'text-gray-700 hover:text-neon-blue' : 'text-zinc-300 hover:text-neon-blue'}`}>
+                </Link>
+                <Link to="/about" className={`transition-colors duration-300 text-sm font-medium tracking-wider uppercase hover:text-neon-blue ${isScrolled ? 'text-gray-700 hover:text-neon-blue' : 'text-zinc-300 hover:text-neon-blue'}`}>
                   About
-                </a>
+                </Link>
               </div>
             </div>
 
@@ -157,7 +157,7 @@ const Navigation = () => {
                 </button>
                 
                 {isProfileOpen && (
-                  <div className="absolute top-full right-0 mt-2 w-48 bg-white shadow-xl rounded-xl backdrop-blur-md p-3 space-y-2 z-50 border border-gray-100 animate-fade-in">
+                  <div className="absolute top-full right-0 mt-2 w-48 bg-zinc-900 shadow-xl rounded-xl backdrop-blur-md p-3 space-y-2 z-50 border border-zinc-800 animate-fade-in">
                     {!isAuthenticated ? (
                       <>
                         <button 
@@ -165,18 +165,18 @@ const Navigation = () => {
                             setIsSignInOpen(true);
                             setIsProfileOpen(false);
                           }}
-                          className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200 ease-in-out"
+                          className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm font-medium text-red-500 hover:bg-zinc-800 rounded-md transition-all duration-200 ease-in-out"
                         >
                           <UserCircle className="w-4 h-4" />
                           Sign In
                         </button>
-                        <hr className="border-t border-gray-200 my-1" />
+                        <hr className="border-t border-zinc-700 my-1" />
                         <button 
                           onClick={() => {
                             setIsRegisterOpen(true);
                             setIsProfileOpen(false);
                           }}
-                          className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200 ease-in-out"
+                          className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-red-500 hover:bg-zinc-800 rounded-md transition-all duration-200 ease-in-out"
                         >
                           <UserPlus className="w-4 h-4" />
                           Register
@@ -184,22 +184,22 @@ const Navigation = () => {
                       </>
                     ) : (
                       <>
-                        <div className="px-3 py-2 border-b border-gray-200">
-                          <p className="text-sm font-medium text-gray-900">Hello, {user?.username}!</p>
-                          <p className="text-xs text-gray-500">{user?.email}</p>
+                        <div className="px-3 py-2 border-b border-zinc-700">
+                          <p className="text-sm font-medium text-white">Hello, {user?.username}!</p>
+                          <p className="text-xs text-zinc-400">{user?.email}</p>
                         </div>
-                        <button className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200 ease-in-out">
+                        <button className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-red-500 hover:bg-zinc-800 rounded-md transition-all duration-200 ease-in-out">
                           <UserCircle className="w-4 h-4" />
                           My Profile
                         </button>
-                        <button className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-md transition-all duration-200 ease-in-out">
+                        <button className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-red-500 hover:bg-zinc-800 rounded-md transition-all duration-200 ease-in-out">
                           <Settings className="w-4 h-4" />
                           Settings
                         </button>
-                        <hr className="border-t border-gray-200 my-1" />
+                        <hr className="border-t border-zinc-700 my-1" />
                         <button 
                           onClick={handleLogout}
-                          className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-red-600 hover:bg-red-100 rounded-md transition-all duration-200 ease-in-out"
+                          className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-red-500 hover:bg-zinc-800 rounded-md transition-all duration-200 ease-in-out"
                         >
                           <LogOut className="w-4 h-4" />
                           Logout
@@ -303,15 +303,15 @@ const Navigation = () => {
                 <Link to="/drops" className={`block px-3 py-2 transition-colors duration-300 text-sm font-medium tracking-wider uppercase hover:text-neon-blue ${isScrolled ? 'text-gray-700' : 'text-zinc-300'}`}>
                   Drops
                 </Link>
-                <a href="#" className={`block px-3 py-2 transition-colors duration-300 text-sm font-medium tracking-wider uppercase hover:text-neon-blue ${isScrolled ? 'text-gray-700' : 'text-zinc-300'}`}>
+                <Link to="/shop" className={`block px-3 py-2 transition-colors duration-300 text-sm font-medium tracking-wider uppercase hover:text-neon-blue ${isScrolled ? 'text-gray-700' : 'text-zinc-300'}`}>
                   Shop
-                </a>
-                <a href="#" className={`block px-3 py-2 transition-colors duration-300 text-sm font-medium tracking-wider uppercase hover:text-neon-blue ${isScrolled ? 'text-gray-700' : 'text-zinc-300'}`}>
+                </Link>
+                <Link to="/404-club" className={`block px-3 py-2 transition-colors duration-300 text-sm font-medium tracking-wider uppercase hover:text-neon-blue ${isScrolled ? 'text-gray-700' : 'text-zinc-300'}`}>
                   404 Club
-                </a>
-                <a href="#" className={`block px-3 py-2 transition-colors duration-300 text-sm font-medium tracking-wider uppercase hover:text-neon-blue ${isScrolled ? 'text-gray-700' : 'text-zinc-300'}`}>
+                </Link>
+                <Link to="/about" className={`block px-3 py-2 transition-colors duration-300 text-sm font-medium tracking-wider uppercase hover:text-neon-blue ${isScrolled ? 'text-gray-700' : 'text-zinc-300'}`}>
                   About
-                </a>
+                </Link>
               </div>
             </div>
           )}
