@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 
 const ProductHighlights = () => {
@@ -79,7 +78,7 @@ const ProductHighlights = () => {
                 <img
                   src={product.image}
                   alt={product.name}
-                  className="w-full h-80 object-cover group-hover:scale-110 group-hover:blur-md transform-gpu transition-all duration-700"
+                  className="w-full h-80 object-cover group-hover:scale-110 group-hover:blur-lg transform-gpu transition-all duration-700"
                 />
                 
                 {/* Badge */}
