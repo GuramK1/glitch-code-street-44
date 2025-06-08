@@ -12,6 +12,7 @@ const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
@@ -20,6 +21,7 @@ const Navigation = () => {
   
   const profileRef = useRef<HTMLDivElement>(null);
   const cartRef = useRef<HTMLDivElement>(null);
+  const wishlistRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
   const searchModalRef = useRef<HTMLDivElement>(null);
 
@@ -31,6 +33,13 @@ const Navigation = () => {
     { id: 1, name: "404 Hoodie", price: 89, qty: 1, image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=100&h=100&fit=crop" },
     { id: 2, name: "Glitch Tee", price: 45, qty: 2, image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=100&h=100&fit=crop" }
   ]);
+
+  // Mock wishlist items for display
+  const mockWishlistItems = [
+    { id: 1, name: "404 Hoodie", price: 89, image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=100&h=100&fit=crop" },
+    { id: 2, name: "Glitch Tee", price: 45, image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=100&h=100&fit=crop" },
+    { id: 3, name: "Street Jacket", price: 129, image: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=100&h=100&fit=crop" }
+  ];
 
   // Enhanced scroll effect for premium feel
   useEffect(() => {
@@ -51,6 +60,9 @@ const Navigation = () => {
       }
       if (cartRef.current && !cartRef.current.contains(event.target as Node)) {
         setIsCartOpen(false);
+      }
+      if (wishlistRef.current && !wishlistRef.current.contains(event.target as Node)) {
+        setIsWishlistOpen(false);
       }
       if (searchModalRef.current && !searchModalRef.current.contains(event.target as Node)) {
         handleCloseSearch();
@@ -107,7 +119,12 @@ const Navigation = () => {
   };
 
   const handleWishlistClick = () => {
-    // For now, scroll to wishlist if on profile page, otherwise navigate to profile
+    setIsWishlistOpen(!isWishlistOpen);
+    setIsProfileOpen(false);
+    setIsCartOpen(false);
+  };
+
+  const handleWishlistFromProfile = () => {
     if (window.location.pathname === '/profile') {
       const wishlistSection = document.getElementById('wishlist-section');
       if (wishlistSection) {
@@ -116,6 +133,7 @@ const Navigation = () => {
     } else {
       window.location.href = '/profile#wishlist-section';
     }
+    setIsProfileOpen(false);
   };
 
   const totalCartItems = cartItems.reduce((sum, item) => sum + item.qty, 0);
@@ -160,18 +178,60 @@ const Navigation = () => {
 
             {/* Icons */}
             <div className="flex items-center space-x-4">
-              {/* Wishlist */}
-              <button 
-                onClick={handleWishlistClick}
-                className="w-5 h-5 text-white hover:text-neon-blue transition-all duration-300 hover:scale-110 relative"
-              >
-                <Heart className="w-5 h-5" />
-                {wishlist.length > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-signal-red text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
-                    {wishlist.length}
-                  </span>
+              {/* Wishlist with Dropdown */}
+              <div ref={wishlistRef} className="relative">
+                <button 
+                  onClick={handleWishlistClick}
+                  className="w-5 h-5 text-white hover:text-neon-blue transition-all duration-300 hover:scale-110 relative"
+                >
+                  <Heart className="w-5 h-5" />
+                  {wishlist.length > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-signal-red text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                      {wishlist.length}
+                    </span>
+                  )}
+                </button>
+
+                {isWishlistOpen && (
+                  <div className="absolute top-full right-0 mt-2 bg-zinc-900 shadow-xl rounded-xl p-4 z-50 w-80 border border-zinc-700 animate-fade-in">
+                    <h3 className="text-lg font-semibold text-white mb-4">Your Wishlist</h3>
+                    
+                    {wishlist.length === 0 ? (
+                      <p className="text-zinc-400 text-center py-4">No items in your wishlist yet</p>
+                    ) : (
+                      <>
+                        <div className="space-y-3 max-h-60 overflow-y-auto">
+                          {mockWishlistItems.slice(0, wishlist.length).map((item) => (
+                            <div key={item.id} className="flex items-center space-x-3 p-2 hover:bg-zinc-800 rounded-lg">
+                              <img src={item.image} alt={item.name} className="w-12 h-12 object-cover rounded-lg flex-shrink-0" />
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-medium text-white truncate">{item.name}</p>
+                                <p className="text-xs text-zinc-400">${item.price}</p>
+                              </div>
+                              <button 
+                                onClick={() => {/* Remove from wishlist logic */}}
+                                className="text-signal-red hover:text-red-400 transition-colors duration-200"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                        
+                        <div className="border-t border-zinc-700 pt-4 mt-4">
+                          <Link 
+                            to="/profile#wishlist-section"
+                            onClick={() => setIsWishlistOpen(false)}
+                            className="w-full bg-signal-red text-white py-3 rounded-xl font-semibold hover:bg-signal-red/90 transition-colors duration-200 text-center block"
+                          >
+                            View All Items
+                          </Link>
+                        </div>
+                      </>
+                    )}
+                  </div>
                 )}
-              </button>
+              </div>
 
               {/* Search */}
               <button 
@@ -232,8 +292,7 @@ const Navigation = () => {
                         </Link>
                         <button 
                           onClick={() => {
-                            handleWishlistClick();
-                            setIsProfileOpen(false);
+                            handleWishlistFromProfile();
                           }}
                           className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-white hover:bg-zinc-800 rounded-md transition-all duration-200 ease-in-out"
                         >
