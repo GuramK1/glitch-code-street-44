@@ -1,5 +1,6 @@
+
 import { useState, useEffect } from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
+import { useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { Filter, Grid, List, ChevronDown, Heart } from 'lucide-react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
@@ -10,7 +11,9 @@ const Shop = () => {
   const [sortBy, setSortBy] = useState('newest');
   const [category, setCategory] = useState('all');
   const [showFilters, setShowFilters] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const { toggleWishlist, isInWishlist } = useWishlist();
+  const navigate = useNavigate();
 
   // Initialize category from URL params and scroll to top
   useEffect(() => {
@@ -21,6 +24,14 @@ const Shop = () => {
     // Scroll to top when component mounts or category changes
     window.scrollTo(0, 0);
   }, [searchParams]);
+
+  // Handle smooth transition to product page
+  const handleQuickView = (slug: string) => {
+    setIsTransitioning(true);
+    setTimeout(() => {
+      navigate(`/product/${slug}`);
+    }, 300);
+  };
 
   // Mock product data with proper data-category attributes and slugs
   const products = [
@@ -82,7 +93,7 @@ const Shop = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       
-      <div className="pt-16">
+      <div className={`pt-16 transition-all duration-500 ${isTransitioning ? 'opacity-0 -translate-x-8' : 'opacity-100 translate-x-0'}`}>
         {/* Hero Section */}
         <div className="bg-background text-foreground py-16 px-4" data-aos="fade-up">
           <div className="max-w-7xl mx-auto text-center">
@@ -213,12 +224,12 @@ const Shop = () => {
                     
                     {/* Quick View Overlay */}
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <Link 
-                        to={`/product/${product.slug}`}
+                      <button 
+                        onClick={() => handleQuickView(product.slug)}
                         className="text-white border border-white px-4 py-2 rounded-full text-sm hover:bg-white hover:text-black transition-all duration-200"
                       >
                         Quick View
-                      </Link>
+                      </button>
                     </div>
                   </div>
                   
