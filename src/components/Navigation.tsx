@@ -125,7 +125,7 @@ const Navigation = () => {
               <Link to="/">
                 <h1 className="text-2xl font-bold tracking-tight">
                   <GlitchText text="404" className="text-signal-red" />
-                  <span className="text-foreground"> FIT</span>
+                  <span className={`${isDark ? 'text-white' : 'text-black'}`}> FIT</span>
                 </h1>
               </Link>
             </div>
@@ -133,16 +133,16 @@ const Navigation = () => {
             {/* Desktop Navigation */}
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-8">
-                <Link to="/drops" className="text-foreground hover:text-neon-blue transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
+                <Link to="/drops" className={`${isDark ? 'text-white hover:text-neon-blue' : 'text-black hover:text-neon-blue'} transition-colors duration-300 text-sm font-medium tracking-wider uppercase`}>
                   Drops
                 </Link>
-                <Link to="/shop" className="text-foreground hover:text-neon-blue transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
+                <Link to="/shop" className={`${isDark ? 'text-white hover:text-neon-blue' : 'text-black hover:text-neon-blue'} transition-colors duration-300 text-sm font-medium tracking-wider uppercase`}>
                   Shop
                 </Link>
-                <Link to="/404-club" className="text-foreground hover:text-neon-blue transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
+                <Link to="/404-club" className={`${isDark ? 'text-white hover:text-neon-blue' : 'text-black hover:text-neon-blue'} transition-colors duration-300 text-sm font-medium tracking-wider uppercase`}>
                   404 Club
                 </Link>
-                <Link to="/about" className="text-foreground hover:text-neon-blue transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
+                <Link to="/about" className={`${isDark ? 'text-white hover:text-neon-blue' : 'text-black hover:text-neon-blue'} transition-colors duration-300 text-sm font-medium tracking-wider uppercase`}>
                   About
                 </Link>
               </div>
@@ -153,13 +153,13 @@ const Navigation = () => {
               {/* Theme Toggle */}
               <button 
                 onClick={toggleTheme}
-                className="w-5 h-5 text-foreground hover:text-neon-blue transition-all duration-300 hover:scale-110"
+                className={`w-5 h-5 ${isDark ? 'text-white hover:text-neon-blue' : 'text-black hover:text-neon-blue'} transition-all duration-300 hover:scale-110`}
               >
                 {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
               </button>
 
               {/* Wishlist */}
-              <button className="w-5 h-5 text-foreground hover:text-neon-blue transition-all duration-300 hover:scale-110 relative">
+              <button className={`w-5 h-5 ${isDark ? 'text-white hover:text-neon-blue' : 'text-black hover:text-neon-blue'} transition-all duration-300 hover:scale-110 relative`}>
                 <Heart className="w-5 h-5" />
                 {wishlist.length > 0 && (
                   <span className="absolute -top-2 -right-2 bg-signal-red text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
@@ -171,7 +171,7 @@ const Navigation = () => {
               {/* Search */}
               <button 
                 onClick={() => setIsSearchOpen(true)}
-                className="w-5 h-5 text-foreground hover:text-neon-blue transition-all duration-300 hover:scale-110"
+                className={`w-5 h-5 ${isDark ? 'text-white hover:text-neon-blue' : 'text-black hover:text-neon-blue'} transition-all duration-300 hover:scale-110`}
               >
                 <Search className="w-5 h-5" />
               </button>
@@ -180,7 +180,7 @@ const Navigation = () => {
               <div ref={profileRef} className="relative">
                 <button 
                   onClick={() => setIsProfileOpen(!isProfileOpen)}
-                  className="w-5 h-5 text-foreground hover:text-neon-blue transition-all duration-300 hover:scale-110"
+                  className={`w-5 h-5 ${isDark ? 'text-white hover:text-neon-blue' : 'text-black hover:text-neon-blue'} transition-all duration-300 hover:scale-110`}
                 >
                   <User className="w-5 h-5" />
                 </button>
@@ -243,7 +243,7 @@ const Navigation = () => {
               <div ref={cartRef} className="relative">
                 <button 
                   onClick={() => setIsCartOpen(!isCartOpen)}
-                  className="w-5 h-5 text-foreground hover:text-neon-blue transition-all duration-300 hover:scale-110 relative"
+                  className={`w-5 h-5 ${isDark ? 'text-white hover:text-neon-blue' : 'text-black hover:text-neon-blue'} transition-all duration-300 hover:scale-110 relative`}
                 >
                   <ShoppingBag className="w-5 h-5" />
                   {totalCartItems > 0 && (
@@ -317,9 +317,9 @@ const Navigation = () => {
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
               >
                 <div className="w-6 h-6 flex flex-col justify-center items-center space-y-1">
-                  <span className={`block w-5 h-0.5 transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-1.5' : ''} bg-foreground`}></span>
-                  <span className={`block w-5 h-0.5 transition-all duration-300 ${isMenuOpen ? 'opacity-0' : ''} bg-foreground`}></span>
-                  <span className={`block w-5 h-0.5 transition-all duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-1.5' : ''} bg-foreground`}></span>
+                  <span className={`block w-5 h-0.5 transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-1.5' : ''} ${isDark ? 'bg-white' : 'bg-black'}`}></span>
+                  <span className={`block w-5 h-0.5 transition-all duration-300 ${isMenuOpen ? 'opacity-0' : ''} ${isDark ? 'bg-white' : 'bg-black'}`}></span>
+                  <span className={`block w-5 h-0.5 transition-all duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-1.5' : ''} ${isDark ? 'bg-white' : 'bg-black'}`}></span>
                 </div>
               </button>
             </div>
@@ -329,16 +329,16 @@ const Navigation = () => {
           {isMenuOpen && (
             <div className="md:hidden">
               <div className="px-2 pt-2 pb-3 space-y-1 border-t border-border bg-background/95 backdrop-blur-sm">
-                <Link to="/drops" className="block px-3 py-2 text-foreground hover:text-neon-blue transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
+                <Link to="/drops" className={`block px-3 py-2 ${isDark ? 'text-white hover:text-neon-blue' : 'text-black hover:text-neon-blue'} transition-colors duration-300 text-sm font-medium tracking-wider uppercase`}>
                   Drops
                 </Link>
-                <Link to="/shop" className="block px-3 py-2 text-foreground hover:text-neon-blue transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
+                <Link to="/shop" className={`block px-3 py-2 ${isDark ? 'text-white hover:text-neon-blue' : 'text-black hover:text-neon-blue'} transition-colors duration-300 text-sm font-medium tracking-wider uppercase`}>
                   Shop
                 </Link>
-                <Link to="/404-club" className="block px-3 py-2 text-foreground hover:text-neon-blue transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
+                <Link to="/404-club" className={`block px-3 py-2 ${isDark ? 'text-white hover:text-neon-blue' : 'text-black hover:text-neon-blue'} transition-colors duration-300 text-sm font-medium tracking-wider uppercase`}>
                   404 Club
                 </Link>
-                <Link to="/about" className="block px-3 py-2 text-foreground hover:text-neon-blue transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
+                <Link to="/about" className={`block px-3 py-2 ${isDark ? 'text-white hover:text-neon-blue' : 'text-black hover:text-neon-blue'} transition-colors duration-300 text-sm font-medium tracking-wider uppercase`}>
                   About
                 </Link>
               </div>
