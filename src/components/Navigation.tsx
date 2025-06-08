@@ -1,9 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
-import { Search, User, ShoppingBag, X, Trash2, Plus, Minus, UserCircle, UserPlus, Settings, LogOut } from 'lucide-react';
+import { Search, User, ShoppingBag, X, Trash2, Plus, Minus, UserCircle, UserPlus, Settings, LogOut, Moon, Sun, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/ThemeContext';
+import { useWishlist } from '../contexts/WishlistContext';
 import SignInModal from './SignInModal';
 import RegisterModal from './RegisterModal';
+import GlitchText from './GlitchText';
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -21,6 +24,8 @@ const Navigation = () => {
   const searchModalRef = useRef<HTMLDivElement>(null);
 
   const { isAuthenticated, user, logout } = useAuth();
+  const { isDark, toggleTheme } = useTheme();
+  const { wishlist } = useWishlist();
 
   // Mock cart items for demo - now with state for quantity updates
   const [cartItems, setCartItems] = useState([
@@ -31,7 +36,8 @@ const Navigation = () => {
   // Handle scroll effect for navbar
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      const scrolled = window.scrollY > 100;
+      setIsScrolled(scrolled);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -106,15 +112,19 @@ const Navigation = () => {
 
   return (
     <>
-      <nav className={`fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border transition-all duration-300 ${isScrolled ? 'bg-white/95 border-gray-200' : ''}`}>
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled 
+          ? 'bg-background/95 backdrop-blur-sm border-b border-border py-2' 
+          : 'bg-background/95 backdrop-blur-sm border-b border-border py-4'
+      }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-12">
             {/* Logo */}
             <div className="flex-shrink-0">
               <Link to="/">
                 <h1 className="text-2xl font-bold tracking-tight">
-                  <span className="text-signal-red">404</span>
-                  <span className={`transition-colors duration-300 ${isScrolled ? 'text-black' : 'text-white'}`}> FIT</span>
+                  <GlitchText text="404" className="text-signal-red" />
+                  <span className="text-foreground"> FIT</span>
                 </h1>
               </Link>
             </div>
@@ -122,16 +132,16 @@ const Navigation = () => {
             {/* Desktop Navigation */}
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-8">
-                <Link to="/drops" className={`transition-colors duration-300 text-sm font-medium tracking-wider uppercase hover:text-neon-blue ${isScrolled ? 'text-gray-700 hover:text-neon-blue' : 'text-zinc-300 hover:text-neon-blue'}`}>
+                <Link to="/drops" className="text-foreground/70 hover:text-neon-blue transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
                   Drops
                 </Link>
-                <Link to="/shop" className={`transition-colors duration-300 text-sm font-medium tracking-wider uppercase hover:text-neon-blue ${isScrolled ? 'text-gray-700 hover:text-neon-blue' : 'text-zinc-300 hover:text-neon-blue'}`}>
+                <Link to="/shop" className="text-foreground/70 hover:text-neon-blue transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
                   Shop
                 </Link>
-                <Link to="/404-club" className={`transition-colors duration-300 text-sm font-medium tracking-wider uppercase hover:text-neon-blue ${isScrolled ? 'text-gray-700 hover:text-neon-blue' : 'text-zinc-300 hover:text-neon-blue'}`}>
+                <Link to="/404-club" className="text-foreground/70 hover:text-neon-blue transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
                   404 Club
                 </Link>
-                <Link to="/about" className={`transition-colors duration-300 text-sm font-medium tracking-wider uppercase hover:text-neon-blue ${isScrolled ? 'text-gray-700 hover:text-neon-blue' : 'text-zinc-300 hover:text-neon-blue'}`}>
+                <Link to="/about" className="text-foreground/70 hover:text-neon-blue transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
                   About
                 </Link>
               </div>
@@ -139,10 +149,28 @@ const Navigation = () => {
 
             {/* Icons */}
             <div className="flex items-center space-x-4">
+              {/* Theme Toggle */}
+              <button 
+                onClick={toggleTheme}
+                className="w-5 h-5 text-foreground/70 hover:text-neon-blue transition-all duration-300 hover:scale-110"
+              >
+                {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              </button>
+
+              {/* Wishlist */}
+              <button className="w-5 h-5 text-foreground/70 hover:text-neon-blue transition-all duration-300 hover:scale-110 relative">
+                <Heart className="w-5 h-5" />
+                {wishlist.length > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-signal-red text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
+                    {wishlist.length}
+                  </span>
+                )}
+              </button>
+
               {/* Search */}
               <button 
                 onClick={() => setIsSearchOpen(true)}
-                className={`w-5 h-5 transition-all duration-300 hover:scale-110 ${isScrolled ? 'text-gray-700 hover:text-neon-blue' : 'text-zinc-300 hover:text-neon-blue'}`}
+                className="w-5 h-5 text-foreground/70 hover:text-neon-blue transition-all duration-300 hover:scale-110"
               >
                 <Search className="w-5 h-5" />
               </button>
@@ -151,13 +179,13 @@ const Navigation = () => {
               <div ref={profileRef} className="relative">
                 <button 
                   onClick={() => setIsProfileOpen(!isProfileOpen)}
-                  className={`w-5 h-5 transition-all duration-300 hover:scale-110 ${isScrolled ? 'text-gray-700 hover:text-neon-blue' : 'text-zinc-300 hover:text-neon-blue'}`}
+                  className="w-5 h-5 text-foreground/70 hover:text-neon-blue transition-all duration-300 hover:scale-110"
                 >
                   <User className="w-5 h-5" />
                 </button>
                 
                 {isProfileOpen && (
-                  <div className="absolute top-full right-0 mt-2 w-48 bg-zinc-900 shadow-xl rounded-xl backdrop-blur-md p-3 space-y-2 z-50 border border-zinc-800 animate-fade-in">
+                  <div className="absolute top-full right-0 mt-2 w-48 bg-card shadow-xl rounded-xl backdrop-blur-md p-3 space-y-2 z-50 border border-border animate-fade-in">
                     {!isAuthenticated ? (
                       <>
                         <button 
@@ -165,18 +193,18 @@ const Navigation = () => {
                             setIsSignInOpen(true);
                             setIsProfileOpen(false);
                           }}
-                          className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm font-medium text-white hover:bg-zinc-800 rounded-md transition-all duration-200 ease-in-out"
+                          className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm font-medium text-card-foreground hover:bg-muted rounded-md transition-all duration-200 ease-in-out"
                         >
                           <UserCircle className="w-4 h-4" />
                           Sign In
                         </button>
-                        <hr className="border-t border-zinc-700 my-1" />
+                        <hr className="border-t border-border my-1" />
                         <button 
                           onClick={() => {
                             setIsRegisterOpen(true);
                             setIsProfileOpen(false);
                           }}
-                          className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-white hover:bg-zinc-800 rounded-md transition-all duration-200 ease-in-out"
+                          className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-card-foreground hover:bg-muted rounded-md transition-all duration-200 ease-in-out"
                         >
                           <UserPlus className="w-4 h-4" />
                           Register
@@ -184,22 +212,22 @@ const Navigation = () => {
                       </>
                     ) : (
                       <>
-                        <div className="px-3 py-2 border-b border-zinc-700">
-                          <p className="text-sm font-medium text-white">Hello, {user?.username}!</p>
-                          <p className="text-xs text-zinc-400">{user?.email}</p>
+                        <div className="px-3 py-2 border-b border-border">
+                          <p className="text-sm font-medium text-card-foreground">Hello, {user?.username}!</p>
+                          <p className="text-xs text-muted-foreground">{user?.email}</p>
                         </div>
-                        <button className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-white hover:bg-zinc-800 rounded-md transition-all duration-200 ease-in-out">
+                        <button className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-card-foreground hover:bg-muted rounded-md transition-all duration-200 ease-in-out">
                           <UserCircle className="w-4 h-4" />
                           My Profile
                         </button>
-                        <button className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-white hover:bg-zinc-800 rounded-md transition-all duration-200 ease-in-out">
+                        <button className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-card-foreground hover:bg-muted rounded-md transition-all duration-200 ease-in-out">
                           <Settings className="w-4 h-4" />
                           Settings
                         </button>
-                        <hr className="border-t border-zinc-700 my-1" />
+                        <hr className="border-t border-border my-1" />
                         <button 
                           onClick={handleLogout}
-                          className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-white hover:bg-zinc-800 rounded-md transition-all duration-200 ease-in-out"
+                          className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-card-foreground hover:bg-muted rounded-md transition-all duration-200 ease-in-out"
                         >
                           <LogOut className="w-4 h-4" />
                           Logout
@@ -214,7 +242,7 @@ const Navigation = () => {
               <div ref={cartRef} className="relative">
                 <button 
                   onClick={() => setIsCartOpen(!isCartOpen)}
-                  className={`w-5 h-5 transition-all duration-300 hover:scale-110 relative ${isScrolled ? 'text-gray-700 hover:text-neon-blue' : 'text-zinc-300 hover:text-neon-blue'}`}
+                  className="w-5 h-5 text-foreground/70 hover:text-neon-blue transition-all duration-300 hover:scale-110 relative"
                 >
                   <ShoppingBag className="w-5 h-5" />
                   {totalCartItems > 0 && (
@@ -225,40 +253,40 @@ const Navigation = () => {
                 </button>
 
                 {isCartOpen && (
-                  <div className="absolute top-full right-0 mt-2 bg-white shadow-xl rounded-xl p-4 z-50 w-80 border border-gray-100 animate-fade-in">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4">Your Bag</h3>
+                  <div className="absolute top-full right-0 mt-2 bg-card shadow-xl rounded-xl p-4 z-50 w-80 border border-border animate-fade-in">
+                    <h3 className="text-lg font-semibold text-card-foreground mb-4">Your Bag</h3>
                     
                     {cartItems.length === 0 ? (
-                      <p className="text-gray-500 text-center py-4">Your bag is empty</p>
+                      <p className="text-muted-foreground text-center py-4">Your bag is empty</p>
                     ) : (
                       <>
                         <div className="space-y-3 max-h-60 overflow-y-auto">
                           {cartItems.map((item) => (
-                            <div key={item.id} className="flex items-center space-x-3 p-2 hover:bg-gray-50 rounded-lg">
+                            <div key={item.id} className="flex items-center space-x-3 p-2 hover:bg-muted rounded-lg">
                               <img src={item.image} alt={item.name} className="w-12 h-12 object-cover rounded-lg flex-shrink-0" />
                               <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium text-gray-900 truncate">{item.name}</p>
+                                <p className="text-sm font-medium text-card-foreground truncate">{item.name}</p>
                                 <div className="flex items-center space-x-2 mt-1">
                                   <button 
                                     onClick={() => updateQuantity(item.id, -1)}
-                                    className="w-6 h-6 bg-gray-200 rounded hover:bg-gray-300 transition-colors duration-200 flex items-center justify-center"
+                                    className="w-6 h-6 bg-muted rounded hover:bg-muted/80 transition-colors duration-200 flex items-center justify-center"
                                   >
                                     <Minus className="w-3 h-3" />
                                   </button>
                                   <span className="text-xs font-medium min-w-[20px] text-center">{item.qty}</span>
                                   <button 
                                     onClick={() => updateQuantity(item.id, 1)}
-                                    className="w-6 h-6 bg-gray-200 rounded hover:bg-gray-300 transition-colors duration-200 flex items-center justify-center"
+                                    className="w-6 h-6 bg-muted rounded hover:bg-muted/80 transition-colors duration-200 flex items-center justify-center"
                                   >
                                     <Plus className="w-3 h-3" />
                                   </button>
                                 </div>
                               </div>
                               <div className="flex items-center space-x-2 flex-shrink-0">
-                                <p className="text-sm font-semibold text-gray-900">${item.price}</p>
+                                <p className="text-sm font-semibold text-card-foreground">${item.price}</p>
                                 <button 
                                   onClick={() => removeItem(item.id)}
-                                  className="text-red-500 hover:text-red-700 transition-colors duration-200"
+                                  className="text-signal-red hover:text-signal-red/80 transition-colors duration-200"
                                 >
                                   <Trash2 className="w-4 h-4" />
                                 </button>
@@ -267,10 +295,10 @@ const Navigation = () => {
                           ))}
                         </div>
                         
-                        <div className="border-t border-gray-200 pt-4 mt-4">
+                        <div className="border-t border-border pt-4 mt-4">
                           <div className="flex justify-between items-center mb-4">
-                            <span className="text-sm font-medium text-gray-900">Total:</span>
-                            <span className="text-lg font-bold text-gray-900">${totalCartPrice}</span>
+                            <span className="text-sm font-medium text-card-foreground">Total:</span>
+                            <span className="text-lg font-bold text-card-foreground">${totalCartPrice}</span>
                           </div>
                           <button className="w-full bg-signal-red text-white py-3 rounded-xl font-semibold hover:bg-signal-red/90 transition-colors duration-200">
                             Checkout
@@ -288,9 +316,9 @@ const Navigation = () => {
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
               >
                 <div className="w-6 h-6 flex flex-col justify-center items-center space-y-1">
-                  <span className={`block w-5 h-0.5 transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-1.5' : ''} ${isScrolled ? 'bg-gray-700' : 'bg-zinc-300'}`}></span>
-                  <span className={`block w-5 h-0.5 transition-all duration-300 ${isMenuOpen ? 'opacity-0' : ''} ${isScrolled ? 'bg-gray-700' : 'bg-zinc-300'}`}></span>
-                  <span className={`block w-5 h-0.5 transition-all duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-1.5' : ''} ${isScrolled ? 'bg-gray-700' : 'bg-zinc-300'}`}></span>
+                  <span className={`block w-5 h-0.5 transition-all duration-300 ${isMenuOpen ? 'rotate-45 translate-y-1.5' : ''} bg-foreground`}></span>
+                  <span className={`block w-5 h-0.5 transition-all duration-300 ${isMenuOpen ? 'opacity-0' : ''} bg-foreground`}></span>
+                  <span className={`block w-5 h-0.5 transition-all duration-300 ${isMenuOpen ? '-rotate-45 -translate-y-1.5' : ''} bg-foreground`}></span>
                 </div>
               </button>
             </div>
@@ -300,16 +328,16 @@ const Navigation = () => {
           {isMenuOpen && (
             <div className="md:hidden">
               <div className="px-2 pt-2 pb-3 space-y-1 border-t border-border bg-background/95 backdrop-blur-sm">
-                <Link to="/drops" className={`block px-3 py-2 transition-colors duration-300 text-sm font-medium tracking-wider uppercase hover:text-neon-blue ${isScrolled ? 'text-gray-700' : 'text-zinc-300'}`}>
+                <Link to="/drops" className="block px-3 py-2 text-foreground/70 hover:text-neon-blue transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
                   Drops
                 </Link>
-                <Link to="/shop" className={`block px-3 py-2 transition-colors duration-300 text-sm font-medium tracking-wider uppercase hover:text-neon-blue ${isScrolled ? 'text-gray-700' : 'text-zinc-300'}`}>
+                <Link to="/shop" className="block px-3 py-2 text-foreground/70 hover:text-neon-blue transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
                   Shop
                 </Link>
-                <Link to="/404-club" className={`block px-3 py-2 transition-colors duration-300 text-sm font-medium tracking-wider uppercase hover:text-neon-blue ${isScrolled ? 'text-gray-700' : 'text-zinc-300'}`}>
+                <Link to="/404-club" className="block px-3 py-2 text-foreground/70 hover:text-neon-blue transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
                   404 Club
                 </Link>
-                <Link to="/about" className={`block px-3 py-2 transition-colors duration-300 text-sm font-medium tracking-wider uppercase hover:text-neon-blue ${isScrolled ? 'text-gray-700' : 'text-zinc-300'}`}>
+                <Link to="/about" className="block px-3 py-2 text-foreground/70 hover:text-neon-blue transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
                   About
                 </Link>
               </div>
@@ -323,38 +351,38 @@ const Navigation = () => {
         <div className={`fixed inset-0 bg-black/60 backdrop-blur-lg flex items-start justify-center z-50 p-4 pt-[20vh] ${searchIsClosing ? 'animate-fade-out' : 'animate-fade-in'}`}>
           <div 
             ref={searchModalRef}
-            className={`bg-zinc-950/90 backdrop-blur-xl shadow-2xl border border-zinc-800 rounded-2xl p-6 w-[90%] max-w-lg transform transition-all duration-300 ${searchIsClosing ? 'animate-slide-out-down' : 'animate-slide-in-up'}`}
+            className={`bg-card/90 backdrop-blur-xl shadow-2xl border border-border rounded-2xl p-6 w-[90%] max-w-lg transform transition-all duration-300 ${searchIsClosing ? 'animate-slide-out-down' : 'animate-slide-in-up'}`}
           >
             <button
               onClick={handleCloseSearch}
-              className="absolute top-4 right-4 text-zinc-400 hover:text-white transition-colors duration-200"
+              className="absolute top-4 right-4 text-muted-foreground hover:text-card-foreground transition-colors duration-200"
             >
               <X className="w-6 h-6" />
             </button>
             
             <div className="mb-6">
-              <h2 className="text-white text-xl font-semibold mb-2">Search 404 Fit</h2>
-              <p className="text-zinc-400 text-sm">Find your perfect streetwear piece</p>
+              <h2 className="text-card-foreground text-xl font-semibold mb-2">Search 404 Fit</h2>
+              <p className="text-muted-foreground text-sm">Find your perfect streetwear piece</p>
             </div>
             
             <div className="relative mb-4">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-zinc-500 w-5 h-5" />
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
               <input
                 ref={searchRef}
                 type="text"
                 placeholder="Search hoodies, drop 001..."
-                className="w-full pl-12 pr-4 py-3 rounded-full bg-zinc-800 text-white placeholder-zinc-500 border border-zinc-700 focus:border-signal-red focus:ring-2 focus:ring-signal-red focus:outline-none transition-all duration-200"
+                className="w-full pl-12 pr-4 py-3 rounded-full bg-input text-card-foreground placeholder-muted-foreground border border-border focus:border-signal-red focus:ring-2 focus:ring-signal-red focus:outline-none transition-all duration-200"
               />
             </div>
             
             <div className="flex flex-wrap gap-2 text-sm">
-              <span className="px-3 py-1 bg-zinc-800 text-zinc-300 rounded-full hover:bg-zinc-700 hover:text-white transition cursor-pointer">
+              <span className="px-3 py-1 bg-muted text-card-foreground rounded-full hover:bg-muted/80 transition cursor-pointer">
                 "hoodies"
               </span>
-              <span className="px-3 py-1 bg-zinc-800 text-zinc-300 rounded-full hover:bg-zinc-700 hover:text-white transition cursor-pointer">
+              <span className="px-3 py-1 bg-muted text-card-foreground rounded-full hover:bg-muted/80 transition cursor-pointer">
                 "drop 001"
               </span>
-              <span className="px-3 py-1 bg-zinc-800 text-zinc-300 rounded-full hover:bg-zinc-700 hover:text-white transition cursor-pointer">
+              <span className="px-3 py-1 bg-muted text-card-foreground rounded-full hover:bg-muted/80 transition cursor-pointer">
                 "streetwear"
               </span>
             </div>
