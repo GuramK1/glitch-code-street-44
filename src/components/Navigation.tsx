@@ -181,7 +181,7 @@ const Navigation = () => {
               <div ref={wishlistRef} className="relative">
                 <button 
                   onClick={handleWishlistClick}
-                  className="w-5 h-5 text-white hover:text-neon-blue transition-all duration-300 hover:scale-110 relative"
+                  className="w-6 h-6 flex items-center justify-center text-white hover:text-neon-blue transition-all duration-300 hover:scale-110 relative"
                 >
                   <Heart className="w-5 h-5" />
                   {wishlist.length > 0 && (
@@ -235,7 +235,7 @@ const Navigation = () => {
               {/* Search */}
               <button 
                 onClick={() => setIsSearchOpen(true)}
-                className="w-5 h-5 text-white hover:text-neon-blue transition-all duration-300 hover:scale-110"
+                className="w-6 h-6 flex items-center justify-center text-white hover:text-neon-blue transition-all duration-300 hover:scale-110"
               >
                 <Search className="w-5 h-5" />
               </button>
@@ -244,7 +244,7 @@ const Navigation = () => {
               <div ref={profileRef} className="relative">
                 <button 
                   onClick={() => setIsProfileOpen(!isProfileOpen)}
-                  className="w-5 h-5 text-white hover:text-neon-blue transition-all duration-300 hover:scale-110"
+                  className="w-6 h-6 flex items-center justify-center text-white hover:text-neon-blue transition-all duration-300 hover:scale-110"
                 >
                   <User className="w-5 h-5" />
                 </button>
@@ -323,7 +323,7 @@ const Navigation = () => {
               <div ref={cartRef} className="relative">
                 <button 
                   onClick={() => setIsCartOpen(!isCartOpen)}
-                  className="w-5 h-5 text-white hover:text-neon-blue transition-all duration-300 hover:scale-110 relative"
+                  className="w-6 h-6 flex items-center justify-center text-white hover:text-neon-blue transition-all duration-300 hover:scale-110 relative"
                 >
                   <ShoppingBag className="w-5 h-5" />
                   {totalCartItems > 0 && (
