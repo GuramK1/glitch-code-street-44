@@ -18,6 +18,11 @@ import About from "./pages/About";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import Admin from "./pages/Admin";
+import SizeGuide from "./pages/SizeGuide";
+import Shipping from "./pages/Shipping";
+import Returns from "./pages/Returns";
+import Contact from "./pages/Contact";
+import FAQ from "./pages/FAQ";
 import NotFound from "./pages/NotFound";
 import BackToTopButton from "./components/BackToTopButton";
 
@@ -51,6 +56,11 @@ const App = () => {
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/settings" element={<Settings />} />
                   <Route path="/admin" element={<Admin />} />
+                  <Route path="/size-guide" element={<SizeGuide />} />
+                  <Route path="/shipping" element={<Shipping />} />
+                  <Route path="/returns" element={<Returns />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/faq" element={<FAQ />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>

@@ -31,11 +31,11 @@ const Footer = () => {
           <div>
             <h3 className="text-sm font-semibold tracking-widest uppercase mb-4 text-white">Shop</h3>
             <ul className="space-y-3">
-              <li><a href="#" className="text-zinc-400 hover:text-white transition-colors duration-300">New Drops</a></li>
-              <li><a href="#" className="text-zinc-400 hover:text-white transition-colors duration-300">Hoodies</a></li>
-              <li><a href="#" className="text-zinc-400 hover:text-white transition-colors duration-300">Tees</a></li>
-              <li><a href="#" className="text-zinc-400 hover:text-white transition-colors duration-300">Bottoms</a></li>
-              <li><a href="#" className="text-zinc-400 hover:text-white transition-colors duration-300">Accessories</a></li>
+              <li><a href="/drops" className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">New Drops</a></li>
+              <li><a href="/shop" className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">Hoodies</a></li>
+              <li><a href="/shop" className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">Tees</a></li>
+              <li><a href="/shop" className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">Bottoms</a></li>
+              <li><a href="/shop" className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">Accessories</a></li>
             </ul>
           </div>
 
@@ -43,11 +43,11 @@ const Footer = () => {
           <div>
             <h3 className="text-sm font-semibold tracking-widest uppercase mb-4 text-white">Support</h3>
             <ul className="space-y-3">
-              <li><a href="#" className="text-zinc-400 hover:text-white transition-colors duration-300">Size Guide</a></li>
-              <li><a href="#" className="text-zinc-400 hover:text-white transition-colors duration-300">Shipping</a></li>
-              <li><a href="#" className="text-zinc-400 hover:text-white transition-colors duration-300">Returns</a></li>
-              <li><a href="#" className="text-zinc-400 hover:text-white transition-colors duration-300">Contact</a></li>
-              <li><a href="#" className="text-zinc-400 hover:text-white transition-colors duration-300">FAQ</a></li>
+              <li><a href="/size-guide" className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">Size Guide</a></li>
+              <li><a href="/shipping" className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">Shipping</a></li>
+              <li><a href="/returns" className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">Returns</a></li>
+              <li><a href="/contact" className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">Contact</a></li>
+              <li><a href="/faq" className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">FAQ</a></li>
             </ul>
           </div>
         </div>
@@ -78,8 +78,8 @@ const Footer = () => {
             © 2024 404 Fit. All rights reserved.
           </p>
           <div className="flex space-x-6 text-sm">
-            <a href="#" className="text-zinc-400 hover:text-white transition-colors duration-300">Privacy Policy</a>
-            <a href="#" className="text-zinc-400 hover:text-white transition-colors duration-300">Terms of Service</a>
+            <a href="#" className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">Privacy Policy</a>
+            <a href="#" className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">Terms of Service</a>
           </div>
         </div>
       </div>
