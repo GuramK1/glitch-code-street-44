@@ -289,15 +289,14 @@ const Navigation = () => {
                           <UserCircle className="w-4 h-4" />
                           My Profile
                         </Link>
-                        <button 
-                          onClick={() => {
-                            handleWishlistFromProfile();
-                          }}
+                        <Link 
+                          to="/profile#wishlist-section"
+                          onClick={() => setIsProfileOpen(false)}
                           className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-white hover:bg-zinc-800 rounded-md transition-all duration-200 ease-in-out"
                         >
                           <Heart className="w-4 h-4" />
                           Wishlist ({wishlist.length})
-                        </button>
+                        </Link>
                         <Link 
                           to="/settings"
                           onClick={() => setIsProfileOpen(false)}

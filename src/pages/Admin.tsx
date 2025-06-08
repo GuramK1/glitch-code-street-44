@@ -1,11 +1,22 @@
-
 import { useState } from 'react';
 import { Package, Users, Settings, BarChart3, Plus, Eye, CheckCircle, Clock, Truck } from 'lucide-react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import Navigation from '../components/Navigation';
 
 const Admin = () => {
   const [activeSection, setActiveSection] = useState('addProduct');
   const [dropCountdownEnabled, setDropCountdownEnabled] = useState(false);
+
+  // Mock data for analytics
+  const analyticsData = [
+    { day: 'Mon', pageViews: 120, sales: 45 },
+    { day: 'Tue', pageViews: 190, sales: 67 },
+    { day: 'Wed', pageViews: 300, sales: 89 },
+    { day: 'Thu', pageViews: 500, sales: 123 },
+    { day: 'Fri', pageViews: 200, sales: 78 },
+    { day: 'Sat', pageViews: 300, sales: 134 },
+    { day: 'Sun', pageViews: 450, sales: 156 }
+  ];
 
   // Mock data
   const mockOrders = [
@@ -248,6 +259,50 @@ const Admin = () => {
                     </div>
                     <p className="text-3xl font-bold text-white">$7,890</p>
                     <p className="text-zinc-400 text-sm">+18% this month</p>
+                  </div>
+                </div>
+
+                <div className="bg-zinc-900 rounded-xl p-6 border border-zinc-800 mb-6">
+                  <h3 className="text-xl font-semibold mb-4">Weekly Performance</h3>
+                  <div className="h-80">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart data={analyticsData}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#3f3f46" />
+                        <XAxis 
+                          dataKey="day" 
+                          tick={{ fill: '#a1a1aa' }}
+                          axisLine={{ stroke: '#52525b' }}
+                        />
+                        <YAxis 
+                          tick={{ fill: '#a1a1aa' }}
+                          axisLine={{ stroke: '#52525b' }}
+                        />
+                        <Tooltip 
+                          contentStyle={{ 
+                            backgroundColor: '#18181b', 
+                            border: '1px solid #3f3f46',
+                            borderRadius: '8px',
+                            color: '#ffffff'
+                          }}
+                        />
+                        <Line 
+                          type="monotone" 
+                          dataKey="pageViews" 
+                          stroke="#06b6d4" 
+                          strokeWidth={3}
+                          dot={{ fill: '#06b6d4', strokeWidth: 2, r: 4 }}
+                          name="Page Views"
+                        />
+                        <Line 
+                          type="monotone" 
+                          dataKey="sales" 
+                          stroke="#ef4444" 
+                          strokeWidth={3}
+                          dot={{ fill: '#ef4444', strokeWidth: 2, r: 4 }}
+                          name="Sales"
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
                   </div>
                 </div>
               </section>
