@@ -42,17 +42,17 @@ const Shop = () => {
       
       <div className="pt-16">
         {/* Hero Section */}
-        <div className="bg-zinc-950 text-white py-16 px-4">
+        <div className="bg-zinc-950 text-white py-16 px-4" data-aos="fade-up">
           <div className="max-w-7xl mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-4">
+            <h1 className="text-4xl md:text-6xl font-bold mb-4" data-aos="fade-up" data-aos-delay="100">
               <span className="text-red-500">404</span> Shop
             </h1>
-            <p className="text-zinc-400 text-lg">Error culture meets street fashion</p>
+            <p className="text-zinc-400 text-lg" data-aos="fade-up" data-aos-delay="200">Error culture meets street fashion</p>
           </div>
         </div>
 
         {/* Filter Bar */}
-        <div className="bg-zinc-900 border-b border-zinc-800 sticky top-16 z-40">
+        <div className="bg-zinc-900 border-b border-zinc-800 sticky top-16 z-40" data-aos="fade-down">
           <div className="max-w-7xl mx-auto px-4 py-4">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               {/* Category Filters */}
@@ -111,10 +111,15 @@ const Shop = () => {
         </div>
 
         {/* Products Grid */}
-        <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="max-w-7xl mx-auto px-4 py-8" data-aos="fade-up" data-aos-delay="300">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {sortedProducts.map((product) => (
-              <div key={product.id} className="group bg-zinc-900 rounded-xl overflow-hidden hover:scale-105 transition-all duration-300">
+            {sortedProducts.map((product, index) => (
+              <div 
+                key={product.id} 
+                className="group bg-zinc-900 rounded-xl overflow-hidden hover:scale-105 transition-all duration-300"
+                data-aos="zoom-in"
+                data-aos-delay={100 + (index * 50)}
+              >
                 <div className="relative aspect-square overflow-hidden">
                   <img 
                     src={product.image} 

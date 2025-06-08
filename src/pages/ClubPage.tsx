@@ -37,15 +37,15 @@ const ClubPage = () => {
       
       <div className="pt-16">
         {/* Hero Section */}
-        <div className="bg-zinc-950 text-white py-16 px-4">
+        <div className="bg-zinc-950 text-white py-16 px-4" data-aos="fade-up">
           <div className="max-w-7xl mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-4">
+            <h1 className="text-4xl md:text-6xl font-bold mb-4" data-aos="fade-up" data-aos-delay="100">
               <span className="text-red-500">404</span> Club
             </h1>
-            <p className="text-zinc-400 text-lg mb-8">Show your style. Join the misfit community.</p>
+            <p className="text-zinc-400 text-lg mb-8" data-aos="fade-up" data-aos-delay="200">Show your style. Join the misfit community.</p>
             
             {/* Submit Your Fit CTA */}
-            <div className="bg-zinc-900 rounded-2xl p-8 max-w-lg mx-auto border border-zinc-800">
+            <div className="bg-zinc-900 rounded-2xl p-8 max-w-lg mx-auto border border-zinc-800" data-aos="zoom-in" data-aos-delay="300">
               <div className="text-center">
                 <Camera className="w-12 h-12 text-red-500 mx-auto mb-4" />
                 <h2 className="text-2xl font-bold mb-2">🔥 Submit Your Fit</h2>
@@ -60,12 +60,12 @@ const ClubPage = () => {
         </div>
 
         {/* Top Fits This Week */}
-        <div className="bg-zinc-900 py-12 px-4">
+        <div className="bg-zinc-900 py-12 px-4" data-aos="fade-right">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-2xl font-bold text-white mb-8 text-center">🏆 Top Fits This Week</h2>
+            <h2 className="text-2xl font-bold text-white mb-8 text-center" data-aos="fade-up" data-aos-delay="100">🏆 Top Fits This Week</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {topFits.map((fit, index) => (
-                <div key={fit.id} className="relative group">
+                <div key={fit.id} className="relative group" data-aos="zoom-in-up" data-aos-delay={200 + (index * 100)}>
                   <div className="aspect-[3/4] rounded-xl overflow-hidden">
                     <img 
                       src={fit.image} 
@@ -97,7 +97,7 @@ const ClubPage = () => {
         </div>
 
         {/* Hashtag Filter */}
-        <div className="bg-zinc-950 py-8 px-4 border-b border-zinc-800">
+        <div className="bg-zinc-950 py-8 px-4 border-b border-zinc-800" data-aos="fade-left">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-wrap gap-3 justify-center">
               {hashtags.map((hashtag) => (
@@ -118,10 +118,15 @@ const ClubPage = () => {
         </div>
 
         {/* Community Gallery */}
-        <div className="max-w-7xl mx-auto px-4 py-12">
+        <div className="max-w-7xl mx-auto px-4 py-12" data-aos="fade-up" data-aos-delay="200">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {filteredFits.map((fit) => (
-              <div key={fit.id} className="group bg-zinc-900 rounded-xl overflow-hidden hover:scale-105 transition-all duration-300">
+            {filteredFits.map((fit, index) => (
+              <div 
+                key={fit.id} 
+                className="group bg-zinc-900 rounded-xl overflow-hidden hover:scale-105 transition-all duration-300"
+                data-aos="flip-up"
+                data-aos-delay={100 + (index * 50)}
+              >
                 <div className="aspect-[3/4] relative overflow-hidden">
                   <img 
                     src={fit.image} 
