@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, Link } from 'react-router-dom';
 import { Filter, Grid, List, ChevronDown, Heart } from 'lucide-react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
@@ -22,16 +22,16 @@ const Shop = () => {
     window.scrollTo(0, 0);
   }, [searchParams]);
 
-  // Mock product data with proper data-category attributes
+  // Mock product data with proper data-category attributes and slugs
   const products = [
-    { id: 1, name: "404 Oversized Hoodie", price: 89, image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=400&fit=crop", category: "hoodies", badge: "LIMITED", isNew: true, stock: 5 },
-    { id: 2, name: "Glitch Effect Tee", price: 45, image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop", category: "tees", badge: null, isNew: false, stock: 15 },
-    { id: 3, name: "Error Code Cargo Pants", price: 120, image: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=400&h=400&fit=crop", category: "bottoms", badge: "DROP 001", isNew: true, stock: 8 },
-    { id: 4, name: "404 Zip Hoodie", price: 95, image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop", category: "hoodies", badge: null, isNew: false, stock: 12 },
-    { id: 5, name: "System Error Shorts", price: 65, image: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=400&h=400&fit=crop", category: "bottoms", badge: "LIMITED", isNew: true, stock: 3 },
-    { id: 6, name: "Broken Link Tank", price: 35, image: "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=400&h=400&fit=crop", category: "tees", badge: null, isNew: false, stock: 20 },
-    { id: 7, name: "404 Beanie", price: 25, image: "https://images.unsplash.com/photo-1576871337622-98d48d1cf531?w=400&h=400&fit=crop", category: "accessories", badge: "NEW", isNew: true, stock: 30 },
-    { id: 8, name: "Glitch Backpack", price: 75, image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop", category: "accessories", badge: null, isNew: false, stock: 18 },
+    { id: 1, name: "404 Oversized Hoodie", price: 89, image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=400&fit=crop", category: "hoodies", badge: "LIMITED", isNew: true, stock: 5, slug: "404-oversized-hoodie" },
+    { id: 2, name: "Glitch Effect Tee", price: 45, image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop", category: "tees", badge: null, isNew: false, stock: 15, slug: "glitch-effect-tee" },
+    { id: 3, name: "Error Code Cargo Pants", price: 120, image: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=400&h=400&fit=crop", category: "bottoms", badge: "DROP 001", isNew: true, stock: 8, slug: "error-code-cargo-pants" },
+    { id: 4, name: "404 Zip Hoodie", price: 95, image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop", category: "hoodies", badge: null, isNew: false, stock: 12, slug: "404-zip-hoodie" },
+    { id: 5, name: "System Error Shorts", price: 65, image: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=400&h=400&fit=crop", category: "bottoms", badge: "LIMITED", isNew: true, stock: 3, slug: "system-error-shorts" },
+    { id: 6, name: "Broken Link Tank", price: 35, image: "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=400&h=400&fit=crop", category: "tees", badge: null, isNew: false, stock: 20, slug: "broken-link-tank" },
+    { id: 7, name: "404 Beanie", price: 25, image: "https://images.unsplash.com/photo-1576871337622-98d48d1cf531?w=400&h=400&fit=crop", category: "accessories", badge: "NEW", isNew: true, stock: 30, slug: "404-beanie" },
+    { id: 8, name: "Glitch Backpack", price: 75, image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop", category: "accessories", badge: null, isNew: false, stock: 18, slug: "glitch-backpack" },
   ];
 
   const handleCategoryChange = (newCategory: string) => {
@@ -213,9 +213,12 @@ const Shop = () => {
                     
                     {/* Quick View Overlay */}
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <button className="text-white border border-white px-4 py-2 rounded-full text-sm hover:bg-white hover:text-black transition-all duration-200">
+                      <Link 
+                        to={`/product/${product.slug}`}
+                        className="text-white border border-white px-4 py-2 rounded-full text-sm hover:bg-white hover:text-black transition-all duration-200"
+                      >
                         Quick View
-                      </button>
+                      </Link>
                     </div>
                   </div>
                   

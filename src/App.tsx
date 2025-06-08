@@ -13,6 +13,7 @@ import 'aos/dist/aos.css';
 import Index from "./pages/Index";
 import Drops from "./pages/Drops";
 import Shop from "./pages/Shop";
+import ProductDetail from "./pages/ProductDetail";
 import ClubPage from "./pages/ClubPage";
 import About from "./pages/About";
 import Profile from "./pages/Profile";
@@ -51,6 +52,7 @@ const App = () => {
                   <Route path="/" element={<Index />} />
                   <Route path="/drops" element={<Drops />} />
                   <Route path="/shop" element={<Shop />} />
+                  <Route path="/product/:slug" element={<ProductDetail />} />
                   <Route path="/404-club" element={<ClubPage />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/profile" element={<Profile />} />
