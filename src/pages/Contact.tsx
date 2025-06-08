@@ -32,14 +32,14 @@ const Contact = () => {
       <main className="pt-20">
         <section className="bg-jet-black text-white p-6 min-h-screen">
           <div className="max-w-4xl mx-auto py-16">
-            <h1 className="text-4xl font-bold mb-6 text-white">Contact Us</h1>
-            <p className="text-zinc-400 mb-12 text-lg">Get in touch with the 404 Fit team.</p>
+            <h1 className="text-4xl font-bold mb-6 text-white" data-aos="fade-down">Contact Us</h1>
+            <p className="text-zinc-400 mb-12 text-lg" data-aos="fade-down" data-aos-delay="100">Get in touch with the 404 Fit team.</p>
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              <div>
+              <div data-aos="zoom-in" data-aos-delay="200">
                 <h2 className="text-2xl font-semibold mb-6 text-white">Send us a message</h2>
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  <div>
+                  <div data-aos="fade-up" data-aos-delay="300">
                     <label htmlFor="name" className="block text-sm font-medium text-white mb-2">
                       Name
                     </label>
@@ -55,7 +55,7 @@ const Contact = () => {
                     />
                   </div>
                   
-                  <div>
+                  <div data-aos="fade-up" data-aos-delay="350">
                     <label htmlFor="email" className="block text-sm font-medium text-white mb-2">
                       Email
                     </label>
@@ -71,7 +71,7 @@ const Contact = () => {
                     />
                   </div>
                   
-                  <div>
+                  <div data-aos="fade-up" data-aos-delay="400">
                     <label htmlFor="subject" className="block text-sm font-medium text-white mb-2">
                       Subject
                     </label>
@@ -87,7 +87,7 @@ const Contact = () => {
                     />
                   </div>
                   
-                  <div>
+                  <div data-aos="fade-up" data-aos-delay="450">
                     <label htmlFor="message" className="block text-sm font-medium text-white mb-2">
                       Message
                     </label>
@@ -105,14 +105,16 @@ const Contact = () => {
                   <Button
                     type="submit"
                     className="w-full bg-signal-red text-white py-3 rounded-xl hover:bg-signal-red/90 transition-all duration-300 hover:scale-105 font-semibold"
+                    data-aos="zoom-in"
+                    data-aos-delay="500"
                   >
                     Send Message
                   </Button>
                 </form>
               </div>
               
-              <div className="space-y-8">
-                <div>
+              <div className="space-y-8" data-aos="fade-left" data-aos-delay="250">
+                <div data-aos="fade-up" data-aos-delay="350">
                   <h3 className="text-xl font-semibold mb-4 text-white">Get in touch</h3>
                   <div className="space-y-4 text-zinc-400">
                     <div>
@@ -130,7 +132,7 @@ const Contact = () => {
                   </div>
                 </div>
                 
-                <div>
+                <div data-aos="fade-up" data-aos-delay="450">
                   <h3 className="text-xl font-semibold mb-4 text-white">Business Hours</h3>
                   <div className="space-y-2 text-zinc-400">
                     <p>Monday - Friday: 9:00 AM - 6:00 PM PST</p>
@@ -139,7 +141,7 @@ const Contact = () => {
                   </div>
                 </div>
                 
-                <div className="bg-carbon-grey rounded-xl p-6">
+                <div className="bg-carbon-grey rounded-xl p-6" data-aos="zoom-in" data-aos-delay="550">
                   <h3 className="text-xl font-semibold mb-3 text-white">Quick Response</h3>
                   <p className="text-zinc-400 text-sm">
                     We typically respond to all inquiries within 24 hours during business days. 

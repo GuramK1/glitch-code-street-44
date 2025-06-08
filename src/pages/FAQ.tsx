@@ -56,12 +56,12 @@ const FAQ = () => {
       <main className="pt-20">
         <section className="bg-jet-black text-white p-6 min-h-screen">
           <div className="max-w-4xl mx-auto py-16">
-            <h1 className="text-4xl font-bold mb-6 text-white">Frequently Asked Questions</h1>
-            <p className="text-zinc-400 mb-12 text-lg">Quick answers to common questions about 404 Fit.</p>
+            <h1 className="text-4xl font-bold mb-6 text-white" data-aos="fade-down">Frequently Asked Questions</h1>
+            <p className="text-zinc-400 mb-12 text-lg" data-aos="fade-down" data-aos-delay="100">Quick answers to common questions about 404 Fit.</p>
             
             <div className="space-y-4">
               {faqData.map((item, index) => (
-                <div key={index} className="bg-carbon-grey rounded-xl overflow-hidden">
+                <div key={index} className="bg-carbon-grey rounded-xl overflow-hidden" data-aos="fade-up" data-aos-delay={200 + (index * 50)}>
                   <button
                     onClick={() => toggleItem(index)}
                     className="w-full p-6 text-left flex items-center justify-between hover:bg-zinc-800 transition-colors duration-300"
@@ -82,7 +82,7 @@ const FAQ = () => {
               ))}
             </div>
             
-            <div className="mt-16 bg-carbon-grey rounded-xl p-8 text-center">
+            <div className="mt-16 bg-carbon-grey rounded-xl p-8 text-center" data-aos="zoom-in" data-aos-delay="600">
               <h2 className="text-2xl font-semibold mb-4 text-white">Still have questions?</h2>
               <p className="text-zinc-400 mb-6">Can't find the answer you're looking for? Our support team is here to help.</p>
               <a 

@@ -9,11 +9,11 @@ const SizeGuide = () => {
       <main className="pt-20">
         <section className="bg-jet-black text-white p-6 min-h-screen">
           <div className="max-w-4xl mx-auto py-16">
-            <h1 className="text-4xl font-bold mb-6 text-white">Size Guide</h1>
-            <p className="text-zinc-400 mb-8 text-lg">Find the perfect fit for your style.</p>
+            <h1 className="text-4xl font-bold mb-6 text-white" data-aos="fade-down">Size Guide</h1>
+            <p className="text-zinc-400 mb-8 text-lg" data-aos="fade-down" data-aos-delay="100">Find the perfect fit for your style.</p>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
-              <div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12" data-aos="fade-up" data-aos-delay="200">
+              <div data-aos="fade-right" data-aos-delay="300">
                 <h2 className="text-2xl font-semibold mb-4 text-white">Men's Sizing</h2>
                 <div className="bg-carbon-grey rounded-xl p-6">
                   <table className="w-full text-white">
@@ -35,7 +35,7 @@ const SizeGuide = () => {
                 </div>
               </div>
               
-              <div>
+              <div data-aos="fade-left" data-aos-delay="400">
                 <h2 className="text-2xl font-semibold mb-4 text-white">Women's Sizing</h2>
                 <div className="bg-carbon-grey rounded-xl p-6">
                   <table className="w-full text-white">
@@ -58,7 +58,7 @@ const SizeGuide = () => {
               </div>
             </div>
             
-            <div className="bg-carbon-grey rounded-xl p-8 text-center">
+            <div className="bg-carbon-grey rounded-xl p-8 text-center" data-aos="zoom-in" data-aos-delay="500">
               <h3 className="text-xl font-semibold mb-4 text-white">Sizing Tips</h3>
               <p className="text-zinc-400 mb-4">All measurements are in inches. For the best fit, measure yourself wearing the undergarments you plan to wear with the item.</p>
               <p className="text-zinc-400">If you're between sizes, we recommend sizing up for a more relaxed fit or sizing down for a more fitted look.</p>
