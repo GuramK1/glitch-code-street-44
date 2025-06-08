@@ -17,6 +17,7 @@ import ClubPage from "./pages/ClubPage";
 import About from "./pages/About";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
+import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 import BackToTopButton from "./components/BackToTopButton";
 
@@ -49,6 +50,7 @@ const App = () => {
                   <Route path="/about" element={<About />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/settings" element={<Settings />} />
+                  <Route path="/admin" element={<Admin />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
