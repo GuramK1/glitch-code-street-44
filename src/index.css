@@ -1,9 +1,8 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* 404 Fit Design System */
+/* 404 Fit Design System - Dark Theme Only */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
@@ -16,7 +15,7 @@
     --signal-red: #C1272D;
     --neon-blue: #7FDBFF;
     
-    /* Design System Colors */
+    /* Design System Colors - Always Dark */
     --background: var(--jet-black);
     --foreground: var(--soft-concrete);
     --card: var(--carbon-grey);
@@ -35,35 +34,23 @@
     --radius: 0.75rem;
   }
 
-  /* Light theme overrides */
-  .light {
-    --background: var(--soft-concrete);
-    --foreground: var(--jet-black);
-    --card: #FFFFFF;
-    --card-foreground: var(--jet-black);
-    --primary: var(--jet-black);
-    --primary-foreground: var(--soft-concrete);
-    --secondary: #F5F5F5;
-    --secondary-foreground: var(--jet-black);
-    --muted: #F5F5F5;
-    --muted-foreground: #666666;
-    --border: #E5E5E5;
-    --input: #FFFFFF;
-  }
-
   * {
     @apply border-border;
   }
 
   body {
-    @apply bg-background text-foreground font-inter;
+    @apply bg-jet-black text-white font-inter;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  html {
+    @apply bg-jet-black;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
     letter-spacing: -0.025em;
-    color: var(--foreground);
+    color: white;
   }
 }
 
@@ -93,7 +80,7 @@
   }
 
   .btn-secondary {
-    @apply border-2 border-foreground text-foreground px-8 py-4 text-sm font-semibold tracking-widest uppercase rounded-xl hover:bg-foreground hover:text-background hover:scale-105 transition-all duration-300 ease-out;
+    @apply border-2 border-white text-white px-8 py-4 text-sm font-semibold tracking-widest uppercase rounded-xl hover:bg-white hover:text-black hover:scale-105 transition-all duration-300 ease-out;
   }
 
   .card-hover {
@@ -133,7 +120,7 @@
 
   /* Glitch Text Animation */
   .glitch-text {
-    color: var(--foreground);
+    color: white;
     font-weight: bold;
     animation: glitch 2s infinite;
   }

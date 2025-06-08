@@ -1,5 +1,5 @@
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, ReactNode } from 'react';
 
 interface ThemeContextType {
   isDark: boolean;
@@ -21,31 +21,18 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
-  const [isDark, setIsDark] = useState(true); // Default to dark theme
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      const darkMode = savedTheme === 'dark';
-      setIsDark(darkMode);
-      document.documentElement.classList.toggle('dark', darkMode);
-    } else {
-      document.documentElement.classList.add('dark');
-    }
-  }, []);
+  // Always dark theme - no toggle functionality
+  const isDark = true;
 
   const toggleTheme = () => {
-    setIsDark(prev => {
-      const newTheme = !prev;
-      localStorage.setItem('theme', newTheme ? 'dark' : 'light');
-      document.documentElement.classList.toggle('dark', newTheme);
-      return newTheme;
-    });
+    // No-op - theme is always dark
   };
 
   return (
     <ThemeContext.Provider value={{ isDark, toggleTheme }}>
-      {children}
+      <div className="bg-jet-black text-white min-h-screen">
+        {children}
+      </div>
     </ThemeContext.Provider>
   );
 };
