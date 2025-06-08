@@ -90,10 +90,10 @@ const Shop = () => {
           </div>
         </div>
 
-        {/* Category Navigation Bar */}
+        {/* Premium Category Navigation Bar */}
         <div className="bg-card border-b border-border" data-aos="fade-down">
-          <div className="max-w-7xl mx-auto px-4 py-6">
-            <nav className="flex flex-wrap gap-4 justify-center">
+          <div className="max-w-7xl mx-auto px-4 py-8">
+            <nav className="flex flex-wrap gap-3 justify-center">
               {[
                 { key: 'all', label: 'All' },
                 { key: 'hoodies', label: 'Hoodies' },
@@ -104,11 +104,12 @@ const Shop = () => {
                 <button
                   key={cat.key}
                   onClick={() => handleCategoryChange(cat.key)}
-                  className={`px-6 py-3 rounded-full font-medium transition-all duration-300 hover:scale-105 ${
+                  className={`px-6 py-3 rounded-full font-semibold uppercase tracking-wide text-sm transition-all duration-300 hover:scale-105 transform ${
                     category === cat.key 
-                      ? 'bg-signal-red text-white shadow-lg' 
-                      : 'bg-muted text-muted-foreground hover:bg-signal-red hover:text-white'
+                      ? 'bg-white text-black border border-black shadow-lg' 
+                      : 'bg-zinc-800 text-white border border-zinc-700 hover:bg-signal-red hover:text-white hover:shadow-md hover:shadow-signal-red/30'
                   }`}
+                  aria-selected={category === cat.key}
                 >
                   {cat.label}
                 </button>
@@ -118,7 +119,7 @@ const Shop = () => {
         </div>
 
         {/* Filter Bar */}
-        <div className="bg-card border-b border-border sticky top-16 z-40" data-aos="fade-down">
+        <div className="bg-card border-b border-border static" data-aos="fade-down">
           <div className="max-w-7xl mx-auto px-4 py-4">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               {/* Mobile Filter Toggle */}
@@ -176,7 +177,7 @@ const Shop = () => {
               {sortedProducts.map((product, index) => (
                 <div 
                   key={product.id} 
-                  className="product-card group bg-card rounded-xl overflow-hidden hover:scale-105 transition-all duration-300"
+                  className="product-card group bg-card rounded-xl overflow-hidden hover:scale-105 transition-all duration-300 shadow-sm hover:shadow-lg"
                   data-category={product.category}
                   data-aos="zoom-in"
                   data-aos-delay={100 + (index * 50)}
