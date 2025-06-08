@@ -6,9 +6,10 @@ import { useAuth } from '../contexts/AuthContext';
 interface RegisterModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onSwitchToSignIn: () => void;
 }
 
-const RegisterModal = ({ isOpen, onClose }: RegisterModalProps) => {
+const RegisterModal = ({ isOpen, onClose, onSwitchToSignIn }: RegisterModalProps) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -191,7 +192,10 @@ const RegisterModal = ({ isOpen, onClose }: RegisterModalProps) => {
         <div className="mt-4 text-center">
           <p className="text-zinc-400 text-sm">
             Already have an account?{' '}
-            <button className="text-signal-red hover:underline">
+            <button 
+              onClick={onSwitchToSignIn}
+              className="text-signal-red hover:underline"
+            >
               Sign in here
             </button>
           </p>

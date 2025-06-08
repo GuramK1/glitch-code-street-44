@@ -32,10 +32,10 @@ const Navigation = () => {
     { id: 2, name: "Glitch Tee", price: 45, qty: 2, image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=100&h=100&fit=crop" }
   ]);
 
-  // Handle scroll effect for navbar
+  // Enhanced scroll effect for premium feel
   useEffect(() => {
     const handleScroll = () => {
-      const scrolled = window.scrollY > 100;
+      const scrolled = window.scrollY > 80;
       setIsScrolled(scrolled);
     };
 
@@ -111,13 +111,13 @@ const Navigation = () => {
 
   return (
     <>
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out ${
         isScrolled 
-          ? 'bg-zinc-950/95 backdrop-blur-sm border-b border-zinc-800 py-2' 
+          ? 'bg-zinc-950/70 backdrop-blur-md border-b border-zinc-800/50 py-2 shadow-2xl' 
           : 'bg-zinc-950/95 backdrop-blur-sm border-b border-zinc-800 py-4'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-12">
+          <div className={`flex items-center justify-between h-12 transition-all duration-500 ${isScrolled ? 'transform scale-95' : ''}`}>
             {/* Logo */}
             <div className="flex-shrink-0">
               <Link to="/">
@@ -207,14 +207,22 @@ const Navigation = () => {
                           <p className="text-sm font-medium text-white">Hello, {user?.username}!</p>
                           <p className="text-xs text-zinc-400">{user?.email}</p>
                         </div>
-                        <button className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-white hover:bg-zinc-800 rounded-md transition-all duration-200 ease-in-out">
+                        <Link 
+                          to="/profile"
+                          onClick={() => setIsProfileOpen(false)}
+                          className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-white hover:bg-zinc-800 rounded-md transition-all duration-200 ease-in-out"
+                        >
                           <UserCircle className="w-4 h-4" />
                           My Profile
-                        </button>
-                        <button className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-white hover:bg-zinc-800 rounded-md transition-all duration-200 ease-in-out">
+                        </Link>
+                        <Link 
+                          to="/settings"
+                          onClick={() => setIsProfileOpen(false)}
+                          className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-white hover:bg-zinc-800 rounded-md transition-all duration-200 ease-in-out"
+                        >
                           <Settings className="w-4 h-4" />
                           Settings
-                        </button>
+                        </Link>
                         <hr className="border-t border-zinc-700 my-1" />
                         <button 
                           onClick={handleLogout}
@@ -382,10 +390,24 @@ const Navigation = () => {
       )}
 
       {/* Sign In Modal */}
-      <SignInModal isOpen={isSignInOpen} onClose={() => setIsSignInOpen(false)} />
+      <SignInModal 
+        isOpen={isSignInOpen} 
+        onClose={() => setIsSignInOpen(false)}
+        onSwitchToRegister={() => {
+          setIsSignInOpen(false);
+          setIsRegisterOpen(true);
+        }}
+      />
 
       {/* Register Modal */}
-      <RegisterModal isOpen={isRegisterOpen} onClose={() => setIsRegisterOpen(false)} />
+      <RegisterModal 
+        isOpen={isRegisterOpen} 
+        onClose={() => setIsRegisterOpen(false)}
+        onSwitchToSignIn={() => {
+          setIsRegisterOpen(false);
+          setIsSignInOpen(true);
+        }}
+      />
     </>
   );
 };

@@ -15,6 +15,8 @@ import Drops from "./pages/Drops";
 import Shop from "./pages/Shop";
 import ClubPage from "./pages/ClubPage";
 import About from "./pages/About";
+import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import BackToTopButton from "./components/BackToTopButton";
 
@@ -45,6 +47,8 @@ const App = () => {
                   <Route path="/shop" element={<Shop />} />
                   <Route path="/404-club" element={<ClubPage />} />
                   <Route path="/about" element={<About />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/settings" element={<Settings />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>

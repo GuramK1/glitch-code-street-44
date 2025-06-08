@@ -6,9 +6,10 @@ import { useAuth } from '../contexts/AuthContext';
 interface SignInModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onSwitchToRegister: () => void;
 }
 
-const SignInModal = ({ isOpen, onClose }: SignInModalProps) => {
+const SignInModal = ({ isOpen, onClose, onSwitchToRegister }: SignInModalProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -142,7 +143,10 @@ const SignInModal = ({ isOpen, onClose }: SignInModalProps) => {
         <div className="mt-4 text-center">
           <p className="text-zinc-400 text-sm">
             Don't have an account?{' '}
-            <button className="text-signal-red hover:underline">
+            <button 
+              onClick={onSwitchToRegister}
+              className="text-signal-red hover:underline"
+            >
               Register here
             </button>
           </p>
