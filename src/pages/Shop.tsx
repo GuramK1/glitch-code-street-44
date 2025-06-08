@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Filter, Grid, List, ChevronDown, Heart } from 'lucide-react';
@@ -13,12 +12,14 @@ const Shop = () => {
   const [showFilters, setShowFilters] = useState(false);
   const { toggleWishlist, isInWishlist } = useWishlist();
 
-  // Initialize category from URL params
+  // Initialize category from URL params and scroll to top
   useEffect(() => {
     const urlCategory = searchParams.get('category');
     if (urlCategory && ['hoodies', 'tees', 'bottoms', 'accessories'].includes(urlCategory)) {
       setCategory(urlCategory);
     }
+    // Scroll to top when component mounts or category changes
+    window.scrollTo(0, 0);
   }, [searchParams]);
 
   // Mock product data with proper data-category attributes
@@ -40,6 +41,8 @@ const Shop = () => {
     } else {
       setSearchParams({ category: newCategory });
     }
+    // Scroll to top when category changes via button clicks
+    window.scrollTo(0, 0);
   };
 
   const getBadgeClass = (badge: string | null, stock: number, isNew: boolean) => {
