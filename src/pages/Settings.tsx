@@ -67,7 +67,7 @@ const Settings = () => {
       <div className="pt-24 pb-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-8">
+          <div className="text-center mb-8" data-aos="fade-down" data-aos-duration="800">
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
               Account Settings
             </h1>
@@ -76,24 +76,28 @@ const Settings = () => {
 
           {/* Success/Error Message */}
           {message && (
-            <div className={`mb-6 p-4 rounded-lg ${
-              message.includes('successfully') 
-                ? 'bg-green-600/20 border border-green-600/30 text-green-400' 
-                : 'bg-red-600/20 border border-red-600/30 text-red-400'
-            }`}>
+            <div 
+              className={`mb-6 p-4 rounded-lg ${
+                message.includes('successfully') 
+                  ? 'bg-green-600/20 border border-green-600/30 text-green-400' 
+                  : 'bg-red-600/20 border border-red-600/30 text-red-400'
+              }`}
+              data-aos="fade-in" 
+              data-aos-duration="400"
+            >
               {message}
             </div>
           )}
 
           {/* Profile Information */}
-          <div className="bg-zinc-900 rounded-xl p-6 mb-6 border border-zinc-800">
+          <div className="bg-zinc-900 rounded-xl p-6 mb-6 border border-zinc-800" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
             <div className="flex items-center gap-3 mb-6">
               <User className="w-6 h-6 text-signal-red" />
               <h2 className="text-xl font-semibold text-white">Profile Information</h2>
             </div>
 
             <form onSubmit={handleUsernameUpdate} className="space-y-4">
-              <div>
+              <div data-aos="fade-right" data-aos-duration="600" data-aos-delay="200">
                 <label htmlFor="email" className="block text-sm font-medium text-zinc-300 mb-2">
                   Email Address
                 </label>
@@ -107,7 +111,7 @@ const Settings = () => {
                 <p className="text-zinc-500 text-xs mt-1">Email cannot be changed</p>
               </div>
 
-              <div>
+              <div data-aos="fade-right" data-aos-duration="600" data-aos-delay="300">
                 <label htmlFor="username" className="block text-sm font-medium text-zinc-300 mb-2">
                   Username
                 </label>
@@ -122,26 +126,28 @@ const Settings = () => {
                 />
               </div>
 
-              <button
-                type="submit"
-                disabled={isLoading || username === user?.username}
-                className="flex items-center gap-2 bg-signal-red text-white px-6 py-3 rounded-lg font-semibold hover:bg-signal-red/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
-              >
-                <Save className="w-4 h-4" />
-                {isLoading ? 'Updating...' : 'Update Profile'}
-              </button>
+              <div data-aos="zoom-in" data-aos-duration="600" data-aos-delay="400">
+                <button
+                  type="submit"
+                  disabled={isLoading || username === user?.username}
+                  className="flex items-center gap-2 bg-signal-red text-white px-6 py-3 rounded-lg font-semibold hover:bg-signal-red/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                >
+                  <Save className="w-4 h-4" />
+                  {isLoading ? 'Updating...' : 'Update Profile'}
+                </button>
+              </div>
             </form>
           </div>
 
           {/* Password Settings */}
-          <div className="bg-zinc-900 rounded-xl p-6 border border-zinc-800">
+          <div className="bg-zinc-900 rounded-xl p-6 border border-zinc-800" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
             <div className="flex items-center gap-3 mb-6">
               <Lock className="w-6 h-6 text-signal-red" />
               <h2 className="text-xl font-semibold text-white">Change Password</h2>
             </div>
 
             <form onSubmit={handlePasswordUpdate} className="space-y-4">
-              <div>
+              <div data-aos="fade-left" data-aos-duration="600" data-aos-delay="300">
                 <label htmlFor="currentPassword" className="block text-sm font-medium text-zinc-300 mb-2">
                   Current Password
                 </label>
@@ -165,7 +171,7 @@ const Settings = () => {
                 </div>
               </div>
 
-              <div>
+              <div data-aos="fade-left" data-aos-duration="600" data-aos-delay="400">
                 <label htmlFor="newPassword" className="block text-sm font-medium text-zinc-300 mb-2">
                   New Password
                 </label>
@@ -189,7 +195,7 @@ const Settings = () => {
                 </div>
               </div>
 
-              <div>
+              <div data-aos="fade-left" data-aos-duration="600" data-aos-delay="500">
                 <label htmlFor="confirmPassword" className="block text-sm font-medium text-zinc-300 mb-2">
                   Confirm New Password
                 </label>
@@ -213,14 +219,16 @@ const Settings = () => {
                 </div>
               </div>
 
-              <button
-                type="submit"
-                disabled={isLoading || !currentPassword || !newPassword || !confirmPassword}
-                className="flex items-center gap-2 bg-signal-red text-white px-6 py-3 rounded-lg font-semibold hover:bg-signal-red/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
-              >
-                <Save className="w-4 h-4" />
-                {isLoading ? 'Updating...' : 'Update Password'}
-              </button>
+              <div data-aos="zoom-in" data-aos-duration="600" data-aos-delay="600">
+                <button
+                  type="submit"
+                  disabled={isLoading || !currentPassword || !newPassword || !confirmPassword}
+                  className="flex items-center gap-2 bg-signal-red text-white px-6 py-3 rounded-lg font-semibold hover:bg-signal-red/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                >
+                  <Save className="w-4 h-4" />
+                  {isLoading ? 'Updating...' : 'Update Password'}
+                </button>
+              </div>
             </form>
           </div>
         </div>

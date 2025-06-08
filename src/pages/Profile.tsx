@@ -3,11 +3,21 @@ import { useAuth } from '../contexts/AuthContext';
 import { useWishlist } from '../contexts/WishlistContext';
 import Navigation from '../components/Navigation';
 import { Navigate } from 'react-router-dom';
-import { Heart, Package, Clock, User } from 'lucide-react';
+import { Heart, Package, Clock, User, Eye } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 const Profile = () => {
   const { user, isAuthenticated } = useAuth();
   const { wishlist } = useWishlist();
+  const [likedPosts, setLikedPosts] = useState<string[]>([]);
+
+  // Load liked posts from localStorage
+  useEffect(() => {
+    const savedLikedPosts = localStorage.getItem('likedPosts');
+    if (savedLikedPosts) {
+      setLikedPosts(JSON.parse(savedLikedPosts));
+    }
+  }, []);
 
   if (!isAuthenticated) {
     return <Navigate to="/" replace />;
@@ -20,12 +30,27 @@ const Profile = () => {
     { id: 3, date: '2024-01-05', status: 'Processing', total: 67, items: 3 }
   ];
 
+  // Mock liked posts data
+  const mockLikedPostsData = [
+    { id: 'post123', image: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=300&h=400&fit=crop', title: 'Drop 002 Fit', author: '@Neo', likes: 45 },
+    { id: 'post456', image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=300&h=400&fit=crop', title: 'Street Style Look', author: '@Trinity', likes: 32 },
+    { id: 'post789', image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=300&h=400&fit=crop', title: 'Urban Aesthetic', author: '@Morpheus', likes: 58 }
+  ];
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'Delivered': return 'text-green-400';
       case 'Shipped': return 'text-neon-blue';
       case 'Processing': return 'text-yellow-400';
       default: return 'text-zinc-400';
+    }
+  };
+
+  const handleViewWishlist = () => {
+    // For now, we'll scroll to the wishlist section or show a toast
+    const wishlistSection = document.getElementById('wishlist-section');
+    if (wishlistSection) {
+      wishlistSection.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
@@ -36,7 +61,7 @@ const Profile = () => {
       <div className="pt-24 pb-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           {/* Welcome Section */}
-          <div className="text-center mb-8">
+          <div className="text-center mb-8" data-aos="fade-down" data-aos-duration="800">
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
               Welcome back, {user?.username}!
             </h1>
@@ -44,7 +69,7 @@ const Profile = () => {
           </div>
 
           {/* Account Info Card */}
-          <div className="bg-zinc-900 rounded-xl p-6 mb-8 border border-zinc-800">
+          <div className="bg-zinc-900 rounded-xl p-6 mb-8 border border-zinc-800" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
             <div className="flex items-center gap-4 mb-4">
               <div className="w-16 h-16 bg-signal-red rounded-full flex items-center justify-center">
                 <User className="w-8 h-8 text-white" />
@@ -56,17 +81,23 @@ const Profile = () => {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-              <div className="bg-zinc-800 rounded-lg p-4 text-center">
+              <div className="bg-zinc-800 rounded-lg p-4 text-center" data-aos="zoom-in" data-aos-duration="600" data-aos-delay="200">
                 <Heart className="w-6 h-6 text-signal-red mx-auto mb-2" />
                 <p className="text-2xl font-bold text-white">{wishlist.length}</p>
                 <p className="text-zinc-400 text-sm">Wishlist Items</p>
+                <button 
+                  onClick={handleViewWishlist}
+                  className="mt-2 text-signal-red text-xs hover:underline"
+                >
+                  View All
+                </button>
               </div>
-              <div className="bg-zinc-800 rounded-lg p-4 text-center">
+              <div className="bg-zinc-800 rounded-lg p-4 text-center" data-aos="zoom-in" data-aos-duration="600" data-aos-delay="300">
                 <Package className="w-6 h-6 text-neon-blue mx-auto mb-2" />
                 <p className="text-2xl font-bold text-white">{mockOrders.length}</p>
                 <p className="text-zinc-400 text-sm">Total Orders</p>
               </div>
-              <div className="bg-zinc-800 rounded-lg p-4 text-center">
+              <div className="bg-zinc-800 rounded-lg p-4 text-center" data-aos="zoom-in" data-aos-duration="600" data-aos-delay="400">
                 <Clock className="w-6 h-6 text-green-400 mx-auto mb-2" />
                 <p className="text-2xl font-bold text-white">3</p>
                 <p className="text-zinc-400 text-sm">Months Active</p>
@@ -74,8 +105,53 @@ const Profile = () => {
             </div>
           </div>
 
+          {/* Liked Posts Section */}
+          <div className="bg-zinc-900 rounded-xl p-6 mb-8 border border-zinc-800" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+            <div className="flex items-center gap-3 mb-6">
+              <Eye className="w-6 h-6 text-signal-red" />
+              <h3 className="text-xl font-semibold text-white">Posts You've Liked</h3>
+              <span className="bg-signal-red/20 text-signal-red px-2 py-1 rounded-full text-xs font-medium">
+                {mockLikedPostsData.length}
+              </span>
+            </div>
+            
+            {mockLikedPostsData.length === 0 ? (
+              <div className="text-center py-8">
+                <Eye className="w-16 h-16 text-zinc-600 mx-auto mb-4" />
+                <p className="text-zinc-400">No liked posts yet</p>
+                <p className="text-zinc-500 text-sm">Start exploring 404 Club to like posts</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {mockLikedPostsData.map((post, index) => (
+                  <div 
+                    key={post.id} 
+                    className="bg-zinc-800 rounded-lg overflow-hidden hover:bg-zinc-750 transition-colors duration-200 cursor-pointer"
+                    data-aos="fade-up" 
+                    data-aos-duration="600" 
+                    data-aos-delay={300 + (index * 100)}
+                  >
+                    <img 
+                      src={post.image} 
+                      alt={post.title}
+                      className="w-full h-32 object-cover"
+                    />
+                    <div className="p-3">
+                      <p className="text-white font-medium text-sm mb-1">{post.title}</p>
+                      <p className="text-zinc-400 text-xs mb-2">{post.author}</p>
+                      <div className="flex items-center gap-1">
+                        <Heart className="w-3 h-3 text-signal-red fill-current" />
+                        <span className="text-zinc-400 text-xs">{post.likes}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
           {/* Order History */}
-          <div className="bg-zinc-900 rounded-xl p-6 mb-8 border border-zinc-800">
+          <div className="bg-zinc-900 rounded-xl p-6 mb-8 border border-zinc-800" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
             <h3 className="text-xl font-semibold text-white mb-6">Recent Orders</h3>
             
             {mockOrders.length === 0 ? (
@@ -86,8 +162,14 @@ const Profile = () => {
               </div>
             ) : (
               <div className="space-y-4">
-                {mockOrders.map((order) => (
-                  <div key={order.id} className="flex items-center justify-between p-4 bg-zinc-800 rounded-lg">
+                {mockOrders.map((order, index) => (
+                  <div 
+                    key={order.id} 
+                    className="flex items-center justify-between p-4 bg-zinc-800 rounded-lg"
+                    data-aos="fade-left" 
+                    data-aos-duration="600" 
+                    data-aos-delay={400 + (index * 100)}
+                  >
                     <div className="flex items-center gap-4">
                       <div className="w-12 h-12 bg-zinc-700 rounded-lg flex items-center justify-center">
                         <Package className="w-6 h-6 text-zinc-400" />
@@ -108,7 +190,13 @@ const Profile = () => {
           </div>
 
           {/* Wishlist Preview */}
-          <div className="bg-zinc-900 rounded-xl p-6 border border-zinc-800">
+          <div 
+            id="wishlist-section"
+            className="bg-zinc-900 rounded-xl p-6 border border-zinc-800" 
+            data-aos="fade-up" 
+            data-aos-duration="800" 
+            data-aos-delay="400"
+          >
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-semibold text-white">Your Wishlist</h3>
               <span className="bg-signal-red text-white px-3 py-1 rounded-full text-sm font-medium">
@@ -124,8 +212,14 @@ const Profile = () => {
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {wishlist.slice(0, 6).map((itemId) => (
-                  <div key={itemId} className="bg-zinc-800 rounded-lg p-4">
+                {wishlist.slice(0, 6).map((itemId, index) => (
+                  <div 
+                    key={itemId} 
+                    className="bg-zinc-800 rounded-lg p-4"
+                    data-aos="fade-up" 
+                    data-aos-duration="600" 
+                    data-aos-delay={500 + (index * 100)}
+                  >
                     <div className="w-full h-32 bg-zinc-700 rounded-lg mb-3 flex items-center justify-center">
                       <Package className="w-8 h-8 text-zinc-500" />
                     </div>

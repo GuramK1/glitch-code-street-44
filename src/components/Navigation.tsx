@@ -106,6 +106,18 @@ const Navigation = () => {
     setIsProfileOpen(false);
   };
 
+  const handleWishlistClick = () => {
+    // For now, scroll to wishlist if on profile page, otherwise navigate to profile
+    if (window.location.pathname === '/profile') {
+      const wishlistSection = document.getElementById('wishlist-section');
+      if (wishlistSection) {
+        wishlistSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      window.location.href = '/profile#wishlist-section';
+    }
+  };
+
   const totalCartItems = cartItems.reduce((sum, item) => sum + item.qty, 0);
   const totalCartPrice = cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
@@ -149,7 +161,10 @@ const Navigation = () => {
             {/* Icons */}
             <div className="flex items-center space-x-4">
               {/* Wishlist */}
-              <button className="w-5 h-5 text-white hover:text-neon-blue transition-all duration-300 hover:scale-110 relative">
+              <button 
+                onClick={handleWishlistClick}
+                className="w-5 h-5 text-white hover:text-neon-blue transition-all duration-300 hover:scale-110 relative"
+              >
                 <Heart className="w-5 h-5" />
                 {wishlist.length > 0 && (
                   <span className="absolute -top-2 -right-2 bg-signal-red text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
@@ -215,6 +230,16 @@ const Navigation = () => {
                           <UserCircle className="w-4 h-4" />
                           My Profile
                         </Link>
+                        <button 
+                          onClick={() => {
+                            handleWishlistClick();
+                            setIsProfileOpen(false);
+                          }}
+                          className="flex items-center gap-2 w-full text-left px-3 py-2 text-sm text-white hover:bg-zinc-800 rounded-md transition-all duration-200 ease-in-out"
+                        >
+                          <Heart className="w-4 h-4" />
+                          Wishlist ({wishlist.length})
+                        </button>
                         <Link 
                           to="/settings"
                           onClick={() => setIsProfileOpen(false)}
