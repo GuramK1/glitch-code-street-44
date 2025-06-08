@@ -1,25 +1,46 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Filter, Grid, List, ChevronDown, Heart } from 'lucide-react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import { useWishlist } from '../contexts/WishlistContext';
 
 const Shop = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [sortBy, setSortBy] = useState('newest');
   const [category, setCategory] = useState('all');
   const [showFilters, setShowFilters] = useState(false);
   const { toggleWishlist, isInWishlist } = useWishlist();
 
-  // Mock product data with stock info and badges
+  // Initialize category from URL params
+  useEffect(() => {
+    const urlCategory = searchParams.get('category');
+    if (urlCategory && ['hoodies', 'tees', 'bottoms', 'accessories'].includes(urlCategory)) {
+      setCategory(urlCategory);
+    }
+  }, [searchParams]);
+
+  // Mock product data with proper data-category attributes
   const products = [
-    { id: 1, name: "404 Oversized Hoodie", price: 89, image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=400&fit=crop", category: "tops", badge: "LIMITED", isNew: true, stock: 5 },
-    { id: 2, name: "Glitch Effect Tee", price: 45, image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop", category: "tops", badge: null, isNew: false, stock: 15 },
+    { id: 1, name: "404 Oversized Hoodie", price: 89, image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=400&fit=crop", category: "hoodies", badge: "LIMITED", isNew: true, stock: 5 },
+    { id: 2, name: "Glitch Effect Tee", price: 45, image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop", category: "tees", badge: null, isNew: false, stock: 15 },
     { id: 3, name: "Error Code Cargo Pants", price: 120, image: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=400&h=400&fit=crop", category: "bottoms", badge: "DROP 001", isNew: true, stock: 8 },
-    { id: 4, name: "404 Zip Hoodie", price: 95, image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop", category: "tops", badge: null, isNew: false, stock: 12 },
+    { id: 4, name: "404 Zip Hoodie", price: 95, image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=400&fit=crop", category: "hoodies", badge: null, isNew: false, stock: 12 },
     { id: 5, name: "System Error Shorts", price: 65, image: "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=400&h=400&fit=crop", category: "bottoms", badge: "LIMITED", isNew: true, stock: 3 },
-    { id: 6, name: "Broken Link Tank", price: 35, image: "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=400&h=400&fit=crop", category: "tops", badge: null, isNew: false, stock: 20 },
+    { id: 6, name: "Broken Link Tank", price: 35, image: "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=400&h=400&fit=crop", category: "tees", badge: null, isNew: false, stock: 20 },
+    { id: 7, name: "404 Beanie", price: 25, image: "https://images.unsplash.com/photo-1576871337622-98d48d1cf531?w=400&h=400&fit=crop", category: "accessories", badge: "NEW", isNew: true, stock: 30 },
+    { id: 8, name: "Glitch Backpack", price: 75, image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop", category: "accessories", badge: null, isNew: false, stock: 18 },
   ];
+
+  const handleCategoryChange = (newCategory: string) => {
+    setCategory(newCategory);
+    if (newCategory === 'all') {
+      setSearchParams({});
+    } else {
+      setSearchParams({ category: newCategory });
+    }
+  };
 
   const getBadgeClass = (badge: string | null, stock: number, isNew: boolean) => {
     if (badge === 'LIMITED') return 'badge-limited';
@@ -69,11 +90,38 @@ const Shop = () => {
           </div>
         </div>
 
+        {/* Category Navigation Bar */}
+        <div className="bg-card border-b border-border" data-aos="fade-down">
+          <div className="max-w-7xl mx-auto px-4 py-6">
+            <nav className="flex flex-wrap gap-4 justify-center">
+              {[
+                { key: 'all', label: 'All' },
+                { key: 'hoodies', label: 'Hoodies' },
+                { key: 'tees', label: 'Tees' },
+                { key: 'bottoms', label: 'Bottoms' },
+                { key: 'accessories', label: 'Accessories' }
+              ].map((cat) => (
+                <button
+                  key={cat.key}
+                  onClick={() => handleCategoryChange(cat.key)}
+                  className={`px-6 py-3 rounded-full font-medium transition-all duration-300 hover:scale-105 ${
+                    category === cat.key 
+                      ? 'bg-signal-red text-white shadow-lg' 
+                      : 'bg-muted text-muted-foreground hover:bg-signal-red hover:text-white'
+                  }`}
+                >
+                  {cat.label}
+                </button>
+              ))}
+            </nav>
+          </div>
+        </div>
+
         {/* Filter Bar */}
         <div className="bg-card border-b border-border sticky top-16 z-40" data-aos="fade-down">
           <div className="max-w-7xl mx-auto px-4 py-4">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-              {/* Category Filters */}
+              {/* Mobile Filter Toggle */}
               <div className="flex items-center gap-4">
                 <button
                   onClick={() => setShowFilters(!showFilters)}
@@ -82,21 +130,9 @@ const Shop = () => {
                   <Filter className="w-4 h-4" />
                   Filters
                 </button>
-                <div className={`flex items-center gap-2 ${showFilters ? 'block' : 'hidden md:flex'}`}>
-                  {['all', 'tops', 'bottoms'].map((cat) => (
-                    <button
-                      key={cat}
-                      onClick={() => setCategory(cat)}
-                      className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                        category === cat 
-                          ? 'bg-signal-red text-white' 
-                          : 'bg-muted text-muted-foreground hover:bg-muted/80 hover:text-card-foreground'
-                      }`}
-                    >
-                      {cat.charAt(0).toUpperCase() + cat.slice(1)}
-                    </button>
-                  ))}
-                </div>
+                <span className="text-sm text-muted-foreground">
+                  {sortedProducts.length} {sortedProducts.length === 1 ? 'product' : 'products'}
+                </span>
               </div>
 
               {/* Sort & View Options */}
@@ -130,63 +166,71 @@ const Shop = () => {
 
         {/* Products Grid */}
         <div className="max-w-7xl mx-auto px-4 py-8" data-aos="fade-up" data-aos-delay="300">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {sortedProducts.map((product, index) => (
-              <div 
-                key={product.id} 
-                className="group bg-card rounded-xl overflow-hidden hover:scale-105 transition-all duration-300"
-                data-aos="zoom-in"
-                data-aos-delay={100 + (index * 50)}
-              >
-                <div className="relative aspect-square overflow-hidden">
-                  <img 
-                    src={product.image} 
-                    alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  
-                  {/* Badge */}
-                  {getBadgeText(product.badge, product.stock, product.isNew) && (
-                    <div className={`absolute top-3 left-3 ${getBadgeClass(product.badge, product.stock, product.isNew)}`}>
-                      {getBadgeText(product.badge, product.stock, product.isNew)}
-                    </div>
-                  )}
+          {sortedProducts.length === 0 ? (
+            <div className="text-center py-16" data-aos="fade-up">
+              <h3 className="text-xl font-semibold text-card-foreground mb-2">No products found</h3>
+              <p className="text-muted-foreground">Try selecting a different category or check back later.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {sortedProducts.map((product, index) => (
+                <div 
+                  key={product.id} 
+                  className="product-card group bg-card rounded-xl overflow-hidden hover:scale-105 transition-all duration-300"
+                  data-category={product.category}
+                  data-aos="zoom-in"
+                  data-aos-delay={100 + (index * 50)}
+                >
+                  <div className="relative aspect-square overflow-hidden">
+                    <img 
+                      src={product.image} 
+                      alt={product.name}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    
+                    {/* Badge */}
+                    {getBadgeText(product.badge, product.stock, product.isNew) && (
+                      <div className={`absolute top-3 left-3 ${getBadgeClass(product.badge, product.stock, product.isNew)}`}>
+                        {getBadgeText(product.badge, product.stock, product.isNew)}
+                      </div>
+                    )}
 
-                  {/* Wishlist Button */}
-                  <button
-                    onClick={() => toggleWishlist(product.id)}
-                    className={`absolute top-3 right-3 p-2 rounded-full transition-all duration-200 ${
-                      isInWishlist(product.id)
-                        ? 'bg-signal-red text-white'
-                        : 'bg-black/50 text-white hover:bg-signal-red'
-                    }`}
-                  >
-                    <Heart className={`w-4 h-4 ${isInWishlist(product.id) ? 'fill-current' : ''}`} />
-                  </button>
+                    {/* Wishlist Button */}
+                    <button
+                      onClick={() => toggleWishlist(product.id)}
+                      className={`absolute top-3 right-3 p-2 rounded-full transition-all duration-200 ${
+                        isInWishlist(product.id)
+                          ? 'bg-signal-red text-white'
+                          : 'bg-black/50 text-white hover:bg-signal-red'
+                      }`}
+                    >
+                      <Heart className={`w-4 h-4 ${isInWishlist(product.id) ? 'fill-current' : ''}`} />
+                    </button>
+                    
+                    {/* Quick View Overlay */}
+                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <button className="text-white border border-white px-4 py-2 rounded-full text-sm hover:bg-white hover:text-black transition-all duration-200">
+                        Quick View
+                      </button>
+                    </div>
+                  </div>
                   
-                  {/* Quick View Overlay */}
-                  <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <button className="text-white border border-white px-4 py-2 rounded-full text-sm hover:bg-white hover:text-black transition-all duration-200">
-                      Quick View
-                    </button>
+                  <div className="p-4">
+                    <h3 className="text-card-foreground font-medium mb-2 group-hover:text-signal-red transition-colors">
+                      {product.name}
+                    </h3>
+                    <p className="text-muted-foreground text-sm mb-2">Premium streetwear</p>
+                    <div className="flex justify-between items-center">
+                      <span className="text-card-foreground font-bold">${product.price}</span>
+                      <button className="bg-signal-red text-white px-3 py-1 rounded-lg text-sm hover:bg-signal-red/90 transition-colors">
+                        Add to Cart
+                      </button>
+                    </div>
                   </div>
                 </div>
-                
-                <div className="p-4">
-                  <h3 className="text-card-foreground font-medium mb-2 group-hover:text-signal-red transition-colors">
-                    {product.name}
-                  </h3>
-                  <p className="text-muted-foreground text-sm mb-2">Premium streetwear</p>
-                  <div className="flex justify-between items-center">
-                    <span className="text-card-foreground font-bold">${product.price}</span>
-                    <button className="bg-signal-red text-white px-3 py-1 rounded-lg text-sm hover:bg-signal-red/90 transition-colors">
-                      Add to Cart
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
       
