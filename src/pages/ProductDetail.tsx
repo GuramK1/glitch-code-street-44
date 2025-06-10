@@ -41,7 +41,6 @@ const ProductDetail = () => {
         hoverImage: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=600&fit=crop",
         badge: "404 Exclusive",
         description: "Embrace the error with our signature 404 Oversized Hoodie. Crafted from premium cotton blend, this piece features our iconic glitch aesthetic with subtle digital distortion patterns.",
-        tags: ["Oversized Fit", "Premium Cotton", "Limited Edition", "Unisex"],
         sizes: ["S", "M", "L", "XL", "XXL"],
         stock: 3,
         rating: 4.8,
@@ -59,7 +58,6 @@ const ProductDetail = () => {
         hoverImage: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=600&h=600&fit=crop",
         badge: "Drop Only",
         description: "Technical cargo pants with a futuristic edge. Multiple pockets and adjustable straps meet street-ready comfort in this standout piece.",
-        tags: ["Cargo Style", "Technical Fabric", "Adjustable Fit", "Street Ready"],
         sizes: ["S", "M", "L", "XL"],
         stock: 8,
         rating: 4.9,
@@ -76,7 +74,6 @@ const ProductDetail = () => {
         image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&h=600&fit=crop",
         badge: "Low Stock",
         description: "A minimalist approach to error culture. This premium tee features subtle system error messaging with a clean, contemporary design.",
-        tags: ["Regular Fit", "100% Cotton", "Minimalist Design", "Everyday Wear"],
         sizes: ["XS", "S", "M", "L", "XL"],
         stock: 3,
         rating: 4.7,
@@ -93,7 +90,6 @@ const ProductDetail = () => {
         image: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=600&h=600&fit=crop",
         badge: "New Drop",
         description: "The future of outerwear. Water-resistant technical fabric meets contemporary design in this statement jacket that bridges function and style.",
-        tags: ["Water Resistant", "Technical Fabric", "Contemporary Cut", "Statement Piece"],
         sizes: ["S", "M", "L", "XL"],
         stock: 12,
         rating: 4.9,
@@ -205,7 +201,7 @@ const ProductDetail = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             {/* Product Image */}
             <div className="relative" data-aos="fade-right" data-aos-delay="200">
-              <div className="aspect-square bg-card rounded-2xl overflow-hidden group">
+              <div className="aspect-square bg-card rounded-2xl overflow-hidden group shadow-2xl">
                 <img 
                   src={product.image} 
                   alt={product.name}
@@ -215,13 +211,13 @@ const ProductDetail = () => {
                 {/* Badges */}
                 <div className="absolute top-6 left-6 flex flex-col gap-2">
                   {product.badge && (
-                    <span className="bg-signal-red text-white px-3 py-1 text-xs font-bold tracking-wider uppercase rounded-lg">
+                    <span className="bg-signal-red text-white px-3 py-1 text-xs font-bold tracking-wider uppercase rounded-lg shadow-lg">
                       {product.badge}
                     </span>
                   )}
                   
                   {product.isOnSale && (
-                    <span className="bg-accent text-accent-foreground px-3 py-1 text-xs font-bold tracking-wider uppercase rounded-lg">
+                    <span className="bg-accent text-accent-foreground px-3 py-1 text-xs font-bold tracking-wider uppercase rounded-lg shadow-lg">
                       Sale
                     </span>
                   )}
@@ -230,8 +226,8 @@ const ProductDetail = () => {
                 {/* Limited Stock Badge */}
                 {product.stock <= 5 && (
                   <div className="absolute top-6 right-6">
-                    <span className={`bg-red-600 text-white px-3 py-1 text-xs font-semibold rounded-full ${product.stock <= 3 ? 'animate-pulse' : ''}`}>
-                      Only {product.stock} left
+                    <span className={`bg-red-600 text-white px-3 py-1 text-xs font-semibold rounded-full shadow-lg ${product.stock <= 3 ? 'animate-pulse' : ''}`}>
+                      Only {product.stock} left 🔥
                     </span>
                   </div>
                 )}
@@ -241,17 +237,17 @@ const ProductDetail = () => {
             {/* Product Info */}
             <div className="space-y-8" data-aos="fade-left" data-aos-delay="300">
               <div>
-                <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
+                <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
                   {product.name}
                 </h1>
                 
                 {/* Price Section */}
-                <div className="flex items-center gap-4 mb-4">
+                <div className="flex items-center gap-4 mb-6">
                   <span className="text-3xl font-bold text-foreground">
                     ${product.price}
                   </span>
                   {product.isOnSale && product.originalPrice && (
-                    <span className="text-xl text-muted-foreground line-through">
+                    <span className="text-xl text-zinc-400 line-through">
                       ${product.originalPrice}
                     </span>
                   )}
@@ -268,29 +264,17 @@ const ProductDetail = () => {
               </div>
 
               {/* Description */}
-              <p className="text-muted-foreground text-lg leading-relaxed">
+              <p className="text-zinc-100 text-lg leading-relaxed">
                 {product.description}
               </p>
 
               {/* Model Info */}
-              <p className="text-muted-foreground text-sm mt-2">
-                {product.modelInfo}
+              <p className="text-zinc-400 text-sm">
+                👕 {product.modelInfo}
               </p>
 
-              {/* Tags */}
-              <div className="flex flex-wrap gap-2">
-                {product.tags.map((tag, index) => (
-                  <span 
-                    key={index}
-                    className="bg-muted text-muted-foreground px-4 py-2 rounded-full text-sm font-medium"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-
               {/* Sectional Divider */}
-              <div className="border-t border-border my-8"></div>
+              <div className="border-t border-zinc-800 my-8"></div>
 
               {/* Size Selector */}
               <div>
@@ -300,10 +284,10 @@ const ProductDetail = () => {
                     <button
                       key={size}
                       onClick={() => setSelectedSize(size)}
-                      className={`px-5 py-3 rounded-lg border font-medium transition-all duration-200 active:scale-95 ${
+                      className={`px-5 py-3 rounded-xl font-medium transition-all duration-200 active:scale-95 shadow-lg ${
                         selectedSize === size
-                          ? 'bg-signal-red text-white border-signal-red'
-                          : 'bg-card text-foreground border-border hover:bg-muted hover:border-signal-red'
+                          ? 'bg-signal-red text-white shadow-red-500/25 shadow-lg'
+                          : 'bg-zinc-900 text-zinc-100 hover:bg-zinc-800 hover:shadow-xl border border-zinc-700'
                       }`}
                     >
                       {size}
@@ -313,7 +297,7 @@ const ProductDetail = () => {
               </div>
 
               {/* Sectional Divider */}
-              <div className="border-t border-border my-8"></div>
+              <div className="border-t border-zinc-800 my-8"></div>
 
               {/* Quantity Selector */}
               <div>
@@ -321,16 +305,16 @@ const ProductDetail = () => {
                 <div className="flex items-center gap-4">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="bg-card text-foreground p-3 rounded-lg border border-border hover:bg-muted transition-all duration-200 active:scale-95"
+                    className="bg-zinc-900 text-zinc-100 p-3 rounded-xl border border-zinc-700 hover:bg-zinc-800 transition-all duration-200 active:scale-95 shadow-lg"
                   >
                     <Minus className="w-4 h-4" />
                   </button>
-                  <span className="text-foreground font-semibold text-xl px-6 py-2 bg-card rounded-lg border border-border min-w-[60px] text-center">
+                  <span className="text-foreground font-semibold text-xl px-6 py-2 bg-zinc-900 rounded-xl border border-zinc-700 min-w-[60px] text-center shadow-lg">
                     {quantity}
                   </span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
-                    className="bg-card text-foreground p-3 rounded-lg border border-border hover:bg-muted transition-all duration-200 active:scale-95"
+                    className="bg-zinc-900 text-zinc-100 p-3 rounded-xl border border-zinc-700 hover:bg-zinc-800 transition-all duration-200 active:scale-95 shadow-lg"
                   >
                     <Plus className="w-4 h-4" />
                   </button>
@@ -338,22 +322,22 @@ const ProductDetail = () => {
               </div>
 
               {/* Sectional Divider */}
-              <div className="border-t border-border my-8"></div>
+              <div className="border-t border-zinc-800 my-8"></div>
 
               {/* Action Buttons */}
               <div className="flex gap-4 pt-4">
                 <button
                   onClick={handleAddToCart}
-                  className="flex-1 bg-signal-red text-white py-4 px-8 rounded-xl font-semibold text-lg hover:bg-red-500 transition-all duration-200 active:scale-95 shadow-lg hover:shadow-xl"
+                  className="flex-1 bg-signal-red text-white py-4 px-8 rounded-xl font-semibold text-lg hover:bg-red-600 hover:shadow-red-500/25 hover:shadow-xl transition-all duration-200 active:scale-97 shadow-lg"
                 >
                   Add to Bag
                 </button>
                 <button
                   onClick={() => toggleWishlist(product.id)}
-                  className={`p-4 rounded-xl transition-all duration-200 active:scale-95 shadow-lg hover:shadow-xl ${
+                  className={`p-4 rounded-xl transition-all duration-200 active:scale-95 shadow-lg ${
                     isInWishlist(product.id)
-                      ? 'bg-signal-red text-white'
-                      : 'bg-card text-foreground border border-border hover:bg-muted hover:shadow-lg'
+                      ? 'bg-signal-red text-white shadow-red-500/25'
+                      : 'bg-zinc-900 text-zinc-100 border border-zinc-700 hover:bg-zinc-800 hover:shadow-xl'
                   }`}
                 >
                   <Heart className={`w-6 h-6 ${isInWishlist(product.id) ? 'fill-current' : ''}`} />
@@ -362,7 +346,7 @@ const ProductDetail = () => {
 
               {/* Stock Info */}
               {product.stock <= 5 && (
-                <p className="text-yellow-500 text-sm font-medium mt-4">
+                <p className="text-yellow-400 text-sm font-medium mt-4 flex items-center gap-2">
                   ⚡ Only {product.stock} left in stock!
                 </p>
               )}
@@ -373,14 +357,14 @@ const ProductDetail = () => {
         {/* Related Products Section */}
         {relatedProducts.length > 0 && (
           <section className="max-w-7xl mx-auto px-6 md:px-12 py-16" data-aos="fade-up" data-aos-delay="400">
-            <div className="border-t border-border mb-12"></div>
+            <div className="border-t border-zinc-800 mb-12"></div>
             <h2 className="text-3xl font-bold text-foreground mb-8">You Might Also Like</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
               {relatedProducts.map((relatedProduct, index) => (
                 <Link 
                   key={relatedProduct.id}
                   to={`/product/${relatedProduct.slug}`}
-                  className="bg-card rounded-xl overflow-hidden hover:scale-105 transition-all duration-300 shadow-sm hover:shadow-lg"
+                  className="bg-zinc-900 rounded-xl overflow-hidden hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl border border-zinc-800"
                   data-aos="fade-up"
                   data-aos-delay={500 + (index * 100)}
                 >
@@ -392,10 +376,10 @@ const ProductDetail = () => {
                     />
                   </div>
                   <div className="p-4">
-                    <h3 className="text-foreground font-medium mb-2 group-hover:text-signal-red transition-colors">
+                    <h3 className="text-zinc-100 font-medium mb-2 group-hover:text-signal-red transition-colors">
                       {relatedProduct.name}
                     </h3>
-                    <p className="text-muted-foreground font-semibold">${relatedProduct.price}</p>
+                    <p className="text-zinc-400 font-semibold">${relatedProduct.price}</p>
                   </div>
                 </Link>
               ))}
