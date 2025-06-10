@@ -81,7 +81,7 @@ const ProductHighlights = () => {
               style={{ transitionDelay: `${index * 150}ms` }}
             >
               <div className="rounded-xl overflow-hidden bg-carbon-grey">
-                <div className="relative group">
+                <div className="relative group overflow-hidden">
                   <img
                     src={product.image}
                     alt={product.name}
@@ -89,14 +89,14 @@ const ProductHighlights = () => {
                   />
                   
                   {/* Badge */}
-                  <div className="absolute top-4 left-4 z-20">
+                  <div className="absolute top-4 left-4 z-30">
                     <span className="bg-signal-red text-white px-3 py-1 text-xs font-bold tracking-wider uppercase rounded-lg">
                       {product.badge}
                     </span>
                   </div>
 
-                  {/* Quick View Overlay with soft lift and glow */}
-                  <div className="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center z-10">
+                  {/* Quick View Overlay - Fixed to cover entire image */}
+                  <div className="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center z-20">
                     <Link 
                       to={`/product/${product.slug}`}
                       className="text-white border border-white px-6 py-3 rounded-full text-sm font-medium hover:bg-white hover:text-black transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 hover:shadow-lg"
