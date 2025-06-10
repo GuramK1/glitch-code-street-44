@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { Search, User, ShoppingBag, X, Trash2, Plus, Minus, UserCircle, UserPlus, Settings, LogOut, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -161,31 +160,58 @@ const Navigation = () => {
               <div className="ml-10 flex items-baseline space-x-8">
                 <Link 
                   to="/drops" 
-                  className="nav-link relative text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase group hover:text-signal-red hover:tracking-widest active:scale-[0.98]"
+                  className="premium-nav-link group relative text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase cursor-pointer hover:scale-105"
                 >
-                  <span className="relative z-10">Drops</span>
+                  <span className="relative z-10 transition-all duration-300 group-hover:translate-x-[1px] group-hover:skew-x-1 group-hover:text-white">
+                    Drops
+                  </span>
+                  {/* Slide-in border hover */}
                   <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-signal-red transition-all duration-300 group-hover:w-full"></span>
+                  {/* Masked fill reveal */}
+                  <span className="absolute inset-0 bg-signal-red transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100 -z-10"></span>
+                  {/* Slide-out duplicate text */}
+                  <span className="absolute inset-0 text-signal-red opacity-0 transition-all duration-300 group-hover:opacity-30 group-hover:-translate-y-1">
+                    Drops
+                  </span>
                 </Link>
                 <Link 
                   to="/shop" 
-                  className="nav-link relative text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase group hover:text-signal-red hover:tracking-widest active:scale-[0.98]"
+                  className="premium-nav-link group relative text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase cursor-pointer hover:scale-105"
                 >
-                  <span className="relative z-10">Shop</span>
+                  <span className="relative z-10 transition-all duration-300 group-hover:translate-x-[1px] group-hover:skew-x-1 group-hover:text-white">
+                    Shop
+                  </span>
                   <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-signal-red transition-all duration-300 group-hover:w-full"></span>
+                  <span className="absolute inset-0 bg-signal-red transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100 -z-10"></span>
+                  <span className="absolute inset-0 text-signal-red opacity-0 transition-all duration-300 group-hover:opacity-30 group-hover:-translate-y-1">
+                    Shop
+                  </span>
                 </Link>
                 <Link 
                   to="/404-club" 
-                  className="nav-link relative text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase group hover:text-signal-red hover:tracking-widest active:scale-[0.98]"
+                  className="premium-nav-link group relative text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase cursor-pointer hover:scale-105"
                 >
-                  <span className="relative z-10">404 Club</span>
+                  <span className="relative z-10 transition-all duration-300 group-hover:translate-x-[1px] group-hover:skew-x-1 group-hover:text-white">
+                    404 Club
+                  </span>
                   <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-signal-red transition-all duration-300 group-hover:w-full"></span>
+                  <span className="absolute inset-0 bg-signal-red transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100 -z-10"></span>
+                  <span className="absolute inset-0 text-signal-red opacity-0 transition-all duration-300 group-hover:opacity-30 group-hover:-translate-y-1">
+                    404 Club
+                  </span>
                 </Link>
                 <Link 
                   to="/about" 
-                  className="nav-link relative text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase group hover:text-signal-red hover:tracking-widest active:scale-[0.98]"
+                  className="premium-nav-link group relative text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase cursor-pointer hover:scale-105"
                 >
-                  <span className="relative z-10">About</span>
+                  <span className="relative z-10 transition-all duration-300 group-hover:translate-x-[1px] group-hover:skew-x-1 group-hover:text-white">
+                    About
+                  </span>
                   <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-signal-red transition-all duration-300 group-hover:w-full"></span>
+                  <span className="absolute inset-0 bg-signal-red transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100 -z-10"></span>
+                  <span className="absolute inset-0 text-signal-red opacity-0 transition-all duration-300 group-hover:opacity-30 group-hover:-translate-y-1">
+                    About
+                  </span>
                 </Link>
               </div>
             </div>
@@ -417,17 +443,45 @@ const Navigation = () => {
           {isMenuOpen && (
             <div className="md:hidden">
               <div className="px-2 pt-2 pb-3 space-y-1 border-t border-zinc-800 bg-zinc-950/95 backdrop-blur-sm">
-                <Link to="/drops" className="nav-link block px-3 py-2 text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase hover:text-signal-red hover:tracking-widest active:scale-[0.98]">
-                  Drops
+                <Link 
+                  to="/drops" 
+                  className="premium-nav-link group relative block px-3 py-2 text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase hover:scale-105 cursor-pointer"
+                >
+                  <span className="relative z-10 transition-all duration-300 group-hover:translate-x-[1px] group-hover:skew-x-1 group-hover:text-white">
+                    Drops
+                  </span>
+                  <span className="absolute bottom-0 left-3 w-0 h-0.5 bg-signal-red transition-all duration-300 group-hover:w-12"></span>
+                  <span className="absolute inset-0 bg-signal-red transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100 -z-10 mx-3 rounded"></span>
                 </Link>
-                <Link to="/shop" className="nav-link block px-3 py-2 text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase hover:text-signal-red hover:tracking-widest active:scale-[0.98]">
-                  Shop
+                <Link 
+                  to="/shop" 
+                  className="premium-nav-link group relative block px-3 py-2 text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase hover:scale-105 cursor-pointer"
+                >
+                  <span className="relative z-10 transition-all duration-300 group-hover:translate-x-[1px] group-hover:skew-x-1 group-hover:text-white">
+                    Shop
+                  </span>
+                  <span className="absolute bottom-0 left-3 w-0 h-0.5 bg-signal-red transition-all duration-300 group-hover:w-12"></span>
+                  <span className="absolute inset-0 bg-signal-red transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100 -z-10 mx-3 rounded"></span>
                 </Link>
-                <Link to="/404-club" className="nav-link block px-3 py-2 text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase hover:text-signal-red hover:tracking-widest active:scale-[0.98]">
-                  404 Club
+                <Link 
+                  to="/404-club" 
+                  className="premium-nav-link group relative block px-3 py-2 text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase hover:scale-105 cursor-pointer"
+                >
+                  <span className="relative z-10 transition-all duration-300 group-hover:translate-x-[1px] group-hover:skew-x-1 group-hover:text-white">
+                    404 Club
+                  </span>
+                  <span className="absolute bottom-0 left-3 w-0 h-0.5 bg-signal-red transition-all duration-300 group-hover:w-12"></span>
+                  <span className="absolute inset-0 bg-signal-red transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100 -z-10 mx-3 rounded"></span>
                 </Link>
-                <Link to="/about" className="nav-link block px-3 py-2 text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase hover:text-signal-red hover:tracking-widest active:scale-[0.98]">
-                  About
+                <Link 
+                  to="/about" 
+                  className="premium-nav-link group relative block px-3 py-2 text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase hover:scale-105 cursor-pointer"
+                >
+                  <span className="relative z-10 transition-all duration-300 group-hover:translate-x-[1px] group-hover:skew-x-1 group-hover:text-white">
+                    About
+                  </span>
+                  <span className="absolute bottom-0 left-3 w-0 h-0.5 bg-signal-red transition-all duration-300 group-hover:w-12"></span>
+                  <span className="absolute inset-0 bg-signal-red transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100 -z-10 mx-3 rounded"></span>
                 </Link>
               </div>
             </div>
