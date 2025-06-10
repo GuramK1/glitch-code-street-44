@@ -169,7 +169,7 @@ const Drops = () => {
                     <img
                       src={product.image}
                       alt={product.name}
-                      className="w-full h-80 object-cover transition-transform duration-300 group-hover:scale-105"
+                      className="w-full h-80 object-cover transition-transform duration-300 group-hover:scale-105 group-hover:blur-sm"
                     />
                     
                     <div className="absolute top-4 left-4 z-20">
@@ -184,8 +184,8 @@ const Drops = () => {
                       </span>
                     </div>
 
-                    {/* Quick View Overlay - Fixed with proper routing */}
-                    <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
+                    {/* Quick View Overlay with blur effect */}
+                    <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center backdrop-blur-sm">
                       <Link 
                         to={`/product/${product.slug}`}
                         className="text-white border border-white px-6 py-3 rounded-full text-sm font-medium hover:bg-white hover:text-black transition-all duration-300 transform translate-y-4 group-hover:translate-y-0"
@@ -226,7 +226,7 @@ const Drops = () => {
                     <img
                       src={product.image}
                       alt={product.name}
-                      className="w-full h-80 object-cover transition-transform duration-300 group-hover:scale-105"
+                      className="w-full h-80 object-cover transition-transform duration-300 group-hover:scale-105 group-hover:blur-sm"
                     />
                     
                     <div className="absolute top-4 left-4 z-20">
@@ -235,8 +235,8 @@ const Drops = () => {
                       </span>
                     </div>
 
-                    {/* Quick View Overlay - Fixed with proper routing */}
-                    <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
+                    {/* Quick View Overlay with blur effect */}
+                    <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center backdrop-blur-sm">
                       <Link 
                         to={`/product/${product.slug}`}
                         className="text-white border border-white px-6 py-3 rounded-full text-sm font-medium hover:bg-white hover:text-black transition-all duration-300 transform translate-y-4 group-hover:translate-y-0"

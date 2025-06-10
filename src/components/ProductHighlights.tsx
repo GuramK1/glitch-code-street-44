@@ -85,7 +85,7 @@ const ProductHighlights = () => {
                   <img
                     src={product.image}
                     alt={product.name}
-                    className="w-full h-80 object-cover group-hover:scale-110 group-hover:blur-xl transform-gpu transition-all duration-700"
+                    className="w-full h-80 object-cover group-hover:scale-110 transform-gpu transition-all duration-700"
                   />
                   
                   {/* Badge */}
@@ -95,11 +95,11 @@ const ProductHighlights = () => {
                     </span>
                   </div>
 
-                  {/* Quick View Overlay with Link to Product Detail */}
+                  {/* Quick View Overlay with soft lift and glow */}
                   <div className="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center z-10">
                     <Link 
                       to={`/product/${product.slug}`}
-                      className="text-white border border-white px-6 py-3 rounded-full text-sm font-medium hover:bg-white hover:text-black transition-all duration-300 transform translate-y-4 group-hover:translate-y-0"
+                      className="text-white border border-white px-6 py-3 rounded-full text-sm font-medium hover:bg-white hover:text-black transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 hover:shadow-lg"
                     >
                       Quick View
                     </Link>

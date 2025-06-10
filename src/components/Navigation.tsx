@@ -142,7 +142,7 @@ const Navigation = () => {
     <>
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out ${
         isScrolled 
-          ? 'bg-zinc-950/70 backdrop-blur-md border-b border-zinc-800/50 py-2 shadow-2xl' 
+          ? 'bg-zinc-950/80 backdrop-blur-xl border-b border-zinc-800/60 py-2 shadow-2xl' 
           : 'bg-zinc-950/95 backdrop-blur-sm border-b border-zinc-800 py-4'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -157,31 +157,47 @@ const Navigation = () => {
               </Link>
             </div>
 
-            {/* Desktop Navigation */}
+            {/* Desktop Navigation with enhanced animations */}
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-8">
-                <Link to="/drops" className="text-white hover:text-neon-blue transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
-                  Drops
+                <Link 
+                  to="/drops" 
+                  className="nav-link relative text-white hover:text-signal-red transition-all duration-300 text-sm font-medium tracking-wider uppercase group"
+                >
+                  <span className="relative z-10">Drops</span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-signal-red transition-all duration-300 group-hover:w-full"></span>
                 </Link>
-                <Link to="/shop" className="text-white hover:text-neon-blue transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
-                  Shop
+                <Link 
+                  to="/shop" 
+                  className="nav-link relative text-white hover:text-signal-red transition-all duration-300 text-sm font-medium tracking-wider uppercase group"
+                >
+                  <span className="relative z-10">Shop</span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-signal-red transition-all duration-300 group-hover:w-full"></span>
                 </Link>
-                <Link to="/404-club" className="text-white hover:text-neon-blue transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
-                  404 Club
+                <Link 
+                  to="/404-club" 
+                  className="nav-link relative text-white hover:text-signal-red transition-all duration-300 text-sm font-medium tracking-wider uppercase group"
+                >
+                  <span className="relative z-10">404 Club</span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-signal-red transition-all duration-300 group-hover:w-full"></span>
                 </Link>
-                <Link to="/about" className="text-white hover:text-neon-blue transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
-                  About
+                <Link 
+                  to="/about" 
+                  className="nav-link relative text-white hover:text-signal-red transition-all duration-300 text-sm font-medium tracking-wider uppercase group"
+                >
+                  <span className="relative z-10">About</span>
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-signal-red transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               </div>
             </div>
 
-            {/* Icons */}
+            {/* Icons with enhanced hover effects */}
             <div className="flex items-center space-x-4">
               {/* Wishlist with Dropdown */}
               <div ref={wishlistRef} className="relative">
                 <button 
                   onClick={handleWishlistClick}
-                  className="w-6 h-6 flex items-center justify-center text-white hover:text-neon-blue transition-all duration-300 hover:scale-110 relative"
+                  className="w-6 h-6 flex items-center justify-center text-white hover:text-signal-red transition-all duration-300 hover:scale-110 active:scale-95 relative"
                 >
                   <Heart className="w-5 h-5" />
                   {wishlist.length > 0 && (
@@ -235,7 +251,7 @@ const Navigation = () => {
               {/* Search */}
               <button 
                 onClick={() => setIsSearchOpen(true)}
-                className="w-6 h-6 flex items-center justify-center text-white hover:text-neon-blue transition-all duration-300 hover:scale-110"
+                className="w-6 h-6 flex items-center justify-center text-white hover:text-signal-red transition-all duration-300 hover:scale-110 active:scale-95"
               >
                 <Search className="w-5 h-5" />
               </button>
@@ -244,7 +260,7 @@ const Navigation = () => {
               <div ref={profileRef} className="relative">
                 <button 
                   onClick={() => setIsProfileOpen(!isProfileOpen)}
-                  className="w-6 h-6 flex items-center justify-center text-white hover:text-neon-blue transition-all duration-300 hover:scale-110"
+                  className="w-6 h-6 flex items-center justify-center text-white hover:text-signal-red transition-all duration-300 hover:scale-110 active:scale-95"
                 >
                   <User className="w-5 h-5" />
                 </button>
@@ -323,7 +339,7 @@ const Navigation = () => {
               <div ref={cartRef} className="relative">
                 <button 
                   onClick={() => setIsCartOpen(!isCartOpen)}
-                  className="w-6 h-6 flex items-center justify-center text-white hover:text-neon-blue transition-all duration-300 hover:scale-110 relative"
+                  className="w-6 h-6 flex items-center justify-center text-white hover:text-signal-red transition-all duration-300 hover:scale-110 active:scale-95 relative"
                 >
                   <ShoppingBag className="w-5 h-5" />
                   {totalCartItems > 0 && (
@@ -409,16 +425,16 @@ const Navigation = () => {
           {isMenuOpen && (
             <div className="md:hidden">
               <div className="px-2 pt-2 pb-3 space-y-1 border-t border-zinc-800 bg-zinc-950/95 backdrop-blur-sm">
-                <Link to="/drops" className="block px-3 py-2 text-white hover:text-neon-blue transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
+                <Link to="/drops" className="block px-3 py-2 text-white hover:text-signal-red transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
                   Drops
                 </Link>
-                <Link to="/shop" className="block px-3 py-2 text-white hover:text-neon-blue transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
+                <Link to="/shop" className="block px-3 py-2 text-white hover:text-signal-red transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
                   Shop
                 </Link>
-                <Link to="/404-club" className="block px-3 py-2 text-white hover:text-neon-blue transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
+                <Link to="/404-club" className="block px-3 py-2 text-white hover:text-signal-red transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
                   404 Club
                 </Link>
-                <Link to="/about" className="block px-3 py-2 text-white hover:text-neon-blue transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
+                <Link to="/about" className="block px-3 py-2 text-white hover:text-signal-red transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
                   About
                 </Link>
               </div>
