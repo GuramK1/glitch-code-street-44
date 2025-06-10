@@ -189,9 +189,9 @@ const ProductDetail = () => {
         <div className="max-w-7xl mx-auto px-6 md:px-12 py-6">
           <button 
             onClick={handleBackToShop}
-            className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors w-fit"
+            className="flex items-center gap-2 text-zinc-100 hover:text-signal-red transition-all duration-300 hover:-translate-x-1 w-fit group"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1" />
             Back to Shop
           </button>
         </div>
@@ -268,8 +268,8 @@ const ProductDetail = () => {
                 {product.description}
               </p>
 
-              {/* Model Info */}
-              <p className="text-zinc-400 text-sm">
+              {/* Model Info - Enhanced Styling */}
+              <p className="text-sm italic text-zinc-400 font-light tracking-wide">
                 👕 {product.modelInfo}
               </p>
 

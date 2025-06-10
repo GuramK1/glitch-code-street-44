@@ -191,7 +191,7 @@ const Shop = () => {
               {sortedProducts.map((product, index) => (
                 <div 
                   key={product.id} 
-                  className="product-card group bg-card rounded-xl overflow-hidden hover:scale-105 transition-all duration-300 shadow-sm hover:shadow-lg"
+                  className="product-card group bg-card rounded-xl overflow-hidden hover:scale-105 hover:-translate-y-1 transition-all duration-300 shadow-sm hover:shadow-xl"
                   data-category={product.category}
                   data-aos="zoom-in"
                   data-aos-delay={100 + (index * 50)}
@@ -222,8 +222,8 @@ const Shop = () => {
                       <Heart className={`w-4 h-4 ${isInWishlist(product.id) ? 'fill-current' : ''}`} />
                     </button>
                     
-                    {/* Quick View Overlay */}
-                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    {/* Quick View Overlay - Removed blur, added shadow effect */}
+                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <button 
                         onClick={() => handleQuickView(product.slug)}
                         className="text-white border border-white px-6 py-3 rounded-full text-sm font-medium hover:bg-white hover:text-black transition-all duration-200 active:scale-95"

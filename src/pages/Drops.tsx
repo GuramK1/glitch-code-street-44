@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Clock, Star, Flame } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 
@@ -24,7 +25,7 @@ const Drops = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Mock data for products
+  // Mock data for products with working slugs
   const limitedEdition = [
     {
       id: 1,
@@ -32,7 +33,8 @@ const Drops = () => {
       price: 149,
       originalPrice: 179,
       image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=500&fit=crop",
-      stock: 3
+      stock: 3,
+      slug: "404-oversized-hoodie"
     },
     {
       id: 2,
@@ -40,7 +42,8 @@ const Drops = () => {
       price: 199,
       originalPrice: 249,
       image: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=500&fit=crop",
-      stock: 7
+      stock: 7,
+      slug: "404-tech-jacket"
     },
     {
       id: 3,
@@ -48,7 +51,8 @@ const Drops = () => {
       price: 129,
       originalPrice: 159,
       image: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400&h=500&fit=crop",
-      stock: 2
+      stock: 2,
+      slug: "glitch-cargo-pants"
     }
   ];
 
@@ -59,7 +63,8 @@ const Drops = () => {
       price: 29,
       originalPrice: 45,
       image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=500&fit=crop",
-      discount: 35
+      discount: 35,
+      slug: "system-error-tee"
     },
     {
       id: 5,
@@ -67,7 +72,8 @@ const Drops = () => {
       price: 59,
       originalPrice: 89,
       image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=500&fit=crop",
-      discount: 33
+      discount: 33,
+      slug: "404-oversized-hoodie"
     },
     {
       id: 6,
@@ -75,7 +81,8 @@ const Drops = () => {
       price: 49,
       originalPrice: 79,
       image: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=400&h=500&fit=crop",
-      discount: 38
+      discount: 38,
+      slug: "glitch-cargo-pants"
     }
   ];
 
@@ -162,7 +169,7 @@ const Drops = () => {
                     <img
                       src={product.image}
                       alt={product.name}
-                      className="w-full h-80 object-cover group-hover:blur-sm transition-all duration-300"
+                      className="w-full h-80 object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                     
                     <div className="absolute top-4 left-4 z-20">
@@ -177,11 +184,14 @@ const Drops = () => {
                       </span>
                     </div>
 
-                    {/* Fixed hover overlay to cover entire image area */}
+                    {/* Quick View Overlay - Fixed with proper routing */}
                     <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
-                      <button className="text-white border border-white px-6 py-3 rounded-full text-sm font-medium hover:bg-white hover:text-black transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                      <Link 
+                        to={`/product/${product.slug}`}
+                        className="text-white border border-white px-6 py-3 rounded-full text-sm font-medium hover:bg-white hover:text-black transition-all duration-300 transform translate-y-4 group-hover:translate-y-0"
+                      >
                         Quick View
-                      </button>
+                      </Link>
                     </div>
                   </div>
 
@@ -216,7 +226,7 @@ const Drops = () => {
                     <img
                       src={product.image}
                       alt={product.name}
-                      className="w-full h-80 object-cover group-hover:blur-sm transition-all duration-300"
+                      className="w-full h-80 object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                     
                     <div className="absolute top-4 left-4 z-20">
@@ -225,11 +235,14 @@ const Drops = () => {
                       </span>
                     </div>
 
-                    {/* Fixed hover overlay to cover entire image area */}
+                    {/* Quick View Overlay - Fixed with proper routing */}
                     <div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
-                      <button className="text-white border border-white px-6 py-3 rounded-full text-sm font-medium hover:bg-white hover:text-black transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
+                      <Link 
+                        to={`/product/${product.slug}`}
+                        className="text-white border border-white px-6 py-3 rounded-full text-sm font-medium hover:bg-white hover:text-black transition-all duration-300 transform translate-y-4 group-hover:translate-y-0"
+                      >
                         Quick View
-                      </button>
+                      </Link>
                     </div>
                   </div>
 
