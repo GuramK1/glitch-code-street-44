@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Search, User, ShoppingBag, X, Trash2, Plus, Minus, UserCircle, UserPlus, Settings, LogOut, Heart } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useWishlist } from '../contexts/WishlistContext';
 import SignInModal from './SignInModal';
@@ -26,6 +26,7 @@ const Navigation = () => {
 
   const { isAuthenticated, user, logout } = useAuth();
   const { wishlist } = useWishlist();
+  const location = useLocation();
 
   // Mock cart items for demo - now with state for quantity updates
   const [cartItems, setCartItems] = useState([
@@ -138,6 +139,28 @@ const Navigation = () => {
   const totalCartItems = cartItems.reduce((sum, item) => sum + item.qty, 0);
   const totalCartPrice = cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
 
+  // Ultra-premium navigation link component
+  const PremiumNavLink = ({ to, children, className = "" }: { to: string; children: string; className?: string }) => {
+    const isActive = location.pathname === to;
+    
+    return (
+      <Link 
+        to={to}
+        className={`relative text-white group font-medium uppercase tracking-wide transition-all duration-300 active:scale-95 ${className}`}
+      >
+        <span className={`${isActive 
+          ? 'text-signal-red tracking-widest' 
+          : 'group-hover:text-signal-red group-hover:tracking-widest group-hover:skew-x-1 group-hover:translate-x-0.5 hover:drop-shadow-[0_0_4px_rgba(193,39,45,0.35)]'
+        } transition-all duration-300`}>
+          {children}
+        </span>
+        <span className={`absolute left-1/2 -translate-x-1/2 bottom-0 h-0.5 bg-signal-red transition-all duration-300 ${
+          isActive ? 'w-full' : 'w-0 group-hover:w-full'
+        }`}></span>
+      </Link>
+    );
+  };
+
   return (
     <>
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out ${
@@ -158,61 +181,10 @@ const Navigation = () => {
 
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-8">
-                <Link 
-                  to="/drops" 
-                  className="premium-nav-link group relative text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase cursor-pointer hover:scale-105"
-                >
-                  <span className="relative z-10 transition-all duration-300 group-hover:translate-x-[1px] group-hover:skew-x-1 group-hover:text-white">
-                    Drops
-                  </span>
-                  {/* Slide-in border hover */}
-                  <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-signal-red transition-all duration-300 group-hover:w-full"></span>
-                  {/* Masked fill reveal */}
-                  <span className="absolute inset-0 bg-signal-red transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100 -z-10"></span>
-                  {/* Slide-out duplicate text */}
-                  <span className="absolute inset-0 text-signal-red opacity-0 transition-all duration-300 group-hover:opacity-30 group-hover:-translate-y-1">
-                    Drops
-                  </span>
-                </Link>
-                <Link 
-                  to="/shop" 
-                  className="premium-nav-link group relative text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase cursor-pointer hover:scale-105"
-                >
-                  <span className="relative z-10 transition-all duration-300 group-hover:translate-x-[1px] group-hover:skew-x-1 group-hover:text-white">
-                    Shop
-                  </span>
-                  <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-signal-red transition-all duration-300 group-hover:w-full"></span>
-                  <span className="absolute inset-0 bg-signal-red transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100 -z-10"></span>
-                  <span className="absolute inset-0 text-signal-red opacity-0 transition-all duration-300 group-hover:opacity-30 group-hover:-translate-y-1">
-                    Shop
-                  </span>
-                </Link>
-                <Link 
-                  to="/404-club" 
-                  className="premium-nav-link group relative text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase cursor-pointer hover:scale-105"
-                >
-                  <span className="relative z-10 transition-all duration-300 group-hover:translate-x-[1px] group-hover:skew-x-1 group-hover:text-white">
-                    404 Club
-                  </span>
-                  <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-signal-red transition-all duration-300 group-hover:w-full"></span>
-                  <span className="absolute inset-0 bg-signal-red transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100 -z-10"></span>
-                  <span className="absolute inset-0 text-signal-red opacity-0 transition-all duration-300 group-hover:opacity-30 group-hover:-translate-y-1">
-                    404 Club
-                  </span>
-                </Link>
-                <Link 
-                  to="/about" 
-                  className="premium-nav-link group relative text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase cursor-pointer hover:scale-105"
-                >
-                  <span className="relative z-10 transition-all duration-300 group-hover:translate-x-[1px] group-hover:skew-x-1 group-hover:text-white">
-                    About
-                  </span>
-                  <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-signal-red transition-all duration-300 group-hover:w-full"></span>
-                  <span className="absolute inset-0 bg-signal-red transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100 -z-10"></span>
-                  <span className="absolute inset-0 text-signal-red opacity-0 transition-all duration-300 group-hover:opacity-30 group-hover:-translate-y-1">
-                    About
-                  </span>
-                </Link>
+                <PremiumNavLink to="/drops">Drops</PremiumNavLink>
+                <PremiumNavLink to="/shop">Shop</PremiumNavLink>
+                <PremiumNavLink to="/404-club">404 Club</PremiumNavLink>
+                <PremiumNavLink to="/about">About</PremiumNavLink>
               </div>
             </div>
 
@@ -443,46 +415,10 @@ const Navigation = () => {
           {isMenuOpen && (
             <div className="md:hidden">
               <div className="px-2 pt-2 pb-3 space-y-1 border-t border-zinc-800 bg-zinc-950/95 backdrop-blur-sm">
-                <Link 
-                  to="/drops" 
-                  className="premium-nav-link group relative block px-3 py-2 text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase hover:scale-105 cursor-pointer"
-                >
-                  <span className="relative z-10 transition-all duration-300 group-hover:translate-x-[1px] group-hover:skew-x-1 group-hover:text-white">
-                    Drops
-                  </span>
-                  <span className="absolute bottom-0 left-3 w-0 h-0.5 bg-signal-red transition-all duration-300 group-hover:w-12"></span>
-                  <span className="absolute inset-0 bg-signal-red transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100 -z-10 mx-3 rounded"></span>
-                </Link>
-                <Link 
-                  to="/shop" 
-                  className="premium-nav-link group relative block px-3 py-2 text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase hover:scale-105 cursor-pointer"
-                >
-                  <span className="relative z-10 transition-all duration-300 group-hover:translate-x-[1px] group-hover:skew-x-1 group-hover:text-white">
-                    Shop
-                  </span>
-                  <span className="absolute bottom-0 left-3 w-0 h-0.5 bg-signal-red transition-all duration-300 group-hover:w-12"></span>
-                  <span className="absolute inset-0 bg-signal-red transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100 -z-10 mx-3 rounded"></span>
-                </Link>
-                <Link 
-                  to="/404-club" 
-                  className="premium-nav-link group relative block px-3 py-2 text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase hover:scale-105 cursor-pointer"
-                >
-                  <span className="relative z-10 transition-all duration-300 group-hover:translate-x-[1px] group-hover:skew-x-1 group-hover:text-white">
-                    404 Club
-                  </span>
-                  <span className="absolute bottom-0 left-3 w-0 h-0.5 bg-signal-red transition-all duration-300 group-hover:w-12"></span>
-                  <span className="absolute inset-0 bg-signal-red transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100 -z-10 mx-3 rounded"></span>
-                </Link>
-                <Link 
-                  to="/about" 
-                  className="premium-nav-link group relative block px-3 py-2 text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase hover:scale-105 cursor-pointer"
-                >
-                  <span className="relative z-10 transition-all duration-300 group-hover:translate-x-[1px] group-hover:skew-x-1 group-hover:text-white">
-                    About
-                  </span>
-                  <span className="absolute bottom-0 left-3 w-0 h-0.5 bg-signal-red transition-all duration-300 group-hover:w-12"></span>
-                  <span className="absolute inset-0 bg-signal-red transform scale-x-0 origin-left transition-transform duration-300 group-hover:scale-x-100 -z-10 mx-3 rounded"></span>
-                </Link>
+                <PremiumNavLink to="/drops" className="block px-3 py-2">Drops</PremiumNavLink>
+                <PremiumNavLink to="/shop" className="block px-3 py-2">Shop</PremiumNavLink>
+                <PremiumNavLink to="/404-club" className="block px-3 py-2">404 Club</PremiumNavLink>
+                <PremiumNavLink to="/about" className="block px-3 py-2">About</PremiumNavLink>
               </div>
             </div>
           )}
