@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { Search, User, ShoppingBag, X, Trash2, Plus, Minus, UserCircle, UserPlus, Settings, LogOut, Heart } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -147,7 +148,6 @@ const Navigation = () => {
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className={`flex items-center justify-between h-12 transition-all duration-500 ${isScrolled ? 'transform scale-95' : ''}`}>
-            {/* Logo */}
             <div className="flex-shrink-0">
               <Link to="/">
                 <h1 className="text-2xl font-bold tracking-tight">
@@ -157,7 +157,6 @@ const Navigation = () => {
               </Link>
             </div>
 
-            {/* Desktop Navigation with enhanced animations */}
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-8">
                 <Link 
@@ -191,9 +190,7 @@ const Navigation = () => {
               </div>
             </div>
 
-            {/* Icons with enhanced hover effects */}
             <div className="flex items-center space-x-4">
-              {/* Wishlist with Dropdown */}
               <div ref={wishlistRef} className="relative">
                 <button 
                   onClick={handleWishlistClick}
@@ -248,7 +245,6 @@ const Navigation = () => {
                 )}
               </div>
 
-              {/* Search */}
               <button 
                 onClick={() => setIsSearchOpen(true)}
                 className="w-6 h-6 flex items-center justify-center text-white hover:text-signal-red transition-all duration-300 hover:scale-110 active:scale-95"
@@ -256,7 +252,6 @@ const Navigation = () => {
                 <Search className="w-5 h-5" />
               </button>
 
-              {/* Profile Dropdown */}
               <div ref={profileRef} className="relative">
                 <button 
                   onClick={() => setIsProfileOpen(!isProfileOpen)}
@@ -335,7 +330,6 @@ const Navigation = () => {
                 )}
               </div>
 
-              {/* Cart Dropdown */}
               <div ref={cartRef} className="relative">
                 <button 
                   onClick={() => setIsCartOpen(!isCartOpen)}
@@ -407,7 +401,6 @@ const Navigation = () => {
                 )}
               </div>
               
-              {/* Mobile menu button */}
               <button 
                 className="md:hidden"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -421,7 +414,6 @@ const Navigation = () => {
             </div>
           </div>
 
-          {/* Mobile Navigation */}
           {isMenuOpen && (
             <div className="md:hidden">
               <div className="px-2 pt-2 pb-3 space-y-1 border-t border-zinc-800 bg-zinc-950/95 backdrop-blur-sm">
@@ -443,7 +435,6 @@ const Navigation = () => {
         </div>
       </nav>
 
-      {/* Enhanced Search Modal with Better Animations */}
       {isSearchOpen && (
         <div className={`fixed inset-0 bg-black/60 backdrop-blur-lg flex items-start justify-center z-50 p-4 pt-[20vh] ${searchIsClosing ? 'animate-fade-out' : 'animate-fade-in'}`}>
           <div 
@@ -487,7 +478,6 @@ const Navigation = () => {
         </div>
       )}
 
-      {/* Sign In Modal */}
       <SignInModal 
         isOpen={isSignInOpen} 
         onClose={() => setIsSignInOpen(false)}
@@ -497,7 +487,6 @@ const Navigation = () => {
         }}
       />
 
-      {/* Register Modal */}
       <RegisterModal 
         isOpen={isRegisterOpen} 
         onClose={() => setIsRegisterOpen(false)}
@@ -511,5 +500,3 @@ const Navigation = () => {
 };
 
 export default Navigation;
-
-</edits_to_apply>
