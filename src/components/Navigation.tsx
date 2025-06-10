@@ -162,31 +162,31 @@ const Navigation = () => {
               <div className="ml-10 flex items-baseline space-x-8">
                 <Link 
                   to="/drops" 
-                  className="nav-link relative text-white hover:text-signal-red transition-all duration-300 text-sm font-medium tracking-wider uppercase group"
+                  className="nav-link relative text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase group hover:text-signal-red hover:tracking-widest active:scale-[0.98]"
                 >
                   <span className="relative z-10">Drops</span>
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-signal-red transition-all duration-300 group-hover:w-full"></span>
+                  <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-signal-red transition-all duration-300 group-hover:w-full"></span>
                 </Link>
                 <Link 
                   to="/shop" 
-                  className="nav-link relative text-white hover:text-signal-red transition-all duration-300 text-sm font-medium tracking-wider uppercase group"
+                  className="nav-link relative text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase group hover:text-signal-red hover:tracking-widest active:scale-[0.98]"
                 >
                   <span className="relative z-10">Shop</span>
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-signal-red transition-all duration-300 group-hover:w-full"></span>
+                  <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-signal-red transition-all duration-300 group-hover:w-full"></span>
                 </Link>
                 <Link 
                   to="/404-club" 
-                  className="nav-link relative text-white hover:text-signal-red transition-all duration-300 text-sm font-medium tracking-wider uppercase group"
+                  className="nav-link relative text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase group hover:text-signal-red hover:tracking-widest active:scale-[0.98]"
                 >
                   <span className="relative z-10">404 Club</span>
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-signal-red transition-all duration-300 group-hover:w-full"></span>
+                  <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-signal-red transition-all duration-300 group-hover:w-full"></span>
                 </Link>
                 <Link 
                   to="/about" 
-                  className="nav-link relative text-white hover:text-signal-red transition-all duration-300 text-sm font-medium tracking-wider uppercase group"
+                  className="nav-link relative text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase group hover:text-signal-red hover:tracking-widest active:scale-[0.98]"
                 >
                   <span className="relative z-10">About</span>
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-signal-red transition-all duration-300 group-hover:w-full"></span>
+                  <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-0.5 bg-signal-red transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               </div>
             </div>
@@ -425,16 +425,16 @@ const Navigation = () => {
           {isMenuOpen && (
             <div className="md:hidden">
               <div className="px-2 pt-2 pb-3 space-y-1 border-t border-zinc-800 bg-zinc-950/95 backdrop-blur-sm">
-                <Link to="/drops" className="block px-3 py-2 text-white hover:text-signal-red transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
+                <Link to="/drops" className="nav-link block px-3 py-2 text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase hover:text-signal-red hover:tracking-widest active:scale-[0.98]">
                   Drops
                 </Link>
-                <Link to="/shop" className="block px-3 py-2 text-white hover:text-signal-red transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
+                <Link to="/shop" className="nav-link block px-3 py-2 text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase hover:text-signal-red hover:tracking-widest active:scale-[0.98]">
                   Shop
                 </Link>
-                <Link to="/404-club" className="block px-3 py-2 text-white hover:text-signal-red transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
+                <Link to="/404-club" className="nav-link block px-3 py-2 text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase hover:text-signal-red hover:tracking-widest active:scale-[0.98]">
                   404 Club
                 </Link>
-                <Link to="/about" className="block px-3 py-2 text-white hover:text-signal-red transition-colors duration-300 text-sm font-medium tracking-wider uppercase">
+                <Link to="/about" className="nav-link block px-3 py-2 text-white transition-all duration-300 text-sm font-medium tracking-wider uppercase hover:text-signal-red hover:tracking-widest active:scale-[0.98]">
                   About
                 </Link>
               </div>
@@ -511,3 +511,5 @@ const Navigation = () => {
 };
 
 export default Navigation;
+
+</edits_to_apply>
