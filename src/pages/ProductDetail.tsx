@@ -11,6 +11,7 @@ const ProductDetail = () => {
   const [selectedSize, setSelectedSize] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [isVisible, setIsVisible] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const { toggleWishlist, isInWishlist } = useWishlist();
 
   // Scroll to top and trigger fade-in animation when component mounts
@@ -34,12 +35,15 @@ const ProductDetail = () => {
         id: 1,
         name: "404 Oversized Hoodie",
         price: 89,
+        originalPrice: 120,
+        isOnSale: true,
         image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600&h=600&fit=crop",
+        hoverImage: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=600&fit=crop",
         badge: "404 Exclusive",
         description: "Embrace the error with our signature 404 Oversized Hoodie. Crafted from premium cotton blend, this piece features our iconic glitch aesthetic with subtle digital distortion patterns.",
         tags: ["Oversized Fit", "Premium Cotton", "Limited Edition", "Unisex"],
         sizes: ["S", "M", "L", "XL", "XXL"],
-        stock: 5,
+        stock: 3,
         rating: 4.8,
         reviewCount: 234,
         modelInfo: "Model is 6'1\" (185cm) wearing size L",
@@ -49,7 +53,10 @@ const ProductDetail = () => {
         id: 2,
         name: "Glitch Cargo Pants",
         price: 120,
+        originalPrice: null,
+        isOnSale: false,
         image: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=600&h=600&fit=crop",
+        hoverImage: "https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?w=600&h=600&fit=crop",
         badge: "Drop Only",
         description: "Technical cargo pants with a futuristic edge. Multiple pockets and adjustable straps meet street-ready comfort in this standout piece.",
         tags: ["Cargo Style", "Technical Fabric", "Adjustable Fit", "Street Ready"],
@@ -151,10 +158,17 @@ const ProductDetail = () => {
     alert('Added to cart!');
   };
 
+  const handleBackToShop = () => {
+    setIsTransitioning(true);
+    setTimeout(() => {
+      window.location.href = '/shop';
+    }, 300);
+  };
+
   if (!product) {
     return (
-      <div className="min-h-screen bg-zinc-950 flex items-center justify-center">
-        <div className="text-center text-white">
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center text-foreground">
           <h1 className="text-2xl font-bold mb-4">Product Not Found</h1>
           <Link to="/shop" className="btn-primary">
             Back to Shop
@@ -167,44 +181,52 @@ const ProductDetail = () => {
   const relatedProducts = getRelatedProducts();
 
   return (
-    <div className="min-h-screen bg-zinc-950">
+    <div className="min-h-screen bg-background">
       <Navigation />
       
-      <div className={`pt-16 transition-all duration-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+      <div className={`pt-16 transition-all duration-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'} ${isTransitioning ? 'opacity-0 -translate-x-8' : ''}`}>
         {/* Back Button */}
-        <div className="max-w-7xl mx-auto px-4 py-6">
-          <Link 
-            to="/shop"
-            className="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors w-fit"
+        <div className="max-w-7xl mx-auto px-6 md:px-12 py-6">
+          <button 
+            onClick={handleBackToShop}
+            className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors w-fit"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to Shop
-          </Link>
+          </button>
         </div>
 
         {/* Product Hero Section */}
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="max-w-7xl mx-auto px-6 md:px-12 py-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             {/* Product Image */}
-            <div className="relative">
-              <div className="aspect-square bg-zinc-900 rounded-xl overflow-hidden">
+            <div className="relative" data-aos="fade-right" data-aos-delay="200">
+              <div className="aspect-square bg-card rounded-2xl overflow-hidden group">
                 <img 
                   src={product.image} 
                   alt={product.name}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                {product.badge && (
-                  <div className="absolute top-4 left-4">
+                
+                {/* Badges */}
+                <div className="absolute top-6 left-6 flex flex-col gap-2">
+                  {product.badge && (
                     <span className="bg-signal-red text-white px-3 py-1 text-xs font-bold tracking-wider uppercase rounded-lg">
                       {product.badge}
                     </span>
-                  </div>
-                )}
-                
+                  )}
+                  
+                  {product.isOnSale && (
+                    <span className="bg-accent text-accent-foreground px-3 py-1 text-xs font-bold tracking-wider uppercase rounded-lg">
+                      Sale
+                    </span>
+                  )}
+                </div>
+
                 {/* Limited Stock Badge */}
                 {product.stock <= 5 && (
-                  <div className="absolute top-4 right-4">
-                    <span className="bg-red-600 text-white px-2 py-1 text-xs font-semibold rounded-full">
+                  <div className="absolute top-6 right-6">
+                    <span className={`bg-red-600 text-white px-3 py-1 text-xs font-semibold rounded-full ${product.stock <= 3 ? 'animate-pulse' : ''}`}>
                       Only {product.stock} left
                     </span>
                   </div>
@@ -213,18 +235,27 @@ const ProductDetail = () => {
             </div>
 
             {/* Product Info */}
-            <div className="space-y-6">
+            <div className="space-y-8" data-aos="fade-left" data-aos-delay="300">
               <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
+                <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
                   {product.name}
                 </h1>
-                <p className="text-2xl font-bold text-white mb-2">
-                  ${product.price}
-                </p>
+                
+                {/* Price Section */}
+                <div className="flex items-center gap-4 mb-4">
+                  <span className="text-3xl font-bold text-foreground">
+                    ${product.price}
+                  </span>
+                  {product.isOnSale && product.originalPrice && (
+                    <span className="text-xl text-muted-foreground line-through">
+                      ${product.originalPrice}
+                    </span>
+                  )}
+                </div>
                 
                 {/* Rating Badge - Only show if purchased */}
                 {hasPurchased(product.id) && (
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="flex items-center gap-2 mb-6">
                     <span className="text-yellow-400 text-sm font-semibold">
                       ★ {product.rating} from {product.reviewCount}+ reviews
                     </span>
@@ -232,12 +263,13 @@ const ProductDetail = () => {
                 )}
               </div>
 
-              <p className="text-zinc-400 text-lg leading-relaxed">
+              {/* Description */}
+              <p className="text-muted-foreground text-lg leading-relaxed">
                 {product.description}
               </p>
 
               {/* Model Info */}
-              <p className="text-zinc-400 text-sm">
+              <p className="text-muted-foreground text-sm mt-2">
                 {product.modelInfo}
               </p>
 
@@ -246,25 +278,28 @@ const ProductDetail = () => {
                 {product.tags.map((tag, index) => (
                   <span 
                     key={index}
-                    className="bg-zinc-800 text-zinc-300 px-3 py-1 rounded-full text-sm"
+                    className="bg-muted text-muted-foreground px-4 py-2 rounded-full text-sm font-medium"
                   >
                     {tag}
                   </span>
                 ))}
               </div>
 
+              {/* Sectional Divider */}
+              <div className="border-t border-border my-8"></div>
+
               {/* Size Selector */}
               <div>
-                <h3 className="text-white font-semibold mb-3">Select Size</h3>
-                <div className="flex flex-wrap gap-2">
+                <h3 className="text-foreground font-semibold mb-4 text-lg">Select Size</h3>
+                <div className="flex flex-wrap gap-3">
                   {product.sizes.map((size) => (
                     <button
                       key={size}
                       onClick={() => setSelectedSize(size)}
-                      className={`px-4 py-2 rounded-lg border transition-colors ${
+                      className={`px-5 py-3 rounded-lg border font-medium transition-all duration-200 active:scale-95 ${
                         selectedSize === size
                           ? 'bg-signal-red text-white border-signal-red'
-                          : 'bg-zinc-800 text-white border-zinc-700 hover:border-signal-red'
+                          : 'bg-card text-foreground border-border hover:bg-muted hover:border-signal-red'
                       }`}
                     >
                       {size}
@@ -273,40 +308,48 @@ const ProductDetail = () => {
                 </div>
               </div>
 
+              {/* Sectional Divider */}
+              <div className="border-t border-border my-8"></div>
+
               {/* Quantity Selector */}
               <div>
-                <h3 className="text-white font-semibold mb-3">Quantity</h3>
-                <div className="flex items-center gap-3">
+                <h3 className="text-foreground font-semibold mb-4 text-lg">Quantity</h3>
+                <div className="flex items-center gap-4">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="bg-zinc-800 text-white p-2 rounded-lg hover:bg-zinc-700 transition-colors"
+                    className="bg-card text-foreground p-3 rounded-lg border border-border hover:bg-muted transition-all duration-200 active:scale-95"
                   >
                     <Minus className="w-4 h-4" />
                   </button>
-                  <span className="text-white font-semibold px-4">{quantity}</span>
+                  <span className="text-foreground font-semibold text-xl px-6 py-2 bg-card rounded-lg border border-border min-w-[60px] text-center">
+                    {quantity}
+                  </span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
-                    className="bg-zinc-800 text-white p-2 rounded-lg hover:bg-zinc-700 transition-colors"
+                    className="bg-card text-foreground p-3 rounded-lg border border-border hover:bg-muted transition-all duration-200 active:scale-95"
                   >
                     <Plus className="w-4 h-4" />
                   </button>
                 </div>
               </div>
 
+              {/* Sectional Divider */}
+              <div className="border-t border-border my-8"></div>
+
               {/* Action Buttons */}
               <div className="flex gap-4 pt-4">
                 <button
                   onClick={handleAddToCart}
-                  className="flex-1 bg-signal-red text-white py-4 px-6 rounded-xl font-semibold hover:bg-red-500 transition-colors"
+                  className="flex-1 bg-signal-red text-white py-4 px-8 rounded-xl font-semibold text-lg hover:bg-red-500 transition-all duration-200 active:scale-95 shadow-lg hover:shadow-xl"
                 >
-                  Add to Cart
+                  Add to Bag
                 </button>
                 <button
                   onClick={() => toggleWishlist(product.id)}
-                  className={`p-4 rounded-xl transition-colors ${
+                  className={`p-4 rounded-xl transition-all duration-200 active:scale-95 shadow-lg hover:shadow-xl ${
                     isInWishlist(product.id)
                       ? 'bg-signal-red text-white'
-                      : 'bg-zinc-800 text-white hover:bg-signal-red'
+                      : 'bg-card text-foreground border border-border hover:bg-muted hover:shadow-lg'
                   }`}
                 >
                   <Heart className={`w-6 h-6 ${isInWishlist(product.id) ? 'fill-current' : ''}`} />
@@ -315,8 +358,8 @@ const ProductDetail = () => {
 
               {/* Stock Info */}
               {product.stock <= 5 && (
-                <p className="text-yellow-500 text-sm">
-                  Only {product.stock} left in stock!
+                <p className="text-yellow-500 text-sm font-medium mt-4">
+                  ⚡ Only {product.stock} left in stock!
                 </p>
               )}
             </div>
@@ -325,25 +368,30 @@ const ProductDetail = () => {
 
         {/* Related Products Section */}
         {relatedProducts.length > 0 && (
-          <section className="max-w-7xl mx-auto px-4 py-12">
-            <h2 className="text-2xl font-bold text-white mb-8">You Might Also Like</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-              {relatedProducts.map((relatedProduct) => (
+          <section className="max-w-7xl mx-auto px-6 md:px-12 py-16" data-aos="fade-up" data-aos-delay="400">
+            <div className="border-t border-border mb-12"></div>
+            <h2 className="text-3xl font-bold text-foreground mb-8">You Might Also Like</h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+              {relatedProducts.map((relatedProduct, index) => (
                 <Link 
                   key={relatedProduct.id}
                   to={`/product/${relatedProduct.slug}`}
-                  className="bg-zinc-900 rounded-xl overflow-hidden hover:scale-105 transition-transform duration-300"
+                  className="bg-card rounded-xl overflow-hidden hover:scale-105 transition-all duration-300 shadow-sm hover:shadow-lg"
+                  data-aos="fade-up"
+                  data-aos-delay={500 + (index * 100)}
                 >
                   <div className="aspect-square">
                     <img 
                       src={relatedProduct.image} 
                       alt={relatedProduct.name}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
                     />
                   </div>
                   <div className="p-4">
-                    <h3 className="text-white font-medium mb-1">{relatedProduct.name}</h3>
-                    <p className="text-zinc-400">${relatedProduct.price}</p>
+                    <h3 className="text-foreground font-medium mb-2 group-hover:text-signal-red transition-colors">
+                      {relatedProduct.name}
+                    </h3>
+                    <p className="text-muted-foreground font-semibold">${relatedProduct.price}</p>
                   </div>
                 </Link>
               ))}

@@ -226,7 +226,7 @@ const Shop = () => {
                     <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <button 
                         onClick={() => handleQuickView(product.slug)}
-                        className="text-white border border-white px-4 py-2 rounded-full text-sm hover:bg-white hover:text-black transition-all duration-200"
+                        className="text-white border border-white px-6 py-3 rounded-full text-sm font-medium hover:bg-white hover:text-black transition-all duration-200 active:scale-95"
                       >
                         Quick View
                       </button>
@@ -240,7 +240,7 @@ const Shop = () => {
                     <p className="text-muted-foreground text-sm mb-2">Premium streetwear</p>
                     <div className="flex justify-between items-center">
                       <span className="text-card-foreground font-bold">${product.price}</span>
-                      <button className="bg-signal-red text-white px-3 py-1 rounded-lg text-sm hover:bg-signal-red/90 transition-colors">
+                      <button className="bg-signal-red text-white px-3 py-1 rounded-lg text-sm hover:bg-signal-red/90 transition-colors active:scale-95">
                         Add to Cart
                       </button>
                     </div>
