@@ -12,14 +12,19 @@ const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const [isVisible, setIsVisible] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [backButtonVisible, setBackButtonVisible] = useState(false);
   const { toggleWishlist, isInWishlist } = useWishlist();
 
   // Scroll to top and trigger fade-in animation when component mounts
   useEffect(() => {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     // Trigger fade-in animation after a brief delay
     const timer = setTimeout(() => setIsVisible(true), 100);
-    return () => clearTimeout(timer);
+    const backButtonTimer = setTimeout(() => setBackButtonVisible(true), 300);
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(backButtonTimer);
+    };
   }, []);
 
   // Check if user has purchased this product
@@ -185,14 +190,16 @@ const ProductDetail = () => {
       <Navigation />
       
       <div className={`pt-16 transition-all duration-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'} ${isTransitioning ? 'opacity-0 -translate-x-8' : ''}`}>
-        {/* Back Button */}
+        {/* Back Button - Premium Redesign */}
         <div className="max-w-7xl mx-auto px-6 md:px-12 py-6">
           <button 
             onClick={handleBackToShop}
-            className="flex items-center gap-2 text-zinc-100 hover:text-signal-red transition-all duration-300 hover:-translate-x-1 w-fit group"
+            className={`inline-flex items-center gap-3 text-zinc-300 font-medium hover:text-signal-red transition-all duration-300 group back-button ${backButtonVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}`}
           >
             <ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1" />
-            Back to Shop
+            <span className="relative after:absolute after:-bottom-0.5 after:left-0 after:w-0 after:h-[2px] after:bg-signal-red group-hover:after:w-full after:transition-all after:duration-300">
+              Back to Shop
+            </span>
           </button>
         </div>
 

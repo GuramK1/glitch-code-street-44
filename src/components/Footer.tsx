@@ -2,6 +2,13 @@
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
+  // Handle smooth scroll to top on navigation
+  const handleNavClick = () => {
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 100);
+  };
+
   return (
     <footer className="bg-jet-black border-t border-border">
       <div className="max-w-7xl mx-auto px-4 py-16">
@@ -33,11 +40,11 @@ const Footer = () => {
           <div>
             <h3 className="text-sm font-semibold tracking-widest uppercase mb-4 text-white">Shop</h3>
             <ul className="space-y-3">
-              <li><Link to="/drops" className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">New Drops</Link></li>
-              <li><Link to="/shop?category=hoodies" className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">Hoodies</Link></li>
-              <li><Link to="/shop?category=tees" className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">Tees</Link></li>
-              <li><Link to="/shop?category=bottoms" className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">Bottoms</Link></li>
-              <li><Link to="/shop?category=accessories" className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">Accessories</Link></li>
+              <li><Link to="/drops" onClick={handleNavClick} className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">New Drops</Link></li>
+              <li><Link to="/shop?category=hoodies" onClick={handleNavClick} className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">Hoodies</Link></li>
+              <li><Link to="/shop?category=tees" onClick={handleNavClick} className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">Tees</Link></li>
+              <li><Link to="/shop?category=bottoms" onClick={handleNavClick} className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">Bottoms</Link></li>
+              <li><Link to="/shop?category=accessories" onClick={handleNavClick} className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">Accessories</Link></li>
             </ul>
           </div>
 
@@ -45,11 +52,11 @@ const Footer = () => {
           <div>
             <h3 className="text-sm font-semibold tracking-widest uppercase mb-4 text-white">Support</h3>
             <ul className="space-y-3">
-              <li><Link to="/size-guide" className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">Size Guide</Link></li>
-              <li><Link to="/shipping" className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">Shipping</Link></li>
-              <li><Link to="/returns" className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">Returns</Link></li>
-              <li><Link to="/contact" className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">Contact</Link></li>
-              <li><Link to="/faq" className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">FAQ</Link></li>
+              <li><Link to="/size-guide" onClick={handleNavClick} className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">Size Guide</Link></li>
+              <li><Link to="/shipping" onClick={handleNavClick} className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">Shipping</Link></li>
+              <li><Link to="/returns" onClick={handleNavClick} className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">Returns</Link></li>
+              <li><Link to="/contact" onClick={handleNavClick} className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">Contact</Link></li>
+              <li><Link to="/faq" onClick={handleNavClick} className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">FAQ</Link></li>
             </ul>
           </div>
         </div>
