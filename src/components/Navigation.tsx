@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { Search, User, ShoppingBag, X, Trash2, Plus, Minus, UserCircle, UserPlus, Settings, LogOut, Heart } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -237,7 +238,7 @@ const Navigation = () => {
                 </button>
 
                 {isWishlistOpen && (
-                  <div className="absolute top-full right-0 mt-2 bg-zinc-900 shadow-xl rounded-xl p-4 z-[60] w-64 sm:w-80 max-w-[calc(100vw-2rem)] border border-zinc-700 animate-fade-in transform -translate-x-[calc(100%-32px)] sm:translate-x-0">
+                  <div className="absolute top-full right-0 mt-2 bg-zinc-900 shadow-xl rounded-xl p-4 z-[60] w-64 sm:w-80 max-w-[calc(100vw-2rem)] border border-zinc-700 animate-fade-in">
                     <h3 className="text-lg font-semibold text-white mb-4">Your Wishlist</h3>
                     
                     {wishlist.length === 0 ? (
