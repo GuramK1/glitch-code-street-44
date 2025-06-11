@@ -143,9 +143,10 @@ const ProductDetail = () => {
   const handleAddToCart = () => {
     if (!selectedSize) {
       toast({
-        title: "Size Required",
-        description: "Please select a size before adding to cart.",
+        title: "⚠️ Size Required",
+        description: "Please select a size before adding to your pack.",
         variant: "destructive",
+        className: "bg-red-600 text-white border-red-500 shadow-lg",
       });
       return;
     }
@@ -458,3 +459,5 @@ const ProductDetail = () => {
 };
 
 export default ProductDetail;
+
+}
