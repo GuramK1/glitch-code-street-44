@@ -146,7 +146,7 @@ const ProductDetail = () => {
         title: "⚠️ Size Required",
         description: "Please select a size before adding to your pack.",
         variant: "destructive",
-        className: "bg-red-600 text-white border-red-500 shadow-lg",
+        className: "bg-red-600 text-white border-red-700 shadow-lg font-medium",
       });
       return;
     }
@@ -186,7 +186,7 @@ const ProductDetail = () => {
     toast({
       title: "Added to Cart! ✅",
       description: `${product?.name} (${selectedSize}) has been added to your cart.`,
-      className: "bg-green-600 text-white border-green-500",
+      className: "bg-green-600 text-white border-green-500 font-medium shadow-lg",
     });
 
     // Dispatch custom event to update cart in Navigation
