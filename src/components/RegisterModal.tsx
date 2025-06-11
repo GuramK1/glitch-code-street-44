@@ -60,7 +60,7 @@ const RegisterModal = ({ isOpen, onClose, onSwitchToSignIn }: RegisterModalProps
     }, 300);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     
@@ -69,7 +69,7 @@ const RegisterModal = ({ isOpen, onClose, onSwitchToSignIn }: RegisterModalProps
       return;
     }
     
-    const success = register(username, email, password);
+    const success = await register(username, email, password);
     if (success) {
       console.log('Registration successful');
       handleClose();
