@@ -44,6 +44,7 @@ const EnhancedProductCard = ({ product, onQuickView }: EnhancedProductCardProps)
 
   const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
+    console.log('🛒 Add to cart clicked!');
     setIsAnimating(true);
 
     // Get existing cart
@@ -73,10 +74,16 @@ const EnhancedProductCard = ({ product, onQuickView }: EnhancedProductCardProps)
     localStorage.setItem('cart', JSON.stringify(existingCart));
     window.dispatchEvent(new CustomEvent('cartUpdated'));
 
-    // Animate to cart using the data attribute selector
+    // Enhanced animation trigger with better error handling
+    console.log('🎯 Looking for cart icon...');
     const cartIcon = document.querySelector('[data-cart-icon]');
     if (cartIcon) {
+      console.log('✅ Cart icon found:', cartIcon);
       animateToTarget(e.currentTarget, '[data-cart-icon]');
+    } else {
+      console.error('❌ Cart icon not found! Available elements with data attributes:', 
+        Array.from(document.querySelectorAll('[data-*]')).map(el => el.getAttribute('data-cart-icon') || el.outerHTML.substring(0, 100))
+      );
     }
 
     toast.success('Added to cart!');
