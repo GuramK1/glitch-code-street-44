@@ -105,3 +105,77 @@ export const animateToTarget = (sourceEl: HTMLElement, targetSelector: string) =
   
   console.log('⏰ Animation cleanup scheduled');
 };
+
+export const animateFromTarget = (targetSelector: string, destinationPoint?: { x: number, y: number }) => {
+  console.log('🔄 Reverse animation started from:', targetSelector);
+  
+  const sourceEl = document.querySelector(targetSelector);
+  if (!sourceEl) {
+    console.error('❌ Source element not found:', targetSelector);
+    return;
+  }
+
+  console.log('✅ Source element found:', sourceEl);
+  
+  const sourceRect = sourceEl.getBoundingClientRect();
+  
+  // Create a clone at the source position
+  const clone = sourceEl.cloneNode(true) as HTMLElement;
+  
+  // Style the clone to look like a heart flying away
+  Object.assign(clone.style, {
+    position: 'fixed',
+    left: `${sourceRect.left + sourceRect.width / 2 - 10}px`,
+    top: `${sourceRect.top + sourceRect.height / 2 - 10}px`,
+    width: '20px',
+    height: '20px',
+    zIndex: '9999',
+    pointerEvents: 'none',
+    transition: 'all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+    background: '#ef4444',
+    border: '2px solid #dc2626',
+    borderRadius: '50%',
+    transform: 'scale(1)',
+    opacity: '0.9',
+    boxShadow: '0 0 20px rgba(239, 68, 68, 0.6)',
+  });
+  
+  document.body.appendChild(clone);
+  console.log('🎭 Reverse clone created and added to DOM');
+  
+  // Force reflow
+  clone.offsetHeight;
+  
+  // Start the reverse animation
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      console.log('🚀 Reverse animation triggered');
+      
+      // Calculate destination (random point away from the wishlist icon)
+      const destinationX = destinationPoint?.x ?? (sourceRect.left + (Math.random() - 0.5) * 400);
+      const destinationY = destinationPoint?.y ?? (sourceRect.top + 200 + Math.random() * 200);
+      
+      Object.assign(clone.style, {
+        left: `${destinationX}px`,
+        top: `${destinationY}px`,
+        transform: 'scale(0.1) rotate(360deg)',
+        opacity: '0',
+      });
+      
+      console.log('🎯 Flying away to:', { x: destinationX, y: destinationY });
+    });
+  });
+  
+  // Cleanup
+  const cleanup = () => {
+    if (clone && clone.parentNode) {
+      console.log('🧹 Cleaning up reverse clone');
+      clone.remove();
+    }
+  };
+  
+  clone.addEventListener('transitionend', cleanup, { once: true });
+  setTimeout(cleanup, 1500);
+  
+  console.log('⏰ Reverse animation cleanup scheduled');
+};

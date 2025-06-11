@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Heart, ShoppingCart, Eye } from 'lucide-react';
 import { useWishlist } from '../contexts/WishlistContext';
-import { animateToTarget } from '../utils/pageTransitions';
+import { animateToTarget, animateFromTarget } from '../utils/pageTransitions';
 import { toast } from 'sonner';
 
 interface Product {
@@ -93,15 +93,26 @@ const EnhancedProductCard = ({ product, onQuickView }: EnhancedProductCardProps)
 
   const handleWishlistToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
+    
+    const wasInWishlist = isInWishlist(product.id);
+    
+    // Toggle the wishlist state
     toggleWishlist(product.id);
     
-    // Animate to wishlist using the data attribute selector
-    const wishlistIcon = document.querySelector('[data-wishlist-icon]');
-    if (wishlistIcon) {
-      animateToTarget(e.currentTarget, '[data-wishlist-icon]');
+    if (wasInWishlist) {
+      // Item was in wishlist, now removing - play reverse animation
+      console.log('🔄 Removing from wishlist - playing reverse animation');
+      animateFromTarget('[data-wishlist-icon]');
+      toast.success('Removed from wishlist');
+    } else {
+      // Item was not in wishlist, now adding - play forward animation
+      console.log('➕ Adding to wishlist - playing forward animation');
+      const wishlistIcon = document.querySelector('[data-wishlist-icon]');
+      if (wishlistIcon) {
+        animateToTarget(e.currentTarget, '[data-wishlist-icon]');
+      }
+      toast.success('Added to wishlist!');
     }
-    
-    toast.success(isInWishlist(product.id) ? 'Removed from wishlist' : 'Added to wishlist!');
   };
 
   const handleQuickView = (e: React.MouseEvent<HTMLButtonElement>) => {
