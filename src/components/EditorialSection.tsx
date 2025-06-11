@@ -29,10 +29,10 @@ const EditorialSection = () => {
         <div className={`space-y-8 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'}`}>
           <div>
             <h2 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight leading-tight">
-              <span className="text-white">STREETWEAR</span><br />
-              <span className="text-white">IS </span><span className="text-signal-red">CODE</span>
+              <span className="text-foreground">STREETWEAR</span><br />
+              <span className="text-foreground">IS </span><span className="text-signal-red">CODE</span>
             </h2>
-            <p className="text-lg text-zinc-400 leading-relaxed mb-8">
+            <p className="text-lg text-muted-foreground leading-relaxed mb-8">
               Every piece we create is a statement, a glitch in the matrix of conventional fashion. 
               We don't follow trends—we disrupt systems, challenge norms, and empower individuals 
               to express their authentic selves through bold, innovative design.

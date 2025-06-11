@@ -69,18 +69,18 @@ const CommunitySection = () => {
   ];
 
   return (
-    <section ref={sectionRef} className="py-20 px-4 bg-white">
+    <section ref={sectionRef} className="py-20 px-4 bg-card">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <h2 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight text-black">
+            <h2 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight text-foreground">
               404 <span className="text-signal-red">CLUB</span>
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
               Join the community of rebels, creators, and style innovators. 
               Share your fit, inspire others, and be part of the glitch.
             </p>
-            <button className="bg-white text-black border-2 border-black px-8 py-4 text-sm font-semibold tracking-widest uppercase rounded-xl hover:bg-black hover:text-white transition-all duration-300 ease-out">
+            <button className="btn-secondary">
               Submit Your Fit
             </button>
           </div>
@@ -135,14 +135,14 @@ const CommunitySection = () => {
         {/* Call to Action */}
         <div className="text-center mt-16">
           <div className={`transition-all duration-1000 delay-600 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <p className="text-lg text-gray-600 mb-6">
+            <p className="text-lg text-muted-foreground mb-6">
               Ready to be part of the movement?
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button className="btn-primary">
                 Join 404 Club
               </button>
-              <button className="bg-black text-white border-2 border-black px-8 py-4 text-sm font-semibold tracking-widest uppercase rounded-xl hover:bg-white hover:text-black hover:scale-105 transition-all duration-300 ease-out">
+              <button className="btn-secondary">
                 Follow @404fit
               </button>
             </div>

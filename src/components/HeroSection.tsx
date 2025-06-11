@@ -19,7 +19,7 @@ const HeroSection = () => {
       {/* Content - Fully Responsive */}
       <div className="relative z-10 text-center container-responsive">
         <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <h1 className="font-bold mb-4 sm:mb-6 tracking-tight text-white">
+          <h1 className="text-responsive-3xl font-bold mb-4 sm:mb-6 tracking-tight">
             <span className="block text-signal-red">404</span>
             <span className="block text-gradient">FIT</span>
           </h1>

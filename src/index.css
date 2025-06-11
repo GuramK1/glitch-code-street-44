@@ -25,6 +25,9 @@
     --input: 240 5.9% 90%;
     --ring: 240 10% 3.9%;
     --signal-red: 9 100% 64%;
+    --neon-blue: 195 100% 50%;
+    --carbon-grey: 0 0% 20%;
+    --jet-black: 0 0% 8%;
     --radius: 0.5rem;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
@@ -116,9 +119,35 @@
   .product-card:hover::before {
     transform: translateX(100%);
   }
+
+  /* Text gradient for hero section */
+  .text-gradient {
+    background: linear-gradient(135deg, hsl(var(--signal-red)), hsl(var(--neon-blue)));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
 }
 
 @layer components {
+  /* Button styles */
+  .btn-primary {
+    @apply bg-signal-red text-white px-8 py-4 text-sm font-semibold tracking-widest uppercase rounded-xl hover:bg-signal-red/90 hover:scale-105 transition-all duration-300 ease-out;
+  }
+  
+  .btn-secondary {
+    @apply bg-transparent text-white border-2 border-white px-8 py-4 text-sm font-semibold tracking-widest uppercase rounded-xl hover:bg-white hover:text-black hover:scale-105 transition-all duration-300 ease-out;
+  }
+  
+  /* Glow effect */
+  .glow-on-hover {
+    @apply relative;
+  }
+  
+  .glow-on-hover:hover {
+    box-shadow: 0 0 30px hsl(var(--signal-red) / 0.5);
+  }
+  
   /* Responsive design utilities */
   .container-responsive {
     @apply mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
