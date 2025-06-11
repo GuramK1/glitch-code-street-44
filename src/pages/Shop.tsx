@@ -69,24 +69,24 @@ const Shop = () => {
   });
 
   return (
-    <div className="min-h-screen bg-background no-scroll-x">
+    <div className="min-h-screen bg-jet-black text-white no-scroll-x">
       <Navigation />
       
       <div className={`pt-16 transition-all duration-500 ${isTransitioning ? 'opacity-0 -translate-x-8' : 'opacity-100 translate-x-0'}`}>
-        {/* Hero Section - Fully Responsive */}
-        <div className="bg-background text-foreground section-padding container-responsive" data-aos="fade-up">
+        {/* Hero Section - Dark theme with proper colors */}
+        <div className="bg-jet-black text-white section-padding container-responsive" data-aos="fade-up">
           <div className="text-center">
-            <h1 className="font-bold element-spacing" data-aos="fade-up" data-aos-delay="100">
+            <h1 className="text-responsive-3xl font-bold element-spacing" data-aos="fade-up" data-aos-delay="100">
               <span className="text-signal-red">404</span> Shop
             </h1>
-            <p className="text-muted-foreground text-responsive-base" data-aos="fade-up" data-aos-delay="200">
+            <p className="text-zinc-400 text-responsive-base" data-aos="fade-up" data-aos-delay="200">
               Error culture meets street fashion
             </p>
           </div>
         </div>
 
-        {/* Premium Category Navigation Bar - Mobile Responsive */}
-        <div className="bg-card border-b border-border" data-aos="fade-down">
+        {/* Premium Category Navigation Bar - Dark theme */}
+        <div className="bg-carbon-grey border-b border-zinc-700" data-aos="fade-down">
           <div className="container-responsive py-6 sm:py-8">
             <nav className="flex flex-wrap gap-2 sm:gap-3 justify-center">
               {[
@@ -101,7 +101,7 @@ const Shop = () => {
                   onClick={() => handleCategoryChange(cat.key)}
                   className={`px-3 py-2 sm:px-4 sm:py-3 md:px-6 md:py-3 rounded-full font-semibold uppercase tracking-wide text-xs sm:text-sm transition-all duration-300 hover:scale-105 transform touch-target ${
                     category === cat.key 
-                      ? 'bg-white text-black border border-black shadow-lg' 
+                      ? 'bg-white text-black border border-white shadow-lg' 
                       : 'bg-zinc-800 text-white border border-zinc-700 hover:bg-signal-red hover:text-white hover:shadow-md hover:shadow-signal-red/30'
                   }`}
                   aria-selected={category === cat.key}
@@ -113,45 +113,45 @@ const Shop = () => {
           </div>
         </div>
 
-        {/* Filter Bar - Mobile Responsive */}
-        <div className="bg-card border-b border-border" data-aos="fade-down">
+        {/* Filter Bar - Dark theme */}
+        <div className="bg-carbon-grey border-b border-zinc-700" data-aos="fade-down">
           <div className="container-responsive py-4">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               {/* Mobile Filter Toggle & Product Count */}
               <div className="flex items-center gap-4 w-full sm:w-auto">
                 <button
                   onClick={() => setShowFilters(!showFilters)}
-                  className="sm:hidden flex items-center gap-2 text-card-foreground hover:text-signal-red transition-colors touch-target"
+                  className="sm:hidden flex items-center gap-2 text-white hover:text-signal-red transition-colors touch-target"
                 >
                   <Filter className="w-4 h-4" />
                   Filters
                 </button>
-                <span className="text-responsive-xs text-muted-foreground">
+                <span className="text-responsive-xs text-zinc-400">
                   {sortedProducts.length} {sortedProducts.length === 1 ? 'product' : 'products'}
                 </span>
               </div>
 
-              {/* Sort & View Options - Mobile Responsive */}
+              {/* Sort & View Options */}
               <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto">
                 <div className="relative flex-1 sm:flex-none">
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="w-full sm:w-auto bg-input text-card-foreground px-3 py-2 sm:px-4 sm:py-2 rounded-lg border border-border focus:border-signal-red focus:outline-none appearance-none pr-8 text-responsive-xs touch-target"
+                    className="w-full sm:w-auto bg-zinc-800 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg border border-zinc-700 focus:border-signal-red focus:outline-none appearance-none pr-8 text-responsive-xs touch-target"
                   >
                     <option value="newest">Newest</option>
                     <option value="price-low">Price: Low to High</option>
                     <option value="price-high">Price: High to Low</option>
                     <option value="limited">Limited Edition</option>
                   </select>
-                  <ChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+                  <ChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-zinc-400 pointer-events-none" />
                 </div>
                 
                 <div className="flex items-center gap-1 sm:gap-2">
-                  <button className="p-2 bg-muted text-card-foreground rounded-lg hover:bg-muted/80 transition-colors touch-target">
+                  <button className="p-2 bg-zinc-800 text-white rounded-lg hover:bg-zinc-700 transition-colors touch-target">
                     <Grid className="w-4 h-4" />
                   </button>
-                  <button className="p-2 bg-muted text-muted-foreground rounded-lg hover:bg-muted/80 hover:text-card-foreground transition-colors touch-target">
+                  <button className="p-2 bg-zinc-800 text-zinc-400 rounded-lg hover:bg-zinc-700 hover:text-white transition-colors touch-target">
                     <List className="w-4 h-4" />
                   </button>
                 </div>
@@ -160,12 +160,12 @@ const Shop = () => {
           </div>
         </div>
 
-        {/* Products Grid - Fully Responsive */}
+        {/* Products Grid */}
         <div className="container-responsive section-padding" data-aos="fade-up" data-aos-delay="300">
           {sortedProducts.length === 0 ? (
             <div className="text-center py-16" data-aos="fade-up">
-              <h3 className="text-responsive-lg font-semibold text-card-foreground element-spacing">No products found</h3>
-              <p className="text-muted-foreground text-responsive-sm">Try selecting a different category or check back later.</p>
+              <h3 className="text-responsive-lg font-semibold text-white element-spacing">No products found</h3>
+              <p className="text-zinc-400 text-responsive-sm">Try selecting a different category or check back later.</p>
             </div>
           ) : (
             <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-6">
