@@ -15,7 +15,10 @@ interface User {
 
 interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string) => Promise<boolean>;
+  login: (
+    email: string,
+    password: string,
+  ) => Promise<{ success: boolean; error?: string }>;
   register: (
     username: string,
     email: string,
@@ -77,20 +80,23 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     };
   }, []);
 
-  const login = async (email: string, password: string): Promise<boolean> => {
+  const login = async (
+    email: string,
+    password: string,
+  ): Promise<{ success: boolean; error?: string }> => {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
     if (error || !data.user) {
-      return false;
+      return { success: false, error: error?.message };
     }
     setUser({
       id: data.user.id,
       email: data.user.email || "",
       username: (data.user.user_metadata as any)?.username || "",
     });
-    return true;
+    return { success: true };
   };
 
   const register = async (

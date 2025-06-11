@@ -59,12 +59,12 @@ const SignInModal = ({ isOpen, onClose, onSwitchToRegister }: SignInModalProps) 
     e.preventDefault();
     setError('');
 
-    const success = await login(email, password);
+    const { success, error: loginError } = await login(email, password);
     if (success) {
       console.log('Sign in successful');
       handleClose();
     } else {
-      setError('Invalid email or password');
+      setError(loginError || 'Invalid email or password');
     }
   };
 
