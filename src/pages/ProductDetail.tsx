@@ -202,9 +202,9 @@ const ProductDetail = () => {
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center container-responsive">
         <div className="text-center text-foreground">
-          <h1 className="text-2xl font-bold mb-4">Product Not Found</h1>
+          <h1 className="text-responsive-xl font-bold element-spacing">Product Not Found</h1>
           <Link to="/shop" className="btn-primary">
             Back to Shop
           </Link>
@@ -216,27 +216,27 @@ const ProductDetail = () => {
   const relatedProducts = getRelatedProducts();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background no-scroll-x">
       <Navigation />
       
       <div className={`pt-16 transition-all duration-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'} ${isTransitioning ? 'opacity-0 -translate-x-8' : ''}`}>
-        {/* Back Button - Premium Redesign */}
-        <div className="max-w-7xl mx-auto px-6 md:px-12 py-6">
+        {/* Back Button - Mobile Responsive */}
+        <div className="container-responsive py-4 sm:py-6">
           <button 
             onClick={handleBackToShop}
-            className={`inline-flex items-center gap-3 text-zinc-300 font-medium hover:text-signal-red transition-all duration-300 group back-button ${backButtonVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}`}
+            className={`inline-flex items-center gap-2 sm:gap-3 text-zinc-300 font-medium hover:text-signal-red transition-all duration-300 group back-button touch-target ${backButtonVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}`}
           >
             <ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1" />
-            <span className="relative after:absolute after:-bottom-0.5 after:left-0 after:w-0 after:h-[2px] after:bg-signal-red group-hover:after:w-full after:transition-all after:duration-300">
+            <span className="relative after:absolute after:-bottom-0.5 after:left-0 after:w-0 after:h-[2px] after:bg-signal-red group-hover:after:w-full after:transition-all after:duration-300 text-responsive-sm">
               Back to Shop
             </span>
           </button>
         </div>
 
-        {/* Product Hero Section */}
-        <div className="max-w-7xl mx-auto px-6 md:px-12 py-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-            {/* Product Image */}
+        {/* Product Hero Section - Fully Responsive */}
+        <div className="container-responsive section-padding">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
+            {/* Product Image - Mobile Optimized */}
             <div className="relative" data-aos="fade-right" data-aos-delay="200">
               <div className="aspect-square bg-card rounded-2xl overflow-hidden group shadow-2xl">
                 <img 
@@ -245,25 +245,25 @@ const ProductDetail = () => {
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 
-                {/* Badges */}
-                <div className="absolute top-6 left-6 flex flex-col gap-2">
+                {/* Badges - Responsive positioning */}
+                <div className="absolute top-4 sm:top-6 left-4 sm:left-6 flex flex-col gap-2">
                   {product.badge && (
-                    <span className="bg-signal-red text-white px-3 py-1 text-xs font-bold tracking-wider uppercase rounded-lg shadow-lg">
+                    <span className="bg-signal-red text-white px-2 py-1 sm:px-3 sm:py-1 text-xs font-bold tracking-wider uppercase rounded-lg shadow-lg">
                       {product.badge}
                     </span>
                   )}
                   
                   {product.isOnSale && (
-                    <span className="bg-accent text-accent-foreground px-3 py-1 text-xs font-bold tracking-wider uppercase rounded-lg shadow-lg">
+                    <span className="bg-accent text-accent-foreground px-2 py-1 sm:px-3 sm:py-1 text-xs font-bold tracking-wider uppercase rounded-lg shadow-lg">
                       Sale
                     </span>
                   )}
                 </div>
 
-                {/* Limited Stock Badge */}
+                {/* Limited Stock Badge - Mobile Responsive */}
                 {product.stock <= 5 && (
-                  <div className="absolute top-6 right-6">
-                    <span className={`bg-red-600 text-white px-3 py-1 text-xs font-semibold rounded-full shadow-lg ${product.stock <= 3 ? 'animate-pulse' : ''}`}>
+                  <div className="absolute top-4 sm:top-6 right-4 sm:right-6">
+                    <span className={`bg-red-600 text-white px-2 py-1 sm:px-3 sm:py-1 text-xs font-semibold rounded-full shadow-lg ${product.stock <= 3 ? 'animate-pulse' : ''}`}>
                       Only {product.stock} left 🔥
                     </span>
                   </div>
@@ -271,20 +271,20 @@ const ProductDetail = () => {
               </div>
             </div>
 
-            {/* Product Info */}
-            <div className="space-y-8" data-aos="fade-left" data-aos-delay="300">
+            {/* Product Info - Mobile Optimized */}
+            <div className="space-y-6 lg:space-y-8" data-aos="fade-left" data-aos-delay="300">
               <div>
-                <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+                <h1 className="font-bold element-spacing">
                   {product.name}
                 </h1>
                 
-                {/* Price Section */}
-                <div className="flex items-center gap-4 mb-6">
-                  <span className="text-3xl font-bold text-foreground">
+                {/* Price Section - Mobile Responsive */}
+                <div className="flex items-center gap-3 sm:gap-4 element-spacing">
+                  <span className="text-2xl sm:text-3xl font-bold text-foreground">
                     ${product.price}
                   </span>
                   {product.isOnSale && product.originalPrice && (
-                    <span className="text-xl text-zinc-400 line-through">
+                    <span className="text-lg sm:text-xl text-zinc-400 line-through">
                       ${product.originalPrice}
                     </span>
                   )}
@@ -292,46 +292,45 @@ const ProductDetail = () => {
                 
                 {/* Rating Badge - Only show if purchased */}
                 {hasPurchased(product.id) && (
-                  <div className="flex items-center gap-2 mb-6">
-                    <span className="text-yellow-400 text-sm font-semibold">
+                  <div className="flex items-center gap-2 element-spacing">
+                    <span className="text-yellow-400 text-responsive-sm font-semibold">
                       ★ {product.rating} from {product.reviewCount}+ reviews
                     </span>
                   </div>
                 )}
               </div>
 
-              {/* Description */}
-              <p className="text-zinc-100 text-lg leading-relaxed">
+              {/* Description - Mobile Responsive */}
+              <p className="text-zinc-100 text-responsive-base leading-relaxed">
                 {product.description}
               </p>
 
-              {/* Model Info - Enhanced Styling */}
-              <p className="text-sm italic text-zinc-400 font-light tracking-wide">
+              {/* Model Info - Mobile Responsive */}
+              <p className="text-responsive-xs italic text-zinc-400 font-light tracking-wide">
                 👕 {product.modelInfo}
               </p>
 
               {/* Sectional Divider */}
-              <div className="border-t border-zinc-800 my-8"></div>
+              <div className="border-t border-zinc-800"></div>
 
-              {/* Size Selector */}
+              {/* Size Selector - Mobile Responsive */}
               <div>
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-foreground font-semibold text-lg">Select Size</h3>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 element-spacing">
+                  <h3 className="text-foreground font-semibold text-responsive-base">Select Size</h3>
                   <button
                     onClick={() => setSizingAssistantOpen(true)}
-                    className="flex items-center gap-2 text-sm text-zinc-400 hover:text-signal-red transition-colors duration-200"
+                    className="flex items-center gap-2 text-responsive-xs text-zinc-400 hover:text-signal-red transition-colors duration-200 touch-target self-start sm:self-auto"
                   >
                     <Ruler className="w-4 h-4" />
-                    <span className="hidden sm:inline">Sizing Assistant</span>
-                    <span className="sm:hidden">Size Guide</span>
+                    <span>Sizing Assistant</span>
                   </button>
                 </div>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-2 sm:gap-3">
                   {product.sizes.map((size) => (
                     <button
                       key={size}
                       onClick={() => setSelectedSize(size)}
-                      className={`px-5 py-3 rounded-xl font-medium transition-all duration-200 active:scale-95 shadow-lg ${
+                      className={`px-4 py-2 sm:px-5 sm:py-3 rounded-xl font-medium transition-all duration-200 active:scale-95 shadow-lg touch-target ${
                         selectedSize === size
                           ? 'bg-signal-red text-white shadow-red-500/25 shadow-lg'
                           : 'bg-zinc-900 text-zinc-100 hover:bg-zinc-800 hover:shadow-xl border border-zinc-700'
@@ -344,24 +343,24 @@ const ProductDetail = () => {
               </div>
 
               {/* Sectional Divider */}
-              <div className="border-t border-zinc-800 my-8"></div>
+              <div className="border-t border-zinc-800"></div>
 
-              {/* Quantity Selector */}
+              {/* Quantity Selector - Mobile Responsive */}
               <div>
-                <h3 className="text-foreground font-semibold mb-4 text-lg">Quantity</h3>
-                <div className="flex items-center gap-4">
+                <h3 className="text-foreground font-semibold element-spacing text-responsive-base">Quantity</h3>
+                <div className="flex items-center gap-3 sm:gap-4">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="bg-zinc-900 text-zinc-100 p-3 rounded-xl border border-zinc-700 hover:bg-zinc-800 transition-all duration-200 active:scale-95 shadow-lg"
+                    className="bg-zinc-900 text-zinc-100 p-2 sm:p-3 rounded-xl border border-zinc-700 hover:bg-zinc-800 transition-all duration-200 active:scale-95 shadow-lg touch-target"
                   >
                     <Minus className="w-4 h-4" />
                   </button>
-                  <span className="text-foreground font-semibold text-xl px-6 py-2 bg-zinc-900 rounded-xl border border-zinc-700 min-w-[60px] text-center shadow-lg">
+                  <span className="text-foreground font-semibold text-lg sm:text-xl px-4 sm:px-6 py-2 bg-zinc-900 rounded-xl border border-zinc-700 min-w-[60px] text-center shadow-lg">
                     {quantity}
                   </span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
-                    className="bg-zinc-900 text-zinc-100 p-3 rounded-xl border border-zinc-700 hover:bg-zinc-800 transition-all duration-200 active:scale-95 shadow-lg"
+                    className="bg-zinc-900 text-zinc-100 p-2 sm:p-3 rounded-xl border border-zinc-700 hover:bg-zinc-800 transition-all duration-200 active:scale-95 shadow-lg touch-target"
                   >
                     <Plus className="w-4 h-4" />
                   </button>
@@ -369,31 +368,31 @@ const ProductDetail = () => {
               </div>
 
               {/* Sectional Divider */}
-              <div className="border-t border-zinc-800 my-8"></div>
+              <div className="border-t border-zinc-800"></div>
 
-              {/* Action Buttons */}
-              <div className="flex gap-4 pt-4">
+              {/* Action Buttons - Mobile Responsive */}
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4">
                 <button
                   onClick={handleAddToCart}
-                  className="flex-1 bg-signal-red text-white py-4 px-8 rounded-xl font-semibold text-lg hover:bg-red-600 hover:shadow-red-500/25 hover:shadow-xl transition-all duration-200 active:scale-97 shadow-lg"
+                  className="flex-1 bg-signal-red text-white py-3 sm:py-4 px-6 sm:px-8 rounded-xl font-semibold text-responsive-base hover:bg-red-600 hover:shadow-red-500/25 hover:shadow-xl transition-all duration-200 active:scale-97 shadow-lg touch-target"
                 >
                   Add to Bag
                 </button>
                 <button
                   onClick={() => toggleWishlist(product.id)}
-                  className={`p-4 rounded-xl transition-all duration-200 active:scale-95 shadow-lg ${
+                  className={`p-3 sm:p-4 rounded-xl transition-all duration-200 active:scale-95 shadow-lg touch-target ${
                     isInWishlist(product.id)
                       ? 'bg-signal-red text-white shadow-red-500/25'
                       : 'bg-zinc-900 text-zinc-100 border border-zinc-700 hover:bg-zinc-800 hover:shadow-xl'
                   }`}
                 >
-                  <Heart className={`w-6 h-6 ${isInWishlist(product.id) ? 'fill-current' : ''}`} />
+                  <Heart className={`w-5 h-5 sm:w-6 sm:h-6 ${isInWishlist(product.id) ? 'fill-current' : ''}`} />
                 </button>
               </div>
 
               {/* Stock Info */}
               {product.stock <= 5 && (
-                <p className="text-yellow-400 text-sm font-medium mt-4 flex items-center gap-2">
+                <p className="text-yellow-400 text-responsive-sm font-medium flex items-center gap-2">
                   ⚡ Only {product.stock} left in stock!
                 </p>
               )}
@@ -401,12 +400,12 @@ const ProductDetail = () => {
           </div>
         </div>
 
-        {/* Related Products Section */}
+        {/* Related Products Section - Mobile Responsive */}
         {relatedProducts.length > 0 && (
-          <section className="max-w-7xl mx-auto px-6 md:px-12 py-16" data-aos="fade-up" data-aos-delay="400">
-            <div className="border-t border-zinc-800 mb-12"></div>
-            <h2 className="text-3xl font-bold text-foreground mb-8">You Might Also Like</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+          <section className="container-responsive section-padding" data-aos="fade-up" data-aos-delay="400">
+            <div className="border-t border-zinc-800 mb-8 sm:mb-12"></div>
+            <h2 className="text-responsive-xl font-bold text-foreground element-spacing">You Might Also Like</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
               {relatedProducts.map((relatedProduct, index) => (
                 <Link 
                   key={relatedProduct.id}
@@ -422,11 +421,11 @@ const ProductDetail = () => {
                       className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
                     />
                   </div>
-                  <div className="p-4">
-                    <h3 className="text-zinc-100 font-medium mb-2 group-hover:text-signal-red transition-colors">
+                  <div className="p-3 sm:p-4">
+                    <h3 className="text-zinc-100 font-medium mb-2 group-hover:text-signal-red transition-colors text-responsive-sm line-clamp-2">
                       {relatedProduct.name}
                     </h3>
-                    <p className="text-zinc-400 font-semibold">${relatedProduct.price}</p>
+                    <p className="text-zinc-400 font-semibold text-responsive-sm">${relatedProduct.price}</p>
                   </div>
                 </Link>
               ))}

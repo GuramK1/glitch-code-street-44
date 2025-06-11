@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { X, Ruler } from 'lucide-react';
 
@@ -17,7 +16,6 @@ const SizingAssistant = ({ isOpen, onClose, onSizeSelect }: SizingAssistantProps
   const modalRef = useRef<HTMLDivElement>(null);
 
   const suggestSize = () => {
-    // Simple size logic based on inputs
     let recommendedSize = 'M';
     
     if (height === '150-160cm' && weight === '50-60kg') {
@@ -38,7 +36,6 @@ const SizingAssistant = ({ isOpen, onClose, onSizeSelect }: SizingAssistantProps
     setTimeout(() => {
       onClose();
       setIsClosing(false);
-      // Reset form when modal closes
       setHeight('');
       setWeight('');
       setFit('');
@@ -54,7 +51,6 @@ const SizingAssistant = ({ isOpen, onClose, onSizeSelect }: SizingAssistantProps
     }
   };
 
-  // Handle click outside to close
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
@@ -71,7 +67,6 @@ const SizingAssistant = ({ isOpen, onClose, onSizeSelect }: SizingAssistantProps
     };
   }, [isOpen]);
 
-  // Handle escape key
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -91,34 +86,37 @@ const SizingAssistant = ({ isOpen, onClose, onSizeSelect }: SizingAssistantProps
   if (!isOpen && !isClosing) return null;
 
   return (
-    <div className={`fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center transition-all duration-300 ${
+    <div className={`fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center transition-all duration-300 p-4 ${
       isOpen && !isClosing ? 'opacity-100' : 'opacity-0'
     }`}>
       <div 
         ref={modalRef}
-        className={`bg-zinc-900 border border-zinc-800 p-6 rounded-xl max-w-sm w-full mx-4 text-white shadow-2xl transition-all duration-300 ${
+        className={`bg-zinc-900 border border-zinc-800 p-4 sm:p-6 rounded-xl w-full max-w-sm text-white shadow-2xl transition-all duration-300 modal-responsive ${
           isOpen && !isClosing 
             ? 'opacity-100 scale-100 translate-y-0' 
             : 'opacity-0 scale-95 translate-y-4'
         }`}
       >
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center justify-between mb-4 sm:mb-6">
           <div className="flex items-center gap-2">
-            <Ruler className="w-5 h-5 text-signal-red" />
-            <h2 className="text-lg font-bold">Find Your Size</h2>
+            <Ruler className="w-4 h-4 sm:w-5 sm:h-5 text-signal-red" />
+            <h2 className="text-base sm:text-lg font-bold">Find Your Size</h2>
           </div>
-          <button onClick={handleClose} className="text-zinc-400 hover:text-white transition-colors">
-            <X className="w-5 h-5" />
+          <button 
+            onClick={handleClose} 
+            className="text-zinc-400 hover:text-white transition-colors p-1 touch-target"
+          >
+            <X className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-2">Height</label>
+            <label className="block text-xs sm:text-sm font-medium text-zinc-300 mb-2">Height</label>
             <select 
               value={height}
               onChange={(e) => setHeight(e.target.value)}
-              className="w-full p-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:border-signal-red focus:outline-none"
+              className="w-full p-2 sm:p-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:border-signal-red focus:outline-none text-sm touch-target"
             >
               <option value="">Select height</option>
               <option value="150-160cm">150-160cm</option>
@@ -129,11 +127,11 @@ const SizingAssistant = ({ isOpen, onClose, onSizeSelect }: SizingAssistantProps
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-2">Weight</label>
+            <label className="block text-xs sm:text-sm font-medium text-zinc-300 mb-2">Weight</label>
             <select 
               value={weight}
               onChange={(e) => setWeight(e.target.value)}
-              className="w-full p-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:border-signal-red focus:outline-none"
+              className="w-full p-2 sm:p-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:border-signal-red focus:outline-none text-sm touch-target"
             >
               <option value="">Select weight</option>
               <option value="50-60kg">50-60kg</option>
@@ -144,11 +142,11 @@ const SizingAssistant = ({ isOpen, onClose, onSizeSelect }: SizingAssistantProps
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-zinc-300 mb-2">Preferred Fit</label>
+            <label className="block text-xs sm:text-sm font-medium text-zinc-300 mb-2">Preferred Fit</label>
             <select 
               value={fit}
               onChange={(e) => setFit(e.target.value)}
-              className="w-full p-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:border-signal-red focus:outline-none"
+              className="w-full p-2 sm:p-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:border-signal-red focus:outline-none text-sm touch-target"
             >
               <option value="">Select fit</option>
               <option value="slim">Slim Fit</option>
@@ -160,17 +158,17 @@ const SizingAssistant = ({ isOpen, onClose, onSizeSelect }: SizingAssistantProps
           <button 
             onClick={suggestSize}
             disabled={!height || !weight || !fit}
-            className="w-full bg-signal-red text-white py-3 rounded-lg font-semibold hover:bg-red-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-signal-red text-white py-2 sm:py-3 rounded-lg font-semibold hover:bg-red-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm touch-target"
           >
             Get Size Recommendation
           </button>
 
           {suggestion && (
-            <div className="bg-zinc-800 border border-zinc-700 p-4 rounded-lg text-center">
-              <p className="font-bold text-signal-red text-lg">{suggestion}</p>
+            <div className="bg-zinc-800 border border-zinc-700 p-3 sm:p-4 rounded-lg text-center">
+              <p className="font-bold text-signal-red text-base sm:text-lg mb-2 sm:mb-3">{suggestion}</p>
               <button 
                 onClick={handleSelectSize}
-                className="mt-3 bg-zinc-700 text-white px-4 py-2 rounded-lg text-sm hover:bg-zinc-600 transition-colors"
+                className="bg-zinc-700 text-white px-3 py-2 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm hover:bg-zinc-600 transition-colors touch-target"
               >
                 Select This Size
               </button>

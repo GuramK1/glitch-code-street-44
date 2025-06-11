@@ -21,11 +21,9 @@ const Shop = () => {
     if (urlCategory && ['hoodies', 'tees', 'bottoms', 'accessories'].includes(urlCategory)) {
       setCategory(urlCategory);
     }
-    // Scroll to top when component mounts or category changes
     window.scrollTo(0, 0);
   }, [searchParams]);
 
-  // Handle smooth transition to product page
   const handleQuickView = (slug: string) => {
     setIsTransitioning(true);
     setTimeout(() => {
@@ -52,7 +50,6 @@ const Shop = () => {
     } else {
       setSearchParams({ category: newCategory });
     }
-    // Scroll to top when category changes via button clicks
     window.scrollTo(0, 0);
   };
 
@@ -90,24 +87,26 @@ const Shop = () => {
   });
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background no-scroll-x">
       <Navigation />
       
       <div className={`pt-16 transition-all duration-500 ${isTransitioning ? 'opacity-0 -translate-x-8' : 'opacity-100 translate-x-0'}`}>
-        {/* Hero Section */}
-        <div className="bg-background text-foreground py-16 px-4" data-aos="fade-up">
-          <div className="max-w-7xl mx-auto text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-4" data-aos="fade-up" data-aos-delay="100">
+        {/* Hero Section - Fully Responsive */}
+        <div className="bg-background text-foreground section-padding container-responsive" data-aos="fade-up">
+          <div className="text-center">
+            <h1 className="font-bold element-spacing" data-aos="fade-up" data-aos-delay="100">
               <span className="text-signal-red">404</span> Shop
             </h1>
-            <p className="text-muted-foreground text-lg" data-aos="fade-up" data-aos-delay="200">Error culture meets street fashion</p>
+            <p className="text-muted-foreground text-responsive-base" data-aos="fade-up" data-aos-delay="200">
+              Error culture meets street fashion
+            </p>
           </div>
         </div>
 
-        {/* Premium Category Navigation Bar */}
+        {/* Premium Category Navigation Bar - Mobile Responsive */}
         <div className="bg-card border-b border-border" data-aos="fade-down">
-          <div className="max-w-7xl mx-auto px-4 py-8">
-            <nav className="flex flex-wrap gap-3 justify-center">
+          <div className="container-responsive py-6 sm:py-8">
+            <nav className="flex flex-wrap gap-2 sm:gap-3 justify-center">
               {[
                 { key: 'all', label: 'All' },
                 { key: 'hoodies', label: 'Hoodies' },
@@ -118,7 +117,7 @@ const Shop = () => {
                 <button
                   key={cat.key}
                   onClick={() => handleCategoryChange(cat.key)}
-                  className={`px-6 py-3 rounded-full font-semibold uppercase tracking-wide text-sm transition-all duration-300 hover:scale-105 transform ${
+                  className={`px-3 py-2 sm:px-4 sm:py-3 md:px-6 md:py-3 rounded-full font-semibold uppercase tracking-wide text-xs sm:text-sm transition-all duration-300 hover:scale-105 transform touch-target ${
                     category === cat.key 
                       ? 'bg-white text-black border border-black shadow-lg' 
                       : 'bg-zinc-800 text-white border border-zinc-700 hover:bg-signal-red hover:text-white hover:shadow-md hover:shadow-signal-red/30'
@@ -132,31 +131,31 @@ const Shop = () => {
           </div>
         </div>
 
-        {/* Filter Bar */}
-        <div className="bg-card border-b border-border static" data-aos="fade-down">
-          <div className="max-w-7xl mx-auto px-4 py-4">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-              {/* Mobile Filter Toggle */}
-              <div className="flex items-center gap-4">
+        {/* Filter Bar - Mobile Responsive */}
+        <div className="bg-card border-b border-border" data-aos="fade-down">
+          <div className="container-responsive py-4">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              {/* Mobile Filter Toggle & Product Count */}
+              <div className="flex items-center gap-4 w-full sm:w-auto">
                 <button
                   onClick={() => setShowFilters(!showFilters)}
-                  className="md:hidden flex items-center gap-2 text-card-foreground hover:text-signal-red transition-colors"
+                  className="sm:hidden flex items-center gap-2 text-card-foreground hover:text-signal-red transition-colors touch-target"
                 >
                   <Filter className="w-4 h-4" />
                   Filters
                 </button>
-                <span className="text-sm text-muted-foreground">
+                <span className="text-responsive-xs text-muted-foreground">
                   {sortedProducts.length} {sortedProducts.length === 1 ? 'product' : 'products'}
                 </span>
               </div>
 
-              {/* Sort & View Options */}
-              <div className="flex items-center gap-4">
-                <div className="relative">
+              {/* Sort & View Options - Mobile Responsive */}
+              <div className="flex items-center gap-2 sm:gap-4 w-full sm:w-auto">
+                <div className="relative flex-1 sm:flex-none">
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="bg-input text-card-foreground px-4 py-2 rounded-lg border border-border focus:border-signal-red focus:outline-none appearance-none pr-8"
+                    className="w-full sm:w-auto bg-input text-card-foreground px-3 py-2 sm:px-4 sm:py-2 rounded-lg border border-border focus:border-signal-red focus:outline-none appearance-none pr-8 text-responsive-xs touch-target"
                   >
                     <option value="newest">Newest</option>
                     <option value="price-low">Price: Low to High</option>
@@ -166,11 +165,11 @@ const Shop = () => {
                   <ChevronDown className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
                 </div>
                 
-                <div className="flex items-center gap-2">
-                  <button className="p-2 bg-muted text-card-foreground rounded-lg hover:bg-muted/80 transition-colors">
+                <div className="flex items-center gap-1 sm:gap-2">
+                  <button className="p-2 bg-muted text-card-foreground rounded-lg hover:bg-muted/80 transition-colors touch-target">
                     <Grid className="w-4 h-4" />
                   </button>
-                  <button className="p-2 bg-muted text-muted-foreground rounded-lg hover:bg-muted/80 hover:text-card-foreground transition-colors">
+                  <button className="p-2 bg-muted text-muted-foreground rounded-lg hover:bg-muted/80 hover:text-card-foreground transition-colors touch-target">
                     <List className="w-4 h-4" />
                   </button>
                 </div>
@@ -179,15 +178,15 @@ const Shop = () => {
           </div>
         </div>
 
-        {/* Products Grid */}
-        <div className="max-w-7xl mx-auto px-4 py-8" data-aos="fade-up" data-aos-delay="300">
+        {/* Products Grid - Fully Responsive */}
+        <div className="container-responsive section-padding" data-aos="fade-up" data-aos-delay="300">
           {sortedProducts.length === 0 ? (
             <div className="text-center py-16" data-aos="fade-up">
-              <h3 className="text-xl font-semibold text-card-foreground mb-2">No products found</h3>
-              <p className="text-muted-foreground">Try selecting a different category or check back later.</p>
+              <h3 className="text-responsive-lg font-semibold text-card-foreground element-spacing">No products found</h3>
+              <p className="text-muted-foreground text-responsive-sm">Try selecting a different category or check back later.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-6">
               {sortedProducts.map((product, index) => (
                 <div 
                   key={product.id} 
@@ -203,17 +202,17 @@ const Shop = () => {
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                     
-                    {/* Badge */}
+                    {/* Badge - Responsive positioning */}
                     {getBadgeText(product.badge, product.stock, product.isNew) && (
-                      <div className={`absolute top-3 left-3 ${getBadgeClass(product.badge, product.stock, product.isNew)}`}>
+                      <div className={`absolute top-2 sm:top-3 left-2 sm:left-3 ${getBadgeClass(product.badge, product.stock, product.isNew)} text-xs`}>
                         {getBadgeText(product.badge, product.stock, product.isNew)}
                       </div>
                     )}
 
-                    {/* Wishlist Button */}
+                    {/* Wishlist Button - Touch-friendly */}
                     <button
                       onClick={() => toggleWishlist(product.id)}
-                      className={`absolute top-3 right-3 p-2 rounded-full transition-all duration-200 ${
+                      className={`absolute top-2 sm:top-3 right-2 sm:right-3 p-2 rounded-full transition-all duration-200 touch-target ${
                         isInWishlist(product.id)
                           ? 'bg-signal-red text-white'
                           : 'bg-black/50 text-white hover:bg-signal-red'
@@ -222,25 +221,25 @@ const Shop = () => {
                       <Heart className={`w-4 h-4 ${isInWishlist(product.id) ? 'fill-current' : ''}`} />
                     </button>
                     
-                    {/* Quick View Overlay - Removed blur, added shadow effect */}
+                    {/* Quick View Overlay - Responsive */}
                     <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <button 
                         onClick={() => handleQuickView(product.slug)}
-                        className="text-white border border-white px-6 py-3 rounded-full text-sm font-medium hover:bg-white hover:text-black transition-all duration-200 active:scale-95"
+                        className="text-white border border-white px-4 py-2 sm:px-6 sm:py-3 rounded-full text-xs sm:text-sm font-medium hover:bg-white hover:text-black transition-all duration-200 active:scale-95 touch-target"
                       >
                         Quick View
                       </button>
                     </div>
                   </div>
                   
-                  <div className="p-4">
-                    <h3 className="text-card-foreground font-medium mb-2 group-hover:text-signal-red transition-colors">
+                  <div className="p-3 sm:p-4">
+                    <h3 className="text-card-foreground font-medium mb-2 group-hover:text-signal-red transition-colors text-responsive-xs sm:text-responsive-sm line-clamp-2">
                       {product.name}
                     </h3>
-                    <p className="text-muted-foreground text-sm mb-2">Premium streetwear</p>
-                    <div className="flex justify-between items-center">
-                      <span className="text-card-foreground font-bold">${product.price}</span>
-                      <button className="bg-signal-red text-white px-3 py-1 rounded-lg text-sm hover:bg-signal-red/90 transition-colors active:scale-95">
+                    <p className="text-muted-foreground text-xs mb-2 hidden sm:block">Premium streetwear</p>
+                    <div className="flex justify-between items-center gap-2">
+                      <span className="text-card-foreground font-bold text-responsive-sm">${product.price}</span>
+                      <button className="bg-signal-red text-white px-2 py-1 sm:px-3 sm:py-1 rounded-lg text-xs hover:bg-signal-red/90 transition-colors active:scale-95 touch-target">
                         Add to Cart
                       </button>
                     </div>

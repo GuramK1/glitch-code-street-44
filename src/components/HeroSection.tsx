@@ -10,22 +10,22 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <section className="relative h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image/Video Placeholder */}
+    <section className="relative h-screen flex items-center justify-center overflow-hidden no-scroll-x">
+      {/* Background Image/Video Placeholder - Responsive */}
       <div className="absolute inset-0 bg-gradient-to-br from-carbon-grey via-jet-black to-carbon-grey">
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGc+CjxjaXJjbGUgY3g9IjMwIiBjeT0iMzAiIHI9IjEiIGZpbGw9IiMzMzMzMzMiIG9wYWNpdHk9IjAuMyIvPgo8L2c+Cjwvc3ZnPg==')] opacity-30"></div>
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
+      {/* Content - Fully Responsive */}
+      <div className="relative z-10 text-center container-responsive">
         <div className={`transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-          <h1 className="text-6xl md:text-8xl font-bold mb-6 tracking-tight text-white">
+          <h1 className="font-bold mb-4 sm:mb-6 tracking-tight text-white">
             <span className="block text-signal-red">404</span>
             <span className="block text-gradient">FIT</span>
           </h1>
           
           <div className={`transition-all duration-1000 delay-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <p className="text-xl md:text-2xl text-zinc-400 mb-8 tracking-wide">
+            <p className="text-responsive-lg text-zinc-400 mb-6 sm:mb-8 tracking-wide">
               NOT FOUND IN THE ORDINARY
             </p>
           </div>
@@ -37,11 +37,11 @@ const HeroSection = () => {
           </div>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+        {/* Scroll Indicator - Mobile Responsive */}
+        <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2">
           <div className="animate-bounce">
-            <div className="w-6 h-10 border-2 border-zinc-300 rounded-full flex justify-center">
-              <div className="w-1 h-3 bg-zinc-300 rounded-full mt-2 animate-pulse"></div>
+            <div className="w-4 h-8 sm:w-6 sm:h-10 border-2 border-zinc-300 rounded-full flex justify-center">
+              <div className="w-1 h-2 sm:h-3 bg-zinc-300 rounded-full mt-1 sm:mt-2 animate-pulse"></div>
             </div>
           </div>
         </div>
