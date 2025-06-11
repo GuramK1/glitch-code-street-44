@@ -1,10 +1,12 @@
+
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Heart, ArrowLeft, Plus, Minus } from 'lucide-react';
+import { Heart, ArrowLeft, Plus, Minus, Ruler } from 'lucide-react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import { useWishlist } from '../contexts/WishlistContext';
 import TryOnSimulator from '../components/TryOnSimulator';
+import SizingAssistant from '../components/SizingAssistant';
 import { trackProductView } from '../components/ContinueWhereLeftOff';
 import { useToast } from '@/hooks/use-toast';
 
