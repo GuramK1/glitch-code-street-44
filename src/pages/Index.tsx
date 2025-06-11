@@ -8,7 +8,6 @@ import ParallaxSection from '../components/ParallaxSection';
 import Footer from '../components/Footer';
 import ContinueWhereLeftOff from '../components/ContinueWhereLeftOff';
 import CartReminder from '../components/CartReminder';
-import GlitchCursor from '../components/GlitchCursor';
 
 const Index = () => {
   return (
@@ -50,7 +49,6 @@ const Index = () => {
       {/* Interactive Features */}
       <ContinueWhereLeftOff />
       <CartReminder />
-      <GlitchCursor />
     </div>
   );
 };

@@ -1,11 +1,9 @@
-
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Heart, ArrowLeft, Plus, Minus, Ruler } from 'lucide-react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import { useWishlist } from '../contexts/WishlistContext';
-import TryOnSimulator from '../components/TryOnSimulator';
 import SizingAssistant from '../components/SizingAssistant';
 import { trackProductView } from '../components/ContinueWhereLeftOff';
 import { useToast } from '@/hooks/use-toast';
@@ -17,7 +15,7 @@ const ProductDetail = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [backButtonVisible, setBackButtonVisible] = useState(false);
-  const [tryOnOpen, setTryOnOpen] = useState(false);
+  const [sizingAssistantOpen, setSizingAssistantOpen] = useState(false);
   const { toggleWishlist, isInWishlist } = useWishlist();
   const { toast } = useToast();
 
@@ -202,10 +200,6 @@ const ProductDetail = () => {
     }, 300);
   };
 
-  const handleTryOn = () => {
-    setTryOnOpen(true);
-  };
-
   if (!product) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -321,7 +315,17 @@ const ProductDetail = () => {
 
               {/* Size Selector */}
               <div>
-                <h3 className="text-foreground font-semibold mb-4 text-lg">Select Size</h3>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-foreground font-semibold text-lg">Select Size</h3>
+                  <button
+                    onClick={() => setSizingAssistantOpen(true)}
+                    className="flex items-center gap-2 text-sm text-zinc-400 hover:text-signal-red transition-colors duration-200"
+                  >
+                    <Ruler className="w-4 h-4" />
+                    <span className="hidden sm:inline">Sizing Assistant</span>
+                    <span className="sm:hidden">Size Guide</span>
+                  </button>
+                </div>
                 <div className="flex flex-wrap gap-3">
                   {product.sizes.map((size) => (
                     <button
@@ -387,18 +391,6 @@ const ProductDetail = () => {
                 </button>
               </div>
 
-              {/* Try On Button - Only for supported categories */}
-              {(['hoodies', 'tees'].includes(product.category)) && (
-                <div className="pt-2">
-                  <button
-                    onClick={handleTryOn}
-                    className="w-full bg-zinc-800 text-white py-3 px-6 rounded-xl font-medium hover:bg-zinc-700 transition-all duration-200 active:scale-98 border border-zinc-700"
-                  >
-                    Try On Simulator
-                  </button>
-                </div>
-              )}
-
               {/* Stock Info */}
               {product.stock <= 5 && (
                 <p className="text-yellow-400 text-sm font-medium mt-4 flex items-center gap-2">
@@ -443,16 +435,11 @@ const ProductDetail = () => {
         )}
       </div>
       
-      {/* Try-On Simulator Modal */}
-      <TryOnSimulator 
-        isOpen={tryOnOpen}
-        onClose={() => setTryOnOpen(false)}
-        product={{
-          id: product.id,
-          name: product.name,
-          image: product.image,
-          category: product.category
-        }}
+      {/* Sizing Assistant Modal */}
+      <SizingAssistant 
+        isOpen={sizingAssistantOpen}
+        onClose={() => setSizingAssistantOpen(false)}
+        onSizeSelect={(size) => setSelectedSize(size)}
       />
       
       <Footer />
