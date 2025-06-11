@@ -68,9 +68,24 @@
   * {
     @apply border-border;
   }
+  
+  html {
+    overflow-x: hidden;
+  }
+  
   body {
     @apply bg-background text-foreground;
     transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+  }
+  
+  /* Prevent horizontal scroll */
+  #root {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
   }
   
   /* Page transition styles */
@@ -129,11 +144,11 @@
 @layer components {
   /* Button styles */
   .btn-primary {
-    @apply bg-signal-red text-white px-8 py-4 text-sm font-semibold tracking-widest uppercase rounded-xl hover:bg-signal-red/90 hover:scale-105 transition-all duration-300 ease-out;
+    @apply bg-signal-red text-white px-6 py-3 sm:px-8 sm:py-4 text-sm font-semibold tracking-widest uppercase rounded-xl hover:bg-signal-red/90 hover:scale-105 transition-all duration-300 ease-out;
   }
   
   .btn-secondary {
-    @apply bg-white text-black border-2 border-white px-8 py-4 text-sm font-semibold tracking-widest uppercase rounded-xl hover:bg-signal-red hover:text-white hover:border-signal-red hover:scale-105 transition-all duration-300 ease-out;
+    @apply bg-white text-black border-2 border-white px-6 py-3 sm:px-8 sm:py-4 text-sm font-semibold tracking-widest uppercase rounded-xl hover:bg-signal-red hover:text-white hover:border-signal-red hover:scale-105 transition-all duration-300 ease-out;
   }
   
   /* Glow effect */
@@ -145,13 +160,15 @@
     box-shadow: 0 0 30px hsl(var(--signal-red) / 0.5);
   }
   
-  /* Responsive design utilities */
+  /* Responsive design utilities - Enhanced for mobile */
   .container-responsive {
     @apply mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
+    width: 100%;
+    overflow-x: hidden;
   }
   
   .section-padding {
-    @apply py-12 sm:py-16 lg:py-20;
+    @apply py-8 sm:py-12 lg:py-16;
   }
   
   .element-spacing {
@@ -191,9 +208,11 @@
     @apply min-h-[44px] min-w-[44px] flex items-center justify-center;
   }
   
-  /* Prevent horizontal scroll */
+  /* Prevent horizontal scroll - Enhanced */
   .no-scroll-x {
-    @apply overflow-x-hidden;
+    overflow-x: hidden !important;
+    width: 100%;
+    max-width: 100vw;
   }
   
   /* Line clamp utilities */

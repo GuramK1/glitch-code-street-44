@@ -11,7 +11,7 @@ import CartReminder from '../components/CartReminder';
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background no-scroll-x">
       <Navigation />
       <HeroSection />
       <ProductHighlights />
@@ -22,9 +22,9 @@ const Index = () => {
         height="h-[300px]"
         speed={0.3}
       >
-        <div className="text-center text-white">
-          <h2 className="text-3xl md:text-5xl font-bold mb-4">Drop 002</h2>
-          <p className="text-lg mb-6">Limited Edition Collection</p>
+        <div className="text-center text-white px-4">
+          <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold mb-4">Drop 002</h2>
+          <p className="text-base sm:text-lg mb-6">Limited Edition Collection</p>
           <button className="btn-primary">Shop Now</button>
         </div>
       </ParallaxSection>
@@ -39,9 +39,9 @@ const Index = () => {
         speed={0.4}
       >
         <div className="absolute inset-0 bg-zinc-800/90"></div>
-        <div className="relative text-center text-white">
-          <h2 className="text-2xl md:text-4xl font-bold mb-2">Join the 404 Club</h2>
-          <p className="text-lg">Exclusive access to drops and events</p>
+        <div className="relative text-center text-white px-4">
+          <h2 className="text-xl sm:text-2xl md:text-4xl font-bold mb-2">Join the 404 Club</h2>
+          <p className="text-base sm:text-lg">Exclusive access to drops and events</p>
         </div>
       </ParallaxSection>
       
