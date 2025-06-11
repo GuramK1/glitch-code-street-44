@@ -24,6 +24,7 @@ import Shipping from "./pages/Shipping";
 import Returns from "./pages/Returns";
 import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
+import Checkout from "./pages/Checkout";
 import NotFound from "./pages/NotFound";
 import BackToTopButton from "./components/BackToTopButton";
 
@@ -58,6 +59,7 @@ const App = () => {
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/settings" element={<Settings />} />
                   <Route path="/admin" element={<Admin />} />
+                  <Route path="/checkout" element={<Checkout />} />
                   <Route path="/size-guide" element={<SizeGuide />} />
                   <Route path="/shipping" element={<Shipping />} />
                   <Route path="/returns" element={<Returns />} />

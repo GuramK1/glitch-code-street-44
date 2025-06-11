@@ -1,27 +1,55 @@
-
 import { useAuth } from '../contexts/AuthContext';
 import { useWishlist } from '../contexts/WishlistContext';
 import Navigation from '../components/Navigation';
 import { Navigate } from 'react-router-dom';
-import { Heart, Package, Clock, User, Eye } from 'lucide-react';
+import { Heart, Package, Clock, User, Eye, Edit, Calendar } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 const Profile = () => {
   const { user, isAuthenticated } = useAuth();
   const { wishlist } = useWishlist();
   const [likedPosts, setLikedPosts] = useState<string[]>([]);
+  const [orders, setOrders] = useState([]);
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [editForm, setEditForm] = useState({
+    username: user?.username || '',
+    email: user?.email || ''
+  });
 
-  // Load liked posts from localStorage
+  // Load liked posts and orders from localStorage
   useEffect(() => {
     const savedLikedPosts = localStorage.getItem('likedPosts');
     if (savedLikedPosts) {
       setLikedPosts(JSON.parse(savedLikedPosts));
     }
+
+    const savedOrders = localStorage.getItem('orders');
+    if (savedOrders) {
+      setOrders(JSON.parse(savedOrders));
+    }
   }, []);
+
+  // Update edit form when user changes
+  useEffect(() => {
+    if (user) {
+      setEditForm({
+        username: user.username,
+        email: user.email
+      });
+    }
+  }, [user]);
 
   if (!isAuthenticated) {
     return <Navigate to="/" replace />;
   }
+
+  // Calculate member since date (mock - 3 months ago)
+  const memberSince = new Date();
+  memberSince.setMonth(memberSince.getMonth() - 3);
+  const memberSinceFormatted = memberSince.toLocaleDateString('en-US', { 
+    year: 'numeric', 
+    month: 'long' 
+  });
 
   // Mock order history data
   const mockOrders = [
@@ -46,8 +74,25 @@ const Profile = () => {
     }
   };
 
+  const getStatusBgColor = (status: string) => {
+    switch (status) {
+      case 'Delivered': return 'bg-green-400/20';
+      case 'Shipped': return 'bg-blue-400/20';
+      case 'Processing': return 'bg-yellow-400/20';
+      default: return 'bg-zinc-600/20';
+    }
+  };
+
+  const handleSaveProfile = () => {
+    // Update user in localStorage (mock save)
+    const updatedUser = { ...user, ...editForm };
+    localStorage.setItem('authUser', JSON.stringify(updatedUser));
+    setIsEditingProfile(false);
+    // In a real app, you'd update the auth context here
+    alert('Profile updated successfully!');
+  };
+
   const handleViewWishlist = () => {
-    // For now, we'll scroll to the wishlist section or show a toast
     const wishlistSection = document.getElementById('wishlist-section');
     if (wishlistSection) {
       wishlistSection.scrollIntoView({ behavior: 'smooth' });
@@ -65,18 +110,70 @@ const Profile = () => {
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
               Welcome back, {user?.username}!
             </h1>
-            <p className="text-zinc-400">Manage your account and track your 404 Fit journey</p>
+            <p className="text-zinc-400 flex items-center justify-center gap-2">
+              <Calendar className="w-4 h-4" />
+              Member since {memberSinceFormatted}
+            </p>
           </div>
 
           {/* Account Info Card */}
           <div className="bg-zinc-900 rounded-xl p-6 mb-8 border border-zinc-800" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
-            <div className="flex items-center gap-4 mb-4">
-              <div className="w-16 h-16 bg-signal-red rounded-full flex items-center justify-center">
-                <User className="w-8 h-8 text-white" />
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-4">
+                <div className="w-16 h-16 bg-signal-red rounded-full flex items-center justify-center">
+                  <User className="w-8 h-8 text-white" />
+                </div>
+                <div>
+                  {isEditingProfile ? (
+                    <div className="space-y-2">
+                      <input
+                        type="text"
+                        value={editForm.username}
+                        onChange={(e) => setEditForm({...editForm, username: e.target.value})}
+                        className="bg-zinc-800 text-white px-3 py-1 rounded border border-zinc-700 focus:border-signal-red focus:outline-none"
+                        placeholder="Username"
+                      />
+                      <input
+                        type="email"
+                        value={editForm.email}
+                        onChange={(e) => setEditForm({...editForm, email: e.target.value})}
+                        className="bg-zinc-800 text-white px-3 py-1 rounded border border-zinc-700 focus:border-signal-red focus:outline-none w-full"
+                        placeholder="Email"
+                      />
+                    </div>
+                  ) : (
+                    <>
+                      <h2 className="text-xl font-semibold text-white">{user?.username}</h2>
+                      <p className="text-zinc-400">{user?.email}</p>
+                    </>
+                  )}
+                </div>
               </div>
-              <div>
-                <h2 className="text-xl font-semibold text-white">{user?.username}</h2>
-                <p className="text-zinc-400">{user?.email}</p>
+              <div className="flex gap-2">
+                {isEditingProfile ? (
+                  <>
+                    <button
+                      onClick={handleSaveProfile}
+                      className="px-4 py-2 bg-signal-red text-white rounded-lg text-sm hover:bg-signal-red/90 transition-colors duration-200"
+                    >
+                      Save
+                    </button>
+                    <button
+                      onClick={() => setIsEditingProfile(false)}
+                      className="px-4 py-2 bg-zinc-700 text-white rounded-lg text-sm hover:bg-zinc-600 transition-colors duration-200"
+                    >
+                      Cancel
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    onClick={() => setIsEditingProfile(true)}
+                    className="px-4 py-2 bg-zinc-800 text-white rounded-lg text-sm hover:bg-zinc-700 transition-colors duration-200 flex items-center gap-2"
+                  >
+                    <Edit className="w-4 h-4" />
+                    Edit Profile
+                  </button>
+                )}
               </div>
             </div>
             
@@ -94,7 +191,7 @@ const Profile = () => {
               </div>
               <div className="bg-zinc-800 rounded-lg p-4 text-center" data-aos="zoom-in" data-aos-duration="600" data-aos-delay="300">
                 <Package className="w-6 h-6 text-neon-blue mx-auto mb-2" />
-                <p className="text-2xl font-bold text-white">{mockOrders.length}</p>
+                <p className="text-2xl font-bold text-white">{orders.length}</p>
                 <p className="text-zinc-400 text-sm">Total Orders</p>
               </div>
               <div className="bg-zinc-800 rounded-lg p-4 text-center" data-aos="zoom-in" data-aos-duration="600" data-aos-delay="400">
@@ -103,6 +200,71 @@ const Profile = () => {
                 <p className="text-zinc-400 text-sm">Months Active</p>
               </div>
             </div>
+          </div>
+
+          {/* Recent Orders Section */}
+          <div className="bg-zinc-900 rounded-xl p-6 mb-8 border border-zinc-800" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
+            <div className="flex items-center gap-3 mb-6">
+              <Package className="w-6 h-6 text-signal-red" />
+              <h3 className="text-xl font-semibold text-white">Recent Orders</h3>
+              {orders.length > 0 && (
+                <span className="bg-signal-red/20 text-signal-red px-2 py-1 rounded-full text-xs font-medium">
+                  {orders.length}
+                </span>
+              )}
+            </div>
+            
+            {orders.length === 0 ? (
+              <div className="text-center py-8">
+                <Package className="w-16 h-16 text-zinc-600 mx-auto mb-4" />
+                <p className="text-zinc-400">No orders yet</p>
+                <p className="text-zinc-500 text-sm">Start shopping to see your orders here</p>
+                <button 
+                  onClick={() => window.location.href = '/shop'}
+                  className="mt-4 bg-signal-red text-white px-6 py-2 rounded-lg hover:bg-signal-red/90 transition-colors duration-200"
+                >
+                  Shop Now
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {orders.slice(0, 5).map((order: any, index) => (
+                  <div 
+                    key={order.id} 
+                    className="flex items-center justify-between p-4 bg-zinc-800 rounded-lg hover:bg-zinc-750 transition-colors duration-200"
+                    data-aos="fade-left" 
+                    data-aos-duration="600" 
+                    data-aos-delay={300 + (index * 100)}
+                  >
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 bg-zinc-700 rounded-lg flex items-center justify-center">
+                        <Package className="w-6 h-6 text-zinc-400" />
+                      </div>
+                      <div>
+                        <p className="text-white font-medium">Order #{order.id}</p>
+                        <p className="text-zinc-400 text-sm">{order.date} • {order.items?.length || 1} items</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="text-right">
+                        <p className="text-white font-semibold">${order.total?.toFixed(2) || '0.00'}</p>
+                        <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getStatusBgColor(order.status)} ${getStatusColor(order.status)}`}>
+                          {order.status}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                
+                {orders.length > 5 && (
+                  <div className="text-center pt-4">
+                    <button className="text-signal-red hover:underline">
+                      View all {orders.length} orders
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Liked Posts Section */}
@@ -143,45 +305,6 @@ const Profile = () => {
                         <Heart className="w-3 h-3 text-signal-red fill-current" />
                         <span className="text-zinc-400 text-xs">{post.likes}</span>
                       </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Order History */}
-          <div className="bg-zinc-900 rounded-xl p-6 mb-8 border border-zinc-800" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
-            <h3 className="text-xl font-semibold text-white mb-6">Recent Orders</h3>
-            
-            {mockOrders.length === 0 ? (
-              <div className="text-center py-8">
-                <Package className="w-16 h-16 text-zinc-600 mx-auto mb-4" />
-                <p className="text-zinc-400">No orders yet</p>
-                <p className="text-zinc-500 text-sm">Start shopping to see your orders here</p>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {mockOrders.map((order, index) => (
-                  <div 
-                    key={order.id} 
-                    className="flex items-center justify-between p-4 bg-zinc-800 rounded-lg"
-                    data-aos="fade-left" 
-                    data-aos-duration="600" 
-                    data-aos-delay={400 + (index * 100)}
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-zinc-700 rounded-lg flex items-center justify-center">
-                        <Package className="w-6 h-6 text-zinc-400" />
-                      </div>
-                      <div>
-                        <p className="text-white font-medium">Order #{order.id}</p>
-                        <p className="text-zinc-400 text-sm">{order.date} • {order.items} items</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-white font-semibold">${order.total}</p>
-                      <p className={`text-sm ${getStatusColor(order.status)}`}>{order.status}</p>
                     </div>
                   </div>
                 ))}

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Search, User, ShoppingBag, X, Trash2, Plus, Minus, UserCircle, UserPlus, Settings, LogOut, Heart } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useWishlist } from '../contexts/WishlistContext';
 import SignInModal from './SignInModal';
@@ -28,6 +28,7 @@ const Navigation = () => {
   const { isAuthenticated, user, logout } = useAuth();
   const { wishlist } = useWishlist();
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Load cart from localStorage on component mount
   useEffect(() => {
@@ -156,6 +157,20 @@ const Navigation = () => {
 
   const totalCartItems = cartItems.reduce((sum, item: any) => sum + item.quantity, 0);
   const totalCartPrice = cartItems.reduce((sum, item: any) => sum + (item.price * item.quantity), 0);
+
+  // Enhanced checkout handler with authentication check
+  const handleCheckoutClick = () => {
+    if (!isAuthenticated) {
+      setIsSignInOpen(true);
+      setIsCartOpen(false);
+    } else if (cartItems.length === 0) {
+      // Optional: show a toast or alert that cart is empty
+      alert('Your cart is empty. Add some items first!');
+    } else {
+      navigate('/checkout');
+      setIsCartOpen(false);
+    }
+  };
 
   // Ultra-premium navigation link component
   const PremiumNavLink = ({ to, children, className = "" }: { to: string; children: string; className?: string }) => {
@@ -408,9 +423,21 @@ const Navigation = () => {
                             <span className="text-sm font-medium text-white">Total:</span>
                             <span className="text-lg font-bold text-white">${totalCartPrice}</span>
                           </div>
-                          <button className="w-full bg-signal-red text-white py-3 rounded-xl font-semibold hover:bg-signal-red/90 transition-colors duration-200">
-                            Checkout
+                          <button 
+                            onClick={handleCheckoutClick}
+                            className={`w-full py-3 rounded-xl font-semibold transition-colors duration-200 ${
+                              !isAuthenticated 
+                                ? 'bg-zinc-700 text-zinc-300 hover:bg-zinc-600' 
+                                : 'bg-signal-red text-white hover:bg-signal-red/90'
+                            }`}
+                          >
+                            {!isAuthenticated ? 'Sign In to Checkout' : 'Checkout'}
                           </button>
+                          {!isAuthenticated && (
+                            <p className="text-xs text-zinc-400 text-center mt-2">
+                              Sign in required for checkout
+                            </p>
+                          )}
                         </div>
                       </>
                     )}
