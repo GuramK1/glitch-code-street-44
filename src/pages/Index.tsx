@@ -2,7 +2,6 @@
 import Navigation from '../components/Navigation';
 import HeroSection from '../components/HeroSection';
 import ProductHighlights from '../components/ProductHighlights';
-import CommunitySection from '../components/CommunitySection';
 import EditorialSection from '../components/EditorialSection';
 import ParallaxSection from '../components/ParallaxSection';
 import Footer from '../components/Footer';
@@ -30,7 +29,6 @@ const Index = () => {
       </ParallaxSection>
       
       <EditorialSection />
-      <CommunitySection />
       
       {/* Enhanced Parallax Section - Newsletter signup */}
       <ParallaxSection 
