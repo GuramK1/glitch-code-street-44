@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Heart, ArrowLeft, Plus, Minus, Ruler } from 'lucide-react';
@@ -203,8 +202,8 @@ const ProductDetail = () => {
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center container-responsive">
-        <div className="text-center text-foreground">
+      <div className="min-h-screen bg-jet-black flex items-center justify-center container-responsive">
+        <div className="text-center text-white">
           <h1 className="text-responsive-xl font-bold element-spacing">Product Not Found</h1>
           <Link to="/shop" className="btn-primary">
             Back to Shop
@@ -217,7 +216,7 @@ const ProductDetail = () => {
   const relatedProducts = getRelatedProducts();
 
   return (
-    <div className="min-h-screen bg-background no-scroll-x">
+    <div className="min-h-screen bg-jet-black no-scroll-x">
       <Navigation />
       
       <div className={`pt-16 transition-all duration-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'} ${isTransitioning ? 'opacity-0 -translate-x-8' : ''}`}>
@@ -225,7 +224,7 @@ const ProductDetail = () => {
         <div className="container-responsive py-4 sm:py-6">
           <button 
             onClick={handleBackToShop}
-            className={`inline-flex items-center gap-2 sm:gap-3 text-muted-foreground font-medium hover:text-signal-red transition-all duration-300 group back-button touch-target ${backButtonVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}`}
+            className={`inline-flex items-center gap-2 sm:gap-3 text-zinc-400 font-medium hover:text-signal-red transition-all duration-300 group back-button touch-target ${backButtonVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}`}
           >
             <ArrowLeft className="w-4 h-4 transition-transform duration-300 group-hover:-translate-x-1" />
             <span className="relative after:absolute after:-bottom-0.5 after:left-0 after:w-0 after:h-[2px] after:bg-signal-red group-hover:after:w-full after:transition-all after:duration-300 text-responsive-sm">
@@ -239,7 +238,7 @@ const ProductDetail = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
             {/* Product Image - Mobile Optimized */}
             <div className="relative" data-aos="fade-right" data-aos-delay="200">
-              <div className="aspect-square bg-card rounded-2xl overflow-hidden group shadow-2xl">
+              <div className="aspect-square bg-zinc-900 rounded-2xl overflow-hidden group shadow-2xl">
                 <img 
                   src={product.image} 
                   alt={product.name}
@@ -272,20 +271,20 @@ const ProductDetail = () => {
               </div>
             </div>
 
-            {/* Product Info - Mobile Optimized with better color contrast */}
+            {/* Product Info - Mobile Optimized with black background and white text */}
             <div className="space-y-6 lg:space-y-8" data-aos="fade-left" data-aos-delay="300">
               <div>
-                <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold element-spacing text-foreground">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold element-spacing text-white">
                   {product.name}
                 </h1>
                 
                 {/* Price Section - Mobile Responsive */}
                 <div className="flex items-center gap-3 sm:gap-4 element-spacing">
-                  <span className="text-2xl sm:text-3xl font-bold text-foreground">
+                  <span className="text-2xl sm:text-3xl font-bold text-white">
                     ${product.price}
                   </span>
                   {product.isOnSale && product.originalPrice && (
-                    <span className="text-lg sm:text-xl text-muted-foreground line-through">
+                    <span className="text-lg sm:text-xl text-zinc-400 line-through">
                       ${product.originalPrice}
                     </span>
                   )}
@@ -302,25 +301,25 @@ const ProductDetail = () => {
               </div>
 
               {/* Description - Mobile Responsive */}
-              <p className="text-muted-foreground text-responsive-base leading-relaxed">
+              <p className="text-zinc-300 text-responsive-base leading-relaxed">
                 {product.description}
               </p>
 
               {/* Model Info - Mobile Responsive */}
-              <p className="text-responsive-xs italic text-muted-foreground font-light tracking-wide">
+              <p className="text-responsive-xs italic text-zinc-400 font-light tracking-wide">
                 👕 {product.modelInfo}
               </p>
 
               {/* Sectional Divider */}
-              <div className="border-t border-border"></div>
+              <div className="border-t border-zinc-700"></div>
 
               {/* Size Selector - Mobile Responsive */}
               <div>
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4 element-spacing">
-                  <h3 className="text-foreground font-semibold text-responsive-base">Select Size</h3>
+                  <h3 className="text-white font-semibold text-responsive-base">Select Size</h3>
                   <button
                     onClick={() => setSizingAssistantOpen(true)}
-                    className="flex items-center gap-2 text-responsive-xs text-muted-foreground hover:text-signal-red transition-colors duration-200 touch-target self-start sm:self-auto"
+                    className="flex items-center gap-2 text-responsive-xs text-zinc-400 hover:text-signal-red transition-colors duration-200 touch-target self-start sm:self-auto"
                   >
                     <Ruler className="w-4 h-4" />
                     <span>Sizing Assistant</span>
@@ -334,7 +333,7 @@ const ProductDetail = () => {
                       className={`px-4 py-2 sm:px-5 sm:py-3 rounded-xl font-medium transition-all duration-200 active:scale-95 shadow-lg touch-target ${
                         selectedSize === size
                           ? 'bg-signal-red text-white shadow-red-500/25 shadow-lg'
-                          : 'bg-muted text-foreground hover:bg-muted/80 hover:shadow-xl border border-border'
+                          : 'bg-zinc-800 text-white hover:bg-zinc-700 hover:shadow-xl border border-zinc-600'
                       }`}
                     >
                       {size}
@@ -344,24 +343,24 @@ const ProductDetail = () => {
               </div>
 
               {/* Sectional Divider */}
-              <div className="border-t border-border"></div>
+              <div className="border-t border-zinc-700"></div>
 
               {/* Quantity Selector - Mobile Responsive */}
               <div>
-                <h3 className="text-foreground font-semibold element-spacing text-responsive-base">Quantity</h3>
+                <h3 className="text-white font-semibold element-spacing text-responsive-base">Quantity</h3>
                 <div className="flex items-center gap-3 sm:gap-4">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="bg-muted text-foreground p-2 sm:p-3 rounded-xl border border-border hover:bg-muted/80 transition-all duration-200 active:scale-95 shadow-lg touch-target"
+                    className="bg-zinc-800 text-white p-2 sm:p-3 rounded-xl border border-zinc-600 hover:bg-zinc-700 transition-all duration-200 active:scale-95 shadow-lg touch-target"
                   >
                     <Minus className="w-4 h-4" />
                   </button>
-                  <span className="text-foreground font-semibold text-lg sm:text-xl px-4 sm:px-6 py-2 bg-muted rounded-xl border border-border min-w-[60px] text-center shadow-lg">
+                  <span className="text-white font-semibold text-lg sm:text-xl px-4 sm:px-6 py-2 bg-zinc-800 rounded-xl border border-zinc-600 min-w-[60px] text-center shadow-lg">
                     {quantity}
                   </span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
-                    className="bg-muted text-foreground p-2 sm:p-3 rounded-xl border border-border hover:bg-muted/80 transition-all duration-200 active:scale-95 shadow-lg touch-target"
+                    className="bg-zinc-800 text-white p-2 sm:p-3 rounded-xl border border-zinc-600 hover:bg-zinc-700 transition-all duration-200 active:scale-95 shadow-lg touch-target"
                   >
                     <Plus className="w-4 h-4" />
                   </button>
@@ -369,7 +368,7 @@ const ProductDetail = () => {
               </div>
 
               {/* Sectional Divider */}
-              <div className="border-t border-border"></div>
+              <div className="border-t border-zinc-700"></div>
 
               {/* Action Buttons - Mobile Responsive */}
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4">
@@ -384,7 +383,7 @@ const ProductDetail = () => {
                   className={`p-3 sm:p-4 rounded-xl transition-all duration-200 active:scale-95 shadow-lg touch-target ${
                     isInWishlist(product.id)
                       ? 'bg-signal-red text-white shadow-red-500/25'
-                      : 'bg-muted text-foreground border border-border hover:bg-muted/80 hover:shadow-xl'
+                      : 'bg-zinc-800 text-white border border-zinc-600 hover:bg-zinc-700 hover:shadow-xl'
                   }`}
                 >
                   <Heart className={`w-5 h-5 sm:w-6 sm:h-6 ${isInWishlist(product.id) ? 'fill-current' : ''}`} />
@@ -404,14 +403,14 @@ const ProductDetail = () => {
         {/* Related Products Section - Mobile Responsive */}
         {relatedProducts.length > 0 && (
           <section className="container-responsive section-padding" data-aos="fade-up" data-aos-delay="400">
-            <div className="border-t border-border mb-8 sm:mb-12"></div>
-            <h2 className="text-responsive-xl font-bold text-foreground element-spacing">You Might Also Like</h2>
+            <div className="border-t border-zinc-700 mb-8 sm:mb-12"></div>
+            <h2 className="text-responsive-xl font-bold text-white element-spacing">You Might Also Like</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
               {relatedProducts.map((relatedProduct, index) => (
                 <Link 
                   key={relatedProduct.id}
                   to={`/product/${relatedProduct.slug}`}
-                  className="bg-card rounded-xl overflow-hidden hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl border border-border"
+                  className="bg-zinc-900 rounded-xl overflow-hidden hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl border border-zinc-700"
                   data-aos="fade-up"
                   data-aos-delay={500 + (index * 100)}
                 >
@@ -423,10 +422,10 @@ const ProductDetail = () => {
                     />
                   </div>
                   <div className="p-3 sm:p-4">
-                    <h3 className="text-foreground font-medium mb-2 group-hover:text-signal-red transition-colors text-responsive-sm line-clamp-2">
+                    <h3 className="text-white font-medium mb-2 group-hover:text-signal-red transition-colors text-responsive-sm line-clamp-2">
                       {relatedProduct.name}
                     </h3>
-                    <p className="text-muted-foreground font-semibold text-responsive-sm">${relatedProduct.price}</p>
+                    <p className="text-zinc-300 font-semibold text-responsive-sm">${relatedProduct.price}</p>
                   </div>
                 </Link>
               ))}
