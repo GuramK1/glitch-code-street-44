@@ -14,7 +14,6 @@ import Index from "./pages/Index";
 import Drops from "./pages/Drops";
 import Shop from "./pages/Shop";
 import ProductDetail from "./pages/ProductDetail";
-import ClubPage from "./pages/ClubPage";
 import About from "./pages/About";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
@@ -25,6 +24,8 @@ import Returns from "./pages/Returns";
 import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
 import Checkout from "./pages/Checkout";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
 import NotFound from "./pages/NotFound";
 import BackToTopButton from "./components/BackToTopButton";
 
@@ -54,7 +55,6 @@ const App = () => {
                   <Route path="/drops" element={<Drops />} />
                   <Route path="/shop" element={<Shop />} />
                   <Route path="/product/:slug" element={<ProductDetail />} />
-                  <Route path="/404-club" element={<ClubPage />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/profile" element={<Profile />} />
                   <Route path="/settings" element={<Settings />} />
@@ -65,6 +65,10 @@ const App = () => {
                   <Route path="/returns" element={<Returns />} />
                   <Route path="/contact" element={<Contact />} />
                   <Route path="/faq" element={<FAQ />} />
+                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                  <Route path="/terms-of-service" element={<TermsOfService />} />
+                  {/* Redirect old 404-club route to home */}
+                  <Route path="/404-club" element={<Index />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>

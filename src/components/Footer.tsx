@@ -87,8 +87,8 @@ const Footer = () => {
             © 2024 404 Fit. All rights reserved.
           </p>
           <div className="flex space-x-6 text-sm">
-            <a href="#" className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">Privacy Policy</a>
-            <a href="#" className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">Terms of Service</a>
+            <Link to="/privacy-policy" onClick={handleNavClick} className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">Privacy Policy</Link>
+            <Link to="/terms-of-service" onClick={handleNavClick} className="text-zinc-400 hover:text-white transition-colors duration-300 cursor-pointer">Terms of Service</Link>
           </div>
         </div>
       </div>

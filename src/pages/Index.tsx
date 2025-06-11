@@ -32,7 +32,7 @@ const Index = () => {
       <EditorialSection />
       <CommunitySection />
       
-      {/* Another Enhanced Parallax Section - Dark gray background for "Join the 404 Club" */}
+      {/* Enhanced Parallax Section - Newsletter signup */}
       <ParallaxSection 
         backgroundImage="https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=1200&h=400&fit=crop"
         height="h-[250px]"
@@ -40,8 +40,8 @@ const Index = () => {
       >
         <div className="absolute inset-0 bg-zinc-800/90"></div>
         <div className="relative text-center text-white px-4">
-          <h2 className="text-xl sm:text-2xl md:text-4xl font-bold mb-2">Join the 404 Club</h2>
-          <p className="text-base sm:text-lg">Exclusive access to drops and events</p>
+          <h2 className="text-xl sm:text-2xl md:text-4xl font-bold mb-2">Stay Updated</h2>
+          <p className="text-base sm:text-lg">Get exclusive access to new drops and events</p>
         </div>
       </ParallaxSection>
       

@@ -216,7 +216,6 @@ const Navigation = () => {
               <div className="ml-10 flex items-baseline space-x-8">
                 <PremiumNavLink to="/drops">Drops</PremiumNavLink>
                 <PremiumNavLink to="/shop">Shop</PremiumNavLink>
-                <PremiumNavLink to="/404-club">404 Club</PremiumNavLink>
                 <PremiumNavLink to="/about">About</PremiumNavLink>
               </div>
             </div>
@@ -465,7 +464,6 @@ const Navigation = () => {
               <div className="px-2 pt-2 pb-3 space-y-1 border-t border-zinc-800 bg-zinc-950/95 backdrop-blur-sm">
                 <PremiumNavLink to="/drops" className="block px-3 py-2">Drops</PremiumNavLink>
                 <PremiumNavLink to="/shop" className="block px-3 py-2">Shop</PremiumNavLink>
-                <PremiumNavLink to="/404-club" className="block px-3 py-2">404 Club</PremiumNavLink>
                 <PremiumNavLink to="/about" className="block px-3 py-2">About</PremiumNavLink>
               </div>
             </div>
