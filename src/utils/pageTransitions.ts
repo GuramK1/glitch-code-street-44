@@ -67,7 +67,7 @@ export const animateToTarget = (sourceEl: HTMLElement, targetSelector: string) =
   console.log('🎭 Clone created and added to DOM');
   
   // Force reflow to ensure initial position is set
-  clone.offsetHeight;
+  void clone.offsetHeight;
   
   // Start animation after a brief delay
   requestAnimationFrame(() => {
@@ -144,7 +144,7 @@ export const animateFromTarget = (targetSelector: string, destinationPoint?: { x
   console.log('🎭 Reverse clone created and added to DOM');
   
   // Force reflow
-  clone.offsetHeight;
+  void clone.offsetHeight;
   
   // Start the reverse animation
   requestAnimationFrame(() => {

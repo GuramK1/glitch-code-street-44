@@ -2,38 +2,48 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingBag, X } from 'lucide-react';
+import { supabase } from '../lib/supabaseClient';
+import { useAuth } from '../contexts/AuthContext';
 
 const CartReminder = () => {
   const [isVisible, setIsVisible] = useState(false);
-  const [cartItems, setCartItems] = useState<any[]>([]);
+  interface CartItem {
+    id: number;
+    name: string;
+    price: number;
+    image: string;
+    size: string;
+    quantity: number;
+  }
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const { user } = useAuth();
 
   useEffect(() => {
-    // Check cart on mount
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    setCartItems(cart);
+    const fetchCart = async () => {
+      if (!user) return;
+      const { data } = await supabase
+        .from('cart')
+        .select('*')
+        .eq('user_id', user.email);
+      setCartItems(data || []);
 
-    if (cart.length > 0) {
-      // Show after 10 seconds of idle time
-      const timer = setTimeout(() => {
-        setIsVisible(true);
-      }, 10000);
-
-      // Show when scrolling past 50%
-      const handleScroll = () => {
-        const scrollPercentage = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
-        if (scrollPercentage > 50 && cart.length > 0) {
-          setIsVisible(true);
-        }
-      };
-
-      window.addEventListener('scroll', handleScroll);
-      
-      return () => {
-        clearTimeout(timer);
-        window.removeEventListener('scroll', handleScroll);
-      };
-    }
-  }, []);
+      if (data && data.length > 0) {
+        const timer = setTimeout(() => setIsVisible(true), 10000);
+        const handleScroll = () => {
+          const scrollPercentage = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+          if (scrollPercentage > 50 && data.length > 0) {
+            setIsVisible(true);
+          }
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+          clearTimeout(timer);
+          window.removeEventListener('scroll', handleScroll);
+        };
+      }
+    };
+    fetchCart();
+  }, [user]);
 
   const handleClose = () => {
     setIsVisible(false);

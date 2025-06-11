@@ -7,6 +7,8 @@ import { useWishlist } from '../contexts/WishlistContext';
 import SizingAssistant from '../components/SizingAssistant';
 import { trackProductView } from '../components/ContinueWhereLeftOff';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '../lib/supabaseClient';
+import { useAuth } from '../contexts/AuthContext';
 
 const ProductDetail = () => {
   const { slug } = useParams();
@@ -18,6 +20,8 @@ const ProductDetail = () => {
   const [sizingAssistantOpen, setSizingAssistantOpen] = useState(false);
   const { toggleWishlist, isInWishlist } = useWishlist();
   const { toast } = useToast();
+  const { user } = useAuth();
+  const [purchasedIds, setPurchasedIds] = useState<number[]>([]);
 
   // Scroll to top and trigger fade-in animation when component mounts
   useEffect(() => {
@@ -31,11 +35,23 @@ const ProductDetail = () => {
     };
   }, []);
 
+  // Fetch purchased items
+  useEffect(() => {
+    const fetchPurchased = async () => {
+      if (!user) return;
+      type OrderRow = { items: { id: number }[] };
+      const { data } = await supabase
+        .from<OrderRow>('orders')
+        .select('items')
+        .eq('user_id', user.email);
+      const ids = (data ?? []).flatMap(order => order.items.map(i => i.id));
+      setPurchasedIds(ids);
+    };
+    fetchPurchased();
+  }, [user]);
+
   // Check if user has purchased this product
-  const hasPurchased = (productId: number) => {
-    const purchasedItems = JSON.parse(localStorage.getItem('purchasedItems') || '[]');
-    return purchasedItems.includes(productId);
-  };
+  const hasPurchased = (productId: number) => purchasedIds.includes(productId);
 
   // Mock product data - in a real app, this would come from an API
   const getProductBySlug = (slug: string) => {
@@ -140,7 +156,7 @@ const ProductDetail = () => {
       .slice(0, 3);
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (!selectedSize) {
       toast({
         title: "⚠️ Size Required",
@@ -161,25 +177,16 @@ const ProductDetail = () => {
       slug: slug
     };
     
-    // Add to localStorage cart
-    const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
-    const existingItemIndex = existingCart.findIndex(
-      (item: any) => item.id === cartItem.id && item.size === selectedSize
-    );
-    
-    if (existingItemIndex > -1) {
-      existingCart[existingItemIndex].quantity += quantity;
-    } else {
-      existingCart.push(cartItem);
-    }
-    
-    localStorage.setItem('cart', JSON.stringify(existingCart));
-    
-    // Add to purchased items for rating badge functionality
-    const purchasedItems = JSON.parse(localStorage.getItem('purchasedItems') || '[]');
-    if (!purchasedItems.includes(product?.id)) {
-      purchasedItems.push(product?.id);
-      localStorage.setItem('purchasedItems', JSON.stringify(purchasedItems));
+    if (user) {
+      await supabase.from('cart').upsert({
+        user_id: user.email,
+        product_id: cartItem.id,
+        size: selectedSize,
+        quantity,
+        name: cartItem.name,
+        price: cartItem.price,
+        image: cartItem.image,
+      });
     }
     
     // Show success toast

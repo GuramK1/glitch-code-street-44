@@ -2,6 +2,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useWishlist } from '../contexts/WishlistContext';
 import Navigation from '../components/Navigation';
 import { Navigate } from 'react-router-dom';
+import { supabase } from '../lib/supabaseClient';
 import { Heart, Package, Clock, User, Eye, Edit, Calendar } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
@@ -9,25 +10,39 @@ const Profile = () => {
   const { user, isAuthenticated } = useAuth();
   const { wishlist } = useWishlist();
   const [likedPosts, setLikedPosts] = useState<string[]>([]);
-  const [orders, setOrders] = useState([]);
+  interface Order {
+    id: number;
+    date: string;
+    status: string;
+    total: number;
+    items: unknown[];
+  }
+  const [orders, setOrders] = useState<Order[]>([]);
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [editForm, setEditForm] = useState({
     username: user?.username || '',
     email: user?.email || ''
   });
 
-  // Load liked posts and orders from localStorage
+  // Load liked posts and orders from Supabase
   useEffect(() => {
-    const savedLikedPosts = localStorage.getItem('likedPosts');
-    if (savedLikedPosts) {
-      setLikedPosts(JSON.parse(savedLikedPosts));
-    }
+    const fetchData = async () => {
+      if (!user) return;
+      const { data: liked } = await supabase
+        .from('liked_posts')
+        .select('post_id')
+        .eq('user_id', user.email);
+      type LikedRow = { post_id: string };
+      setLikedPosts((liked as LikedRow[] | null)?.map(r => r.post_id) || []);
 
-    const savedOrders = localStorage.getItem('orders');
-    if (savedOrders) {
-      setOrders(JSON.parse(savedOrders));
-    }
-  }, []);
+      const { data: ordersData } = await supabase
+        .from('orders')
+        .select('*')
+        .eq('user_id', user.email);
+      setOrders(ordersData || []);
+    };
+    fetchData();
+  }, [user]);
 
   // Update edit form when user changes
   useEffect(() => {
@@ -83,12 +98,13 @@ const Profile = () => {
     }
   };
 
-  const handleSaveProfile = () => {
-    // Update user in localStorage (mock save)
-    const updatedUser = { ...user, ...editForm };
-    localStorage.setItem('authUser', JSON.stringify(updatedUser));
+  const handleSaveProfile = async () => {
+    if (!user) return;
+    await supabase.auth.updateUser({
+      data: { username: editForm.username },
+      email: editForm.email,
+    });
     setIsEditingProfile(false);
-    // In a real app, you'd update the auth context here
     alert('Profile updated successfully!');
   };
 
@@ -228,7 +244,7 @@ const Profile = () => {
               </div>
             ) : (
               <div className="space-y-4">
-                {orders.slice(0, 5).map((order: any, index) => (
+                {orders.slice(0, 5).map((order: Order, index: number) => (
                   <div 
                     key={order.id} 
                     className="flex items-center justify-between p-4 bg-zinc-800 rounded-lg hover:bg-zinc-750 transition-colors duration-200"
