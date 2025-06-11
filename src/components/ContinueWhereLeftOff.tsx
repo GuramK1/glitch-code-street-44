@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react';
 import { X, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { supabase } from '../lib/supabaseClient';
+import { useAuth } from '../contexts/AuthContext';
 
 interface LastViewedProduct {
   id: number;
@@ -15,34 +17,29 @@ const ContinueWhereLeftOff = () => {
   const [lastViewed, setLastViewed] = useState<LastViewedProduct | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
+  const { user } = useAuth();
 
   useEffect(() => {
-    // Check for last viewed product on homepage load
-    const stored = localStorage.getItem('lastViewedProduct');
-    if (stored) {
-      try {
-        const data: LastViewedProduct = JSON.parse(stored);
-        
-        // Only show if viewed within last 7 days
-        const weekAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
-        if (data.timestamp > weekAgo) {
-          setLastViewed(data);
-          
-          // Show toast after brief delay
+    const fetchLastViewed = async () => {
+      if (!user) return;
+      const { data } = await supabase
+        .from('recent_views')
+        .select('*')
+        .eq('user_id', user.email)
+        .order('timestamp', { ascending: false })
+        .limit(1);
+      if (data && data[0]) {
+        const product = data[0];
+        const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+        if (product.timestamp > weekAgo) {
+          setLastViewed(product);
           setTimeout(() => setIsVisible(true), 1000);
-          
-          // Auto-hide after 15 seconds
           setTimeout(() => handleClose(), 16000);
-        } else {
-          // Clean up old data
-          localStorage.removeItem('lastViewedProduct');
         }
-      } catch (error) {
-        console.error('Error parsing last viewed product:', error);
-        localStorage.removeItem('lastViewedProduct');
       }
-    }
-  }, []);
+    };
+    fetchLastViewed();
+  }, [user]);
 
   const handleClose = () => {
     setIsClosing(true);
@@ -52,14 +49,15 @@ const ContinueWhereLeftOff = () => {
     }, 300);
   };
 
-  const handleRemindLater = () => {
-    // Update timestamp to show again in 24 hours
-    if (lastViewed) {
-      const updatedData = {
-        ...lastViewed,
-        timestamp: Date.now() + (24 * 60 * 60 * 1000)
-      };
-      localStorage.setItem('lastViewedProduct', JSON.stringify(updatedData));
+  const handleRemindLater = async () => {
+    if (lastViewed && user) {
+      await supabase
+        .from('recent_views')
+        .upsert({
+          ...lastViewed,
+          user_id: user.email,
+          timestamp: Date.now() + 24 * 60 * 60 * 1000,
+        });
     }
     handleClose();
   };
@@ -135,7 +133,10 @@ export const trackProductView = (product: {
     ...product,
     timestamp: Date.now()
   };
-  localStorage.setItem('lastViewedProduct', JSON.stringify(data));
+  supabase.from('recent_views').upsert({
+    ...data,
+    user_id: supabase.auth.getUser().data.user?.email ?? 'anonymous'
+  });
 };
 
 export default ContinueWhereLeftOff;

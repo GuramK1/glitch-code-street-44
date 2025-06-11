@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { supabase } from '../lib/supabaseClient';
 import Navigation from '../components/Navigation';
 import { Minus, Plus, Trash2, CreditCard, Truck, ShieldCheck } from 'lucide-react';
 import { createPageTransition } from '../utils/pageTransitions';
@@ -8,7 +9,15 @@ import { createPageTransition } from '../utils/pageTransitions';
 const Checkout = () => {
   const { isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
-  const [cartItems, setCartItems] = useState([]);
+  interface CartItem {
+    id: number;
+    name: string;
+    price: number;
+    image: string;
+    size: string;
+    quantity: number;
+  }
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isPageLoaded, setIsPageLoaded] = useState(false);
   const [shippingInfo, setShippingInfo] = useState({
     fullName: '',
@@ -34,40 +43,62 @@ const Checkout = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Redirect if not authenticated
-  if (!isAuthenticated) {
-    return <Navigate to="/" replace />;
-  }
 
   // Load cart items
   useEffect(() => {
-    const savedCart = JSON.parse(localStorage.getItem('cart') || '[]');
-    setCartItems(savedCart);
-  }, []);
+    const fetchCart = async () => {
+      if (!user) return;
+      const { data } = await supabase
+        .from('cart')
+        .select('*')
+        .eq('user_id', user.email);
+      setCartItems(data || []);
+    };
+    fetchCart();
+  }, [user]);
 
   // Update cart item quantity
   const updateQuantity = (id: number, size: string, change: number) => {
-    const updatedCart = cartItems.map((item: any) => 
+    const updatedCart = cartItems.map((item: CartItem) =>
       item.id === id && item.size === size
         ? { ...item, quantity: Math.max(0, item.quantity + change) }
         : item
-    ).filter((item: any) => item.quantity > 0);
+    ).filter((item: CartItem) => item.quantity > 0);
     
     setCartItems(updatedCart);
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
-    window.dispatchEvent(new CustomEvent('cartUpdated'));
+    if (user) {
+      for (const item of updatedCart) {
+        await supabase.from('cart').upsert({
+          user_id: user.email,
+          product_id: item.id,
+          size: item.size,
+          quantity: item.quantity,
+          name: item.name,
+          price: item.price,
+          image: item.image,
+        });
+      }
+      window.dispatchEvent(new CustomEvent('cartUpdated'));
+    }
   };
 
   // Remove item from cart
   const removeItem = (id: number, size: string) => {
-    const updatedCart = cartItems.filter((item: any) => !(item.id === id && item.size === size));
+    const updatedCart = cartItems.filter((item: CartItem) => !(item.id === id && item.size === size));
     setCartItems(updatedCart);
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
-    window.dispatchEvent(new CustomEvent('cartUpdated'));
+    if (user) {
+      await supabase
+        .from('cart')
+        .delete()
+        .eq('user_id', user.email)
+        .eq('product_id', id)
+        .eq('size', size);
+      window.dispatchEvent(new CustomEvent('cartUpdated'));
+    }
   };
 
   // Calculate totals
-  const subtotal = cartItems.reduce((sum, item: any) => sum + (item.price * item.quantity), 0);
+  const subtotal = cartItems.reduce((sum, item: CartItem) => sum + item.price * item.quantity, 0);
   const shipping = subtotal > 100 ? 0 : 10;
   const tax = subtotal * 0.08;
   const total = subtotal + shipping + tax;
@@ -82,33 +113,33 @@ const Checkout = () => {
     e.preventDefault();
     setIsProcessing(true);
 
-    // Mock order processing
-    setTimeout(() => {
-      const orderId = Math.floor(Math.random() * 100000);
-      
-      // Save order to localStorage (mock backend)
-      const existingOrders = JSON.parse(localStorage.getItem('orders') || '[]');
-      const newOrder = {
-        id: orderId,
-        date: new Date().toISOString().split('T')[0],
-        items: cartItems,
-        total: total,
-        status: 'Processing',
-        shippingInfo,
-        paymentInfo: { ...paymentInfo, cardNumber: '**** **** **** ' + paymentInfo.cardNumber.slice(-4) }
-      };
-      existingOrders.push(newOrder);
-      localStorage.setItem('orders', JSON.stringify(existingOrders));
+    if (!user) return;
 
-      // Clear cart
-      localStorage.removeItem('cart');
+    const { error } = await supabase.from('orders').insert({
+      user_id: user.email,
+      items: cartItems,
+      total,
+      status: 'Processing',
+      shipping_info: shippingInfo,
+      payment_info: {
+        ...paymentInfo,
+        cardNumber: '**** **** **** ' + paymentInfo.cardNumber.slice(-4),
+      },
+    });
+
+    if (!error) {
+      await supabase.from('cart').delete().eq('user_id', user.email);
       setCartItems([]);
       window.dispatchEvent(new CustomEvent('cartUpdated'));
+      alert('Order placed successfully!');
+    }
 
-      setIsProcessing(false);
-      alert(`Order placed successfully! Order ID: #${orderId}`);
-    }, 2000);
+    setIsProcessing(false);
   };
+
+  if (!isAuthenticated) {
+    return <Navigate to="/" replace />;
+  }
 
   if (cartItems.length === 0) {
     return (
@@ -270,7 +301,7 @@ const Checkout = () => {
                 
                 {/* Cart Items */}
                 <div className="space-y-4 mb-6">
-                  {cartItems.map((item: any) => (
+                  {cartItems.map((item: CartItem) => (
                     <div key={`${item.id}-${item.size}`} className="flex items-center space-x-4 p-4 bg-zinc-800 rounded-lg">
                       <img src={item.image} alt={item.name} className="w-16 h-16 object-cover rounded-lg flex-shrink-0" />
                       <div className="flex-1 min-w-0">

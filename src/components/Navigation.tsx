@@ -4,6 +4,7 @@ import { Search, User, ShoppingBag, X, Trash2, Plus, Minus, UserCircle, UserPlus
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useWishlist } from '../contexts/WishlistContext';
+import { supabase } from '../lib/supabaseClient';
 import SignInModal from './SignInModal';
 import RegisterModal from './RegisterModal';
 import GlitchText from './GlitchText';
@@ -18,7 +19,15 @@ const Navigation = () => {
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchIsClosing, setSearchIsClosing] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
+  interface CartItem {
+    id: number;
+    name: string;
+    price: number;
+    image: string;
+    size: string;
+    quantity: number;
+  }
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [wishlistClicked, setWishlistClicked] = useState(false);
   
   const profileRef = useRef<HTMLDivElement>(null);
@@ -32,23 +41,27 @@ const Navigation = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Load cart from localStorage on component mount
+  // Load cart from Supabase on component mount
   useEffect(() => {
-    const loadCart = () => {
-      const savedCart = JSON.parse(localStorage.getItem('cart') || '[]');
-      setCartItems(savedCart);
+    const loadCart = async () => {
+      if (!user) return;
+      const { data } = await supabase
+        .from('cart')
+        .select('*')
+        .eq('user_id', user.email);
+      setCartItems(data || []);
     };
-    
+
     loadCart();
-    
+
     // Listen for cart updates
     const handleCartUpdate = () => {
       loadCart();
     };
-    
+
     window.addEventListener('cartUpdated', handleCartUpdate);
     return () => window.removeEventListener('cartUpdated', handleCartUpdate);
-  }, []);
+  }, [user]);
 
   // Mock wishlist items for display
   const mockWishlistItems = [
@@ -115,23 +128,42 @@ const Navigation = () => {
   };
 
   // Cart functions
-  const updateQuantity = (id: number, size: string, change: number) => {
-    const updatedCart = cartItems.map((item: any) => 
+  const updateQuantity = async (id: number, size: string, change: number) => {
+    const updatedCart = cartItems.map((item: CartItem) =>
       item.id === id && item.size === size
         ? { ...item, quantity: Math.max(0, item.quantity + change) }
         : item
-    ).filter((item: any) => item.quantity > 0);
-    
+    ).filter((item: CartItem) => item.quantity > 0);
+
     setCartItems(updatedCart);
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
-    window.dispatchEvent(new CustomEvent('cartUpdated'));
+    if (user) {
+      for (const item of updatedCart) {
+        await supabase.from('cart').upsert({
+          user_id: user.email,
+          product_id: item.id,
+          size: item.size,
+          quantity: item.quantity,
+          name: item.name,
+          price: item.price,
+          image: item.image,
+        });
+      }
+      window.dispatchEvent(new CustomEvent('cartUpdated'));
+    }
   };
 
-  const removeItem = (id: number, size: string) => {
-    const updatedCart = cartItems.filter((item: any) => !(item.id === id && item.size === size));
+  const removeItem = async (id: number, size: string) => {
+    const updatedCart = cartItems.filter((item: CartItem) => !(item.id === id && item.size === size));
     setCartItems(updatedCart);
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
-    window.dispatchEvent(new CustomEvent('cartUpdated'));
+    if (user) {
+      await supabase
+        .from('cart')
+        .delete()
+        .eq('user_id', user.email)
+        .eq('product_id', id)
+        .eq('size', size);
+      window.dispatchEvent(new CustomEvent('cartUpdated'));
+    }
   };
 
   const handleLogout = () => {
@@ -162,8 +194,8 @@ const Navigation = () => {
     setIsProfileOpen(false);
   };
 
-  const totalCartItems = cartItems.reduce((sum, item: any) => sum + item.quantity, 0);
-  const totalCartPrice = cartItems.reduce((sum, item: any) => sum + (item.price * item.quantity), 0);
+  const totalCartItems = cartItems.reduce((sum, item: CartItem) => sum + item.quantity, 0);
+  const totalCartPrice = cartItems.reduce((sum, item: CartItem) => sum + item.price * item.quantity, 0);
 
   // Enhanced checkout handler with authentication check
   const handleCheckoutClick = () => {
@@ -394,7 +426,7 @@ const Navigation = () => {
                     ) : (
                       <>
                         <div className="space-y-3 max-h-60 overflow-y-auto">
-                          {cartItems.map((item: any) => (
+                          {cartItems.map((item: CartItem) => (
                             <div key={`${item.id}-${item.size}`} className="flex items-center space-x-3 p-2 hover:bg-zinc-800 rounded-lg">
                               <img src={item.image} alt={item.name} className="w-12 h-12 object-cover rounded-lg flex-shrink-0" />
                               <div className="flex-1 min-w-0">

@@ -2,6 +2,8 @@
 import { useState } from 'react';
 import { Heart, ShoppingCart, Eye } from 'lucide-react';
 import { useWishlist } from '../contexts/WishlistContext';
+import { supabase } from '../lib/supabaseClient';
+import { useAuth } from '../contexts/AuthContext';
 import { animateToTarget, animateFromTarget } from '../utils/pageTransitions';
 import { toast } from 'sonner';
 
@@ -24,6 +26,7 @@ interface EnhancedProductCardProps {
 
 const EnhancedProductCard = ({ product, onQuickView }: EnhancedProductCardProps) => {
   const { toggleWishlist, isInWishlist } = useWishlist();
+  const { user } = useAuth();
   const [isAnimating, setIsAnimating] = useState(false);
 
   const getBadgeClass = (badge: string | null, stock: number, isNew: boolean) => {
@@ -42,37 +45,23 @@ const EnhancedProductCard = ({ product, onQuickView }: EnhancedProductCardProps)
     return '';
   };
 
-  const handleAddToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleAddToCart = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     console.log('🛒 Add to cart clicked!');
     setIsAnimating(true);
 
-    // Get existing cart
-    const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
-    
-    // Add item with default size
-    const cartItem = {
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-      size: 'M', // Default size
-      quantity: 1
-    };
-
-    // Check if item already exists
-    const existingItemIndex = existingCart.findIndex(
-      (item: any) => item.id === product.id && item.size === 'M'
-    );
-
-    if (existingItemIndex > -1) {
-      existingCart[existingItemIndex].quantity += 1;
-    } else {
-      existingCart.push(cartItem);
+    if (user) {
+      await supabase.from('cart').upsert({
+        user_id: user.email,
+        product_id: product.id,
+        size: 'M',
+        quantity: 1,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+      });
+      window.dispatchEvent(new CustomEvent('cartUpdated'));
     }
-
-    localStorage.setItem('cart', JSON.stringify(existingCart));
-    window.dispatchEvent(new CustomEvent('cartUpdated'));
 
     // Enhanced animation trigger with better error handling
     console.log('🎯 Looking for cart icon...');
