@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { supabase } from '@/lib/supabaseClient';
 import Navigation from '../components/Navigation';
 import { Minus, Plus, Trash2, CreditCard, Truck, ShieldCheck } from 'lucide-react';
 import { createPageTransition } from '../utils/pageTransitions';
@@ -46,7 +47,7 @@ const Checkout = () => {
   }, []);
 
   // Update cart item quantity
-  const updateQuantity = (id: number, size: string, change: number) => {
+  const updateQuantity = async (id: number, size: string, change: number) => {
     const updatedCart = cartItems.map((item: any) => 
       item.id === id && item.size === size
         ? { ...item, quantity: Math.max(0, item.quantity + change) }
@@ -56,14 +57,29 @@ const Checkout = () => {
     setCartItems(updatedCart);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
     window.dispatchEvent(new CustomEvent('cartUpdated'));
+    if (isAuthenticated && user) {
+      const item = updatedCart.find(i => i.id === id && i.size === size);
+      if (item) {
+        await supabase
+          .from('cart')
+          .update({ quantity: item.quantity })
+          .match({ user_id: user.id, product_id: id, size });
+      }
+    }
   };
 
   // Remove item from cart
-  const removeItem = (id: number, size: string) => {
+  const removeItem = async (id: number, size: string) => {
     const updatedCart = cartItems.filter((item: any) => !(item.id === id && item.size === size));
     setCartItems(updatedCart);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
     window.dispatchEvent(new CustomEvent('cartUpdated'));
+    if (isAuthenticated && user) {
+      await supabase
+        .from('cart')
+        .delete()
+        .match({ user_id: user.id, product_id: id, size });
+    }
   };
 
   // Calculate totals
@@ -83,7 +99,7 @@ const Checkout = () => {
     setIsProcessing(true);
 
     // Mock order processing
-    setTimeout(() => {
+    setTimeout(async () => {
       const orderId = Math.floor(Math.random() * 100000);
       
       // Save order to localStorage (mock backend)
@@ -99,6 +115,16 @@ const Checkout = () => {
       };
       existingOrders.push(newOrder);
       localStorage.setItem('orders', JSON.stringify(existingOrders));
+
+      if (user) {
+        await supabase.from('orders').insert({
+          user_id: user.id,
+          items: cartItems,
+          total,
+          status: 'Processing'
+        });
+        await supabase.from('cart').delete().eq('user_id', user.id);
+      }
 
       // Clear cart
       localStorage.removeItem('cart');
