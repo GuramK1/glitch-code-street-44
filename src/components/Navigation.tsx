@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { Search, User, ShoppingBag, X, Trash2, Plus, Minus, UserCircle, UserPlus, Settings, LogOut, Heart } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -222,7 +223,7 @@ const Navigation = () => {
             </div>
 
             <div className="flex items-center space-x-4">
-              <div ref={wishlistRef} className="relative">
+              <div ref={wishlistRef} className="relative overflow-visible">
                 <button 
                   data-wishlist-icon
                   onClick={handleWishlistClick}
@@ -237,7 +238,8 @@ const Navigation = () => {
                 </button>
 
                 {isWishlistOpen && (
-                  <div className="absolute top-full left-0 mt-2 bg-zinc-900 shadow-xl rounded-xl p-4 z-[60] w-80 max-w-[calc(100vw-1rem)] border border-zinc-700 animate-fade-in">
+                  <div className="absolute top-full mt-2 bg-zinc-900 shadow-xl rounded-xl p-4 z-[60] w-80 max-w-[90vw] border border-zinc-700 animate-fade-in
+                                  left-1/2 transform -translate-x-1/2 sm:left-auto sm:right-0 sm:transform-none">
                     <h3 className="text-lg font-semibold text-white mb-4">Your Wishlist</h3>
                     
                     {wishlist.length === 0 ? (
