@@ -158,12 +158,6 @@ const EnhancedProductCard = ({ product, onQuickView }: EnhancedProductCardProps)
         <p className="text-gray-400 text-xs mb-3 hidden sm:block">Premium streetwear</p>
         <div className="flex justify-between items-center gap-2">
           <span className="text-white font-bold text-responsive-sm">${product.price}</span>
-          <button 
-            onClick={handleAddToCart}
-            className="bg-red-600 text-white px-3 py-2 rounded-md text-xs hover:bg-red-700 transition-colors active:scale-95 touch-target"
-          >
-            Add to Cart
-          </button>
         </div>
       </div>
     </div>
