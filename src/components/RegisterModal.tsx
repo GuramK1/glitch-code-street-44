@@ -69,12 +69,16 @@ const RegisterModal = ({ isOpen, onClose, onSwitchToSignIn }: RegisterModalProps
       return;
     }
     
-    const success = await register(username, email, password);
+    const { success, error: registerError } = await register(
+      username,
+      email,
+      password
+    );
     if (success) {
       console.log('Registration successful');
       handleClose();
     } else {
-      setError('User with this email already exists');
+      setError(registerError || 'Registration failed');
     }
   };
 

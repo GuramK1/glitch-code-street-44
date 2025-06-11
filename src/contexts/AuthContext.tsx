@@ -10,7 +10,11 @@ interface User {
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<boolean>;
-  register: (username: string, email: string, password: string) => Promise<boolean>;
+  register: (
+    username: string,
+    email: string,
+    password: string
+  ) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
   isAuthenticated: boolean;
 }
@@ -80,7 +84,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     return true;
   };
 
-  const register = async (username: string, email: string, password: string): Promise<boolean> => {
+  const register = async (
+    username: string,
+    email: string,
+    password: string
+  ): Promise<{ success: boolean; error?: string }> => {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -89,13 +97,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       }
     });
     if (error || !data.user) {
-      return false;
+      return { success: false, error: error?.message };
     }
     setUser({
       email: data.user.email || '',
       username
     });
-    return true;
+    return { success: true };
   };
 
   const logout = async () => {
