@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Heart, ArrowLeft, Plus, Minus } from 'lucide-react';
@@ -443,5 +444,3 @@ const ProductDetail = () => {
 };
 
 export default ProductDetail;
-
-</edits_to_apply>
