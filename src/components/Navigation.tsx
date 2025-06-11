@@ -17,6 +17,7 @@ const Navigation = () => {
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchIsClosing, setSearchIsClosing] = useState(false);
+  const [cartItems, setCartItems] = useState([]);
   
   const profileRef = useRef<HTMLDivElement>(null);
   const cartRef = useRef<HTMLDivElement>(null);
@@ -28,11 +29,23 @@ const Navigation = () => {
   const { wishlist } = useWishlist();
   const location = useLocation();
 
-  // Mock cart items for demo - now with state for quantity updates
-  const [cartItems, setCartItems] = useState([
-    { id: 1, name: "404 Hoodie", price: 89, qty: 1, image: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=100&h=100&fit=crop" },
-    { id: 2, name: "Glitch Tee", price: 45, qty: 2, image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=100&h=100&fit=crop" }
-  ]);
+  // Load cart from localStorage on component mount
+  useEffect(() => {
+    const loadCart = () => {
+      const savedCart = JSON.parse(localStorage.getItem('cart') || '[]');
+      setCartItems(savedCart);
+    };
+    
+    loadCart();
+    
+    // Listen for cart updates
+    const handleCartUpdate = () => {
+      loadCart();
+    };
+    
+    window.addEventListener('cartUpdated', handleCartUpdate);
+    return () => window.removeEventListener('cartUpdated', handleCartUpdate);
+  }, []);
 
   // Mock wishlist items for display
   const mockWishlistItems = [
@@ -99,18 +112,23 @@ const Navigation = () => {
   };
 
   // Cart functions
-  const updateQuantity = (id: number, change: number) => {
-    setCartItems(items => 
-      items.map(item => 
-        item.id === id 
-          ? { ...item, qty: Math.max(0, item.qty + change) }
-          : item
-      ).filter(item => item.qty > 0)
-    );
+  const updateQuantity = (id: number, size: string, change: number) => {
+    const updatedCart = cartItems.map((item: any) => 
+      item.id === id && item.size === size
+        ? { ...item, quantity: Math.max(0, item.quantity + change) }
+        : item
+    ).filter((item: any) => item.quantity > 0);
+    
+    setCartItems(updatedCart);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    window.dispatchEvent(new CustomEvent('cartUpdated'));
   };
 
-  const removeItem = (id: number) => {
-    setCartItems(items => items.filter(item => item.id !== id));
+  const removeItem = (id: number, size: string) => {
+    const updatedCart = cartItems.filter((item: any) => !(item.id === id && item.size === size));
+    setCartItems(updatedCart);
+    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    window.dispatchEvent(new CustomEvent('cartUpdated'));
   };
 
   const handleLogout = () => {
@@ -136,8 +154,8 @@ const Navigation = () => {
     setIsProfileOpen(false);
   };
 
-  const totalCartItems = cartItems.reduce((sum, item) => sum + item.qty, 0);
-  const totalCartPrice = cartItems.reduce((sum, item) => sum + (item.price * item.qty), 0);
+  const totalCartItems = cartItems.reduce((sum, item: any) => sum + item.quantity, 0);
+  const totalCartPrice = cartItems.reduce((sum, item: any) => sum + (item.price * item.quantity), 0);
 
   // Ultra-premium navigation link component
   const PremiumNavLink = ({ to, children, className = "" }: { to: string; children: string; className?: string }) => {
@@ -350,21 +368,22 @@ const Navigation = () => {
                     ) : (
                       <>
                         <div className="space-y-3 max-h-60 overflow-y-auto">
-                          {cartItems.map((item) => (
-                            <div key={item.id} className="flex items-center space-x-3 p-2 hover:bg-zinc-800 rounded-lg">
+                          {cartItems.map((item: any) => (
+                            <div key={`${item.id}-${item.size}`} className="flex items-center space-x-3 p-2 hover:bg-zinc-800 rounded-lg">
                               <img src={item.image} alt={item.name} className="w-12 h-12 object-cover rounded-lg flex-shrink-0" />
                               <div className="flex-1 min-w-0">
                                 <p className="text-sm font-medium text-white truncate">{item.name}</p>
+                                <p className="text-xs text-zinc-400">Size: {item.size}</p>
                                 <div className="flex items-center space-x-2 mt-1">
                                   <button 
-                                    onClick={() => updateQuantity(item.id, -1)}
+                                    onClick={() => updateQuantity(item.id, item.size, -1)}
                                     className="w-6 h-6 bg-zinc-700 rounded hover:bg-zinc-600 transition-colors duration-200 flex items-center justify-center text-white"
                                   >
                                     <Minus className="w-3 h-3" />
                                   </button>
-                                  <span className="text-xs font-medium min-w-[20px] text-center text-white">{item.qty}</span>
+                                  <span className="text-xs font-medium min-w-[20px] text-center text-white">{item.quantity}</span>
                                   <button 
-                                    onClick={() => updateQuantity(item.id, 1)}
+                                    onClick={() => updateQuantity(item.id, item.size, 1)}
                                     className="w-6 h-6 bg-zinc-700 rounded hover:bg-zinc-600 transition-colors duration-200 flex items-center justify-center text-white"
                                   >
                                     <Plus className="w-3 h-3" />
@@ -374,7 +393,7 @@ const Navigation = () => {
                               <div className="flex items-center space-x-2 flex-shrink-0">
                                 <p className="text-sm font-semibold text-white">${item.price}</p>
                                 <button 
-                                  onClick={() => removeItem(item.id)}
+                                  onClick={() => removeItem(item.id, item.size)}
                                   className="text-signal-red hover:text-red-400 transition-colors duration-200"
                                 >
                                   <Trash2 className="w-4 h-4" />
@@ -490,3 +509,5 @@ const Navigation = () => {
 };
 
 export default Navigation;
+
+}

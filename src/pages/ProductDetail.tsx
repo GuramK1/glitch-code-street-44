@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Heart, ArrowLeft, Plus, Minus } from 'lucide-react';
@@ -7,6 +6,7 @@ import Footer from '../components/Footer';
 import { useWishlist } from '../contexts/WishlistContext';
 import TryOnSimulator from '../components/TryOnSimulator';
 import { trackProductView } from '../components/ContinueWhereLeftOff';
+import { useToast } from '@/hooks/use-toast';
 
 const ProductDetail = () => {
   const { slug } = useParams();
@@ -17,6 +17,7 @@ const ProductDetail = () => {
   const [backButtonVisible, setBackButtonVisible] = useState(false);
   const [tryOnOpen, setTryOnOpen] = useState(false);
   const { toggleWishlist, isInWishlist } = useWishlist();
+  const { toast } = useToast();
 
   // Scroll to top and trigger fade-in animation when component mounts
   useEffect(() => {
@@ -141,7 +142,11 @@ const ProductDetail = () => {
 
   const handleAddToCart = () => {
     if (!selectedSize) {
-      alert('Please select a size');
+      toast({
+        title: "Size Required",
+        description: "Please select a size before adding to cart.",
+        variant: "destructive",
+      });
       return;
     }
     
@@ -151,7 +156,8 @@ const ProductDetail = () => {
       price: product?.price,
       size: selectedSize,
       quantity: quantity,
-      image: product?.image
+      image: product?.image,
+      slug: slug
     };
     
     // Add to localStorage cart
@@ -175,7 +181,15 @@ const ProductDetail = () => {
       localStorage.setItem('purchasedItems', JSON.stringify(purchasedItems));
     }
     
-    alert('Added to cart!');
+    // Show success toast
+    toast({
+      title: "Added to Cart! ✅",
+      description: `${product?.name} (${selectedSize}) has been added to your cart.`,
+      className: "bg-green-600 text-white border-green-500",
+    });
+
+    // Dispatch custom event to update cart in Navigation
+    window.dispatchEvent(new CustomEvent('cartUpdated'));
   };
 
   const handleBackToShop = () => {
