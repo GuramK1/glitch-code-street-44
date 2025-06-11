@@ -1,10 +1,11 @@
 
 import { useState, useEffect } from 'react';
 import { useSearchParams, Link, useNavigate } from 'react-router-dom';
-import { Filter, Grid, List, ChevronDown, Heart } from 'lucide-react';
+import { Filter, Grid, List, ChevronDown } from 'lucide-react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
-import { useWishlist } from '../contexts/WishlistContext';
+import EnhancedProductCard from '../components/EnhancedProductCard';
+import { createPageTransition } from '../utils/pageTransitions';
 
 const Shop = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -12,7 +13,6 @@ const Shop = () => {
   const [category, setCategory] = useState('all');
   const [showFilters, setShowFilters] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const { toggleWishlist, isInWishlist } = useWishlist();
   const navigate = useNavigate();
 
   // Initialize category from URL params and scroll to top
@@ -24,11 +24,9 @@ const Shop = () => {
     window.scrollTo(0, 0);
   }, [searchParams]);
 
-  const handleQuickView = (slug: string) => {
+  const handleQuickView = async (slug: string) => {
     setIsTransitioning(true);
-    setTimeout(() => {
-      navigate(`/product/${slug}`);
-    }, 300);
+    await createPageTransition(`/product/${slug}`, 300);
   };
 
   // Mock product data with proper data-category attributes and slugs
@@ -51,22 +49,6 @@ const Shop = () => {
       setSearchParams({ category: newCategory });
     }
     window.scrollTo(0, 0);
-  };
-
-  const getBadgeClass = (badge: string | null, stock: number, isNew: boolean) => {
-    if (badge === 'LIMITED') return 'badge-limited';
-    if (badge === 'DROP 001') return 'badge-drop-only';
-    if (stock <= 5) return 'badge-low-stock';
-    if (isNew) return 'badge-new';
-    return '';
-  };
-
-  const getBadgeText = (badge: string | null, stock: number, isNew: boolean) => {
-    if (badge === 'LIMITED') return 'LIMITED';
-    if (badge === 'DROP 001') return 'DROP ONLY';
-    if (stock <= 5) return 'LOW STOCK';
-    if (isNew) return 'NEW';
-    return '';
   };
 
   const filteredProducts = products.filter(product => 
@@ -188,63 +170,11 @@ const Shop = () => {
           ) : (
             <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-5 gap-4 sm:gap-6">
               {sortedProducts.map((product, index) => (
-                <div 
-                  key={product.id} 
-                  className="product-card group bg-card rounded-xl overflow-hidden hover:scale-105 hover:-translate-y-1 transition-all duration-300 shadow-sm hover:shadow-xl"
-                  data-category={product.category}
-                  data-aos="zoom-in"
-                  data-aos-delay={100 + (index * 50)}
-                >
-                  <div className="relative aspect-square overflow-hidden">
-                    <img 
-                      src={product.image} 
-                      alt={product.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    
-                    {/* Badge - Responsive positioning */}
-                    {getBadgeText(product.badge, product.stock, product.isNew) && (
-                      <div className={`absolute top-2 sm:top-3 left-2 sm:left-3 ${getBadgeClass(product.badge, product.stock, product.isNew)} text-xs`}>
-                        {getBadgeText(product.badge, product.stock, product.isNew)}
-                      </div>
-                    )}
-
-                    {/* Wishlist Button - Touch-friendly */}
-                    <button
-                      onClick={() => toggleWishlist(product.id)}
-                      className={`absolute top-2 sm:top-3 right-2 sm:right-3 p-2 rounded-full transition-all duration-200 touch-target ${
-                        isInWishlist(product.id)
-                          ? 'bg-signal-red text-white'
-                          : 'bg-black/50 text-white hover:bg-signal-red'
-                      }`}
-                    >
-                      <Heart className={`w-4 h-4 ${isInWishlist(product.id) ? 'fill-current' : ''}`} />
-                    </button>
-                    
-                    {/* Quick View Overlay - Responsive */}
-                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <button 
-                        onClick={() => handleQuickView(product.slug)}
-                        className="text-white border border-white px-4 py-2 sm:px-6 sm:py-3 rounded-full text-xs sm:text-sm font-medium hover:bg-white hover:text-black transition-all duration-200 active:scale-95 touch-target"
-                      >
-                        Quick View
-                      </button>
-                    </div>
-                  </div>
-                  
-                  <div className="p-3 sm:p-4">
-                    <h3 className="text-card-foreground font-medium mb-2 group-hover:text-signal-red transition-colors text-responsive-xs sm:text-responsive-sm line-clamp-2">
-                      {product.name}
-                    </h3>
-                    <p className="text-muted-foreground text-xs mb-2 hidden sm:block">Premium streetwear</p>
-                    <div className="flex justify-between items-center gap-2">
-                      <span className="text-card-foreground font-bold text-responsive-sm">${product.price}</span>
-                      <button className="bg-signal-red text-white px-2 py-1 sm:px-3 sm:py-1 rounded-lg text-xs hover:bg-signal-red/90 transition-colors active:scale-95 touch-target">
-                        Add to Cart
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                <EnhancedProductCard
+                  key={product.id}
+                  product={product}
+                  onQuickView={handleQuickView}
+                />
               ))}
             </div>
           )}

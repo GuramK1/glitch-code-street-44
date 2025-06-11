@@ -1,13 +1,15 @@
-
 import { useState, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import Navigation from '../components/Navigation';
 import { Minus, Plus, Trash2, CreditCard, Truck, ShieldCheck } from 'lucide-react';
+import { createPageTransition } from '../utils/pageTransitions';
 
 const Checkout = () => {
   const { isAuthenticated, user } = useAuth();
+  const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
+  const [isPageLoaded, setIsPageLoaded] = useState(false);
   const [shippingInfo, setShippingInfo] = useState({
     fullName: '',
     address: '',
@@ -23,6 +25,14 @@ const Checkout = () => {
     nameOnCard: ''
   });
   const [isProcessing, setIsProcessing] = useState(false);
+
+  // Page entrance animation
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsPageLoaded(true);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Redirect if not authenticated
   if (!isAuthenticated) {
@@ -62,6 +72,11 @@ const Checkout = () => {
   const tax = subtotal * 0.08;
   const total = subtotal + shipping + tax;
 
+  // Handle continue shopping with transition
+  const handleContinueShopping = async () => {
+    await createPageTransition('/shop', 300);
+  };
+
   // Handle order placement
   const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -97,14 +112,14 @@ const Checkout = () => {
 
   if (cartItems.length === 0) {
     return (
-      <div className="min-h-screen bg-zinc-950">
+      <div className={`min-h-screen bg-zinc-950 transition-all duration-500 ${isPageLoaded ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
         <Navigation />
         <div className="pt-24 pb-12 px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto text-center">
             <h1 className="text-3xl font-bold text-white mb-4">Your cart is empty</h1>
             <p className="text-zinc-400 mb-8">Add some items to your cart to proceed with checkout</p>
             <button 
-              onClick={() => window.location.href = '/shop'}
+              onClick={handleContinueShopping}
               className="bg-signal-red text-white px-8 py-3 rounded-lg font-semibold hover:bg-signal-red/90 transition-colors duration-200"
             >
               Continue Shopping
@@ -116,7 +131,7 @@ const Checkout = () => {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950">
+    <div className={`min-h-screen bg-zinc-950 transition-all duration-500 ${isPageLoaded ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'}`}>
       <Navigation />
       
       <div className="pt-24 pb-12 px-4 sm:px-6 lg:px-8">
