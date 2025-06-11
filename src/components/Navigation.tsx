@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { Search, User, ShoppingBag, X, Trash2, Plus, Minus, UserCircle, UserPlus, Settings, LogOut, Heart } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -27,7 +28,7 @@ const Navigation = () => {
   const searchModalRef = useRef<HTMLDivElement>(null);
 
   const { isAuthenticated, user, logout } = useAuth();
-  const { wishlist } = useWishlist();
+  const { wishlist, removeFromWishlist } = useWishlist();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -253,7 +254,7 @@ const Navigation = () => {
                     ) : (
                       <>
                         <div className="space-y-3 max-h-60 overflow-y-auto">
-                          {mockWishlistItems.slice(0, wishlist.length).map((item) => (
+                          {mockWishlistItems.slice(0, wishlist.length).map((item, index) => (
                             <div key={item.id} className="flex items-center space-x-3 p-2 hover:bg-zinc-800 rounded-lg">
                               <img src={item.image} alt={item.name} className="w-12 h-12 object-cover rounded-lg flex-shrink-0" />
                               <div className="flex-1 min-w-0">
@@ -261,7 +262,7 @@ const Navigation = () => {
                                 <p className="text-xs text-zinc-400">${item.price}</p>
                               </div>
                               <button 
-                                onClick={() => {/* Remove from wishlist logic */}}
+                                onClick={() => removeFromWishlist(item.id)}
                                 className="text-signal-red hover:text-red-400 transition-colors duration-200"
                               >
                                 <Trash2 className="w-4 h-4" />

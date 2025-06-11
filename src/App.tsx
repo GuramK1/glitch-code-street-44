@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { WishlistProvider } from "./contexts/WishlistContext";
+import ScrollToTop from "./components/ScrollToTop";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import Index from "./pages/Index";
@@ -50,6 +51,7 @@ const App = () => {
               <Toaster />
               <Sonner />
               <BrowserRouter>
+                <ScrollToTop />
                 <Routes>
                   <Route path="/" element={<Index />} />
                   <Route path="/drops" element={<Drops />} />

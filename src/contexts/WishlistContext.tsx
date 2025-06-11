@@ -4,6 +4,7 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 interface WishlistContextType {
   wishlist: number[];
   toggleWishlist: (productId: number) => void;
+  removeFromWishlist: (productId: number) => void;
   isInWishlist: (productId: number) => boolean;
 }
 
@@ -42,12 +43,20 @@ export const WishlistProvider: React.FC<WishlistProviderProps> = ({ children }) 
     });
   };
 
+  const removeFromWishlist = (productId: number) => {
+    setWishlist(prev => {
+      const newWishlist = prev.filter(id => id !== productId);
+      localStorage.setItem('wishlist', JSON.stringify(newWishlist));
+      return newWishlist;
+    });
+  };
+
   const isInWishlist = (productId: number) => {
     return wishlist.includes(productId);
   };
 
   return (
-    <WishlistContext.Provider value={{ wishlist, toggleWishlist, isInWishlist }}>
+    <WishlistContext.Provider value={{ wishlist, toggleWishlist, removeFromWishlist, isInWishlist }}>
       {children}
     </WishlistContext.Provider>
   );
