@@ -1,10 +1,11 @@
-
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Heart, ArrowLeft, Plus, Minus } from 'lucide-react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import { useWishlist } from '../contexts/WishlistContext';
+import TryOnSimulator from '../components/TryOnSimulator';
+import { trackProductView } from '../components/ContinueWhereLeftOff';
 
 const ProductDetail = () => {
   const { slug } = useParams();
@@ -13,6 +14,7 @@ const ProductDetail = () => {
   const [isVisible, setIsVisible] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [backButtonVisible, setBackButtonVisible] = useState(false);
+  const [tryOnOpen, setTryOnOpen] = useState(false);
   const { toggleWishlist, isInWishlist } = useWishlist();
 
   // Scroll to top and trigger fade-in animation when component mounts
@@ -108,6 +110,18 @@ const ProductDetail = () => {
 
   const product = getProductBySlug(slug || '');
 
+  // Track product view for "Continue Where You Left Off" feature
+  useEffect(() => {
+    if (product) {
+      trackProductView({
+        id: product.id,
+        name: product.name,
+        image: product.image,
+        slug: slug || ''
+      });
+    }
+  }, [product, slug]);
+
   // Get related products by category
   const getRelatedProducts = () => {
     if (!product) return [];
@@ -168,6 +182,10 @@ const ProductDetail = () => {
     setTimeout(() => {
       window.location.href = '/shop';
     }, 300);
+  };
+
+  const handleTryOn = () => {
+    setTryOnOpen(true);
   };
 
   if (!product) {
@@ -351,6 +369,18 @@ const ProductDetail = () => {
                 </button>
               </div>
 
+              {/* Try On Button - Only for supported categories */}
+              {(['hoodies', 'tees'].includes(product.category)) && (
+                <div className="pt-2">
+                  <button
+                    onClick={handleTryOn}
+                    className="w-full bg-zinc-800 text-white py-3 px-6 rounded-xl font-medium hover:bg-zinc-700 transition-all duration-200 active:scale-98 border border-zinc-700"
+                  >
+                    Try On Simulator
+                  </button>
+                </div>
+              )}
+
               {/* Stock Info */}
               {product.stock <= 5 && (
                 <p className="text-yellow-400 text-sm font-medium mt-4 flex items-center gap-2">
@@ -395,9 +425,23 @@ const ProductDetail = () => {
         )}
       </div>
       
+      {/* Try-On Simulator Modal */}
+      <TryOnSimulator 
+        isOpen={tryOnOpen}
+        onClose={() => setTryOnOpen(false)}
+        product={{
+          id: product.id,
+          name: product.name,
+          image: product.image,
+          category: product.category
+        }}
+      />
+      
       <Footer />
     </div>
   );
 };
 
 export default ProductDetail;
+
+</edits_to_apply>

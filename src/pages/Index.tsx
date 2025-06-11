@@ -1,4 +1,3 @@
-
 import Navigation from '../components/Navigation';
 import HeroSection from '../components/HeroSection';
 import ProductHighlights from '../components/ProductHighlights';
@@ -6,6 +5,7 @@ import CommunitySection from '../components/CommunitySection';
 import EditorialSection from '../components/EditorialSection';
 import ParallaxSection from '../components/ParallaxSection';
 import Footer from '../components/Footer';
+import ContinueWhereLeftOff from '../components/ContinueWhereLeftOff';
 
 const Index = () => {
   return (
@@ -41,6 +41,9 @@ const Index = () => {
       </ParallaxSection>
       
       <Footer />
+      
+      {/* Continue Where You Left Off Toast */}
+      <ContinueWhereLeftOff />
     </div>
   );
 };
