@@ -102,7 +102,7 @@ const EnhancedProductCard = ({ product, onQuickView }: EnhancedProductCardProps)
   };
 
   return (
-    <div className="product-card group bg-card rounded-xl overflow-hidden hover:scale-105 hover:-translate-y-1 transition-all duration-300 shadow-sm hover:shadow-xl relative">
+    <div className="product-card group bg-neutral-900 rounded-xl overflow-hidden hover:scale-105 hover:-translate-y-1 transition-all duration-300 shadow-sm hover:shadow-xl hover:bg-neutral-800 relative">
       <div className="relative aspect-square overflow-hidden">
         <img 
           src={product.image} 
@@ -150,16 +150,16 @@ const EnhancedProductCard = ({ product, onQuickView }: EnhancedProductCardProps)
         </div>
       </div>
       
-      <div className="p-3 sm:p-4">
-        <h3 className="text-card-foreground font-medium mb-2 group-hover:text-signal-red transition-colors text-responsive-xs sm:text-responsive-sm line-clamp-2">
+      <div className="bg-neutral-900 border-t border-neutral-800 p-4 rounded-b-xl">
+        <h3 className="text-white font-semibold mb-2 group-hover:text-signal-red transition-colors text-responsive-xs sm:text-responsive-sm line-clamp-2">
           {product.name}
         </h3>
-        <p className="text-muted-foreground text-xs mb-2 hidden sm:block">Premium streetwear</p>
+        <p className="text-gray-400 text-xs mb-3 hidden sm:block">Premium streetwear</p>
         <div className="flex justify-between items-center gap-2">
-          <span className="text-card-foreground font-bold text-responsive-sm">${product.price}</span>
+          <span className="text-white font-bold text-responsive-sm">${product.price}</span>
           <button 
             onClick={handleAddToCart}
-            className="bg-signal-red text-white px-2 py-1 sm:px-3 sm:py-1 rounded-lg text-xs hover:bg-signal-red/90 transition-colors active:scale-95 touch-target"
+            className="bg-red-600 text-white px-3 py-2 rounded-md text-xs hover:bg-red-700 transition-colors active:scale-95 touch-target"
           >
             Add to Cart
           </button>
