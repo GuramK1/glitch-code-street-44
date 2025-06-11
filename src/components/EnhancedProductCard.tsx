@@ -73,7 +73,7 @@ const EnhancedProductCard = ({ product, onQuickView }: EnhancedProductCardProps)
     localStorage.setItem('cart', JSON.stringify(existingCart));
     window.dispatchEvent(new CustomEvent('cartUpdated'));
 
-    // Animate to cart
+    // Animate to cart using the data attribute selector
     const cartIcon = document.querySelector('[data-cart-icon]');
     if (cartIcon) {
       animateToTarget(e.currentTarget, '[data-cart-icon]');
@@ -88,8 +88,9 @@ const EnhancedProductCard = ({ product, onQuickView }: EnhancedProductCardProps)
     e.stopPropagation();
     toggleWishlist(product.id);
     
-    const heartIcon = document.querySelector('[data-wishlist-icon]');
-    if (heartIcon) {
+    // Animate to wishlist using the data attribute selector
+    const wishlistIcon = document.querySelector('[data-wishlist-icon]');
+    if (wishlistIcon) {
       animateToTarget(e.currentTarget, '[data-wishlist-icon]');
     }
     

@@ -142,7 +142,7 @@ const CommunitySection = () => {
               <button className="btn-primary">
                 Join 404 Club
               </button>
-              <button className="btn-secondary">
+              <button className="border border-white px-4 py-3 rounded-full text-white text-sm hover:bg-white hover:text-black transition-all duration-300 font-semibold tracking-wide uppercase">
                 Follow @404fit
               </button>
             </div>

@@ -224,6 +224,7 @@ const Navigation = () => {
             <div className="flex items-center space-x-4">
               <div ref={wishlistRef} className="relative">
                 <button 
+                  data-wishlist-icon
                   onClick={handleWishlistClick}
                   className="w-6 h-6 flex items-center justify-center text-white hover:text-signal-red transition-all duration-300 hover:scale-110 active:scale-95 relative"
                 >
@@ -363,6 +364,7 @@ const Navigation = () => {
 
               <div ref={cartRef} className="relative">
                 <button 
+                  data-cart-icon
                   onClick={() => setIsCartOpen(!isCartOpen)}
                   className="w-6 h-6 flex items-center justify-center text-white hover:text-signal-red transition-all duration-300 hover:scale-110 active:scale-95 relative"
                 >
@@ -536,3 +538,5 @@ const Navigation = () => {
 };
 
 export default Navigation;
+
+}
