@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { X, Ruler } from 'lucide-react';
 
 interface SizingAssistantProps {
@@ -13,6 +13,8 @@ const SizingAssistant = ({ isOpen, onClose, onSizeSelect }: SizingAssistantProps
   const [weight, setWeight] = useState('');
   const [fit, setFit] = useState('');
   const [suggestion, setSuggestion] = useState('');
+  const [isClosing, setIsClosing] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   const suggestSize = () => {
     // Simple size logic based on inputs
@@ -31,25 +33,81 @@ const SizingAssistant = ({ isOpen, onClose, onSizeSelect }: SizingAssistantProps
     setSuggestion(`We recommend: Size ${recommendedSize}`);
   };
 
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      onClose();
+      setIsClosing(false);
+      // Reset form when modal closes
+      setHeight('');
+      setWeight('');
+      setFit('');
+      setSuggestion('');
+    }, 300);
+  };
+
   const handleSelectSize = () => {
     const size = suggestion.split('Size ')[1];
     if (size) {
       onSizeSelect(size);
-      onClose();
+      handleClose();
     }
   };
 
-  if (!isOpen) return null;
+  // Handle click outside to close
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        handleClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
+
+  // Handle escape key
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        handleClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isOpen]);
+
+  if (!isOpen && !isClosing) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center animate-fade-in">
-      <div className="bg-zinc-900 border border-zinc-800 p-6 rounded-xl max-w-sm w-full mx-4 text-white shadow-2xl animate-scale-in">
+    <div className={`fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center transition-all duration-300 ${
+      isOpen && !isClosing ? 'opacity-100' : 'opacity-0'
+    }`}>
+      <div 
+        ref={modalRef}
+        className={`bg-zinc-900 border border-zinc-800 p-6 rounded-xl max-w-sm w-full mx-4 text-white shadow-2xl transition-all duration-300 ${
+          isOpen && !isClosing 
+            ? 'opacity-100 scale-100 translate-y-0' 
+            : 'opacity-0 scale-95 translate-y-4'
+        }`}
+      >
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <Ruler className="w-5 h-5 text-signal-red" />
             <h2 className="text-lg font-bold">Find Your Size</h2>
           </div>
-          <button onClick={onClose} className="text-zinc-400 hover:text-white transition-colors">
+          <button onClick={handleClose} className="text-zinc-400 hover:text-white transition-colors">
             <X className="w-5 h-5" />
           </button>
         </div>
