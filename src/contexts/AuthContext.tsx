@@ -1,8 +1,14 @@
-
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { supabase } from '@/lib/supabaseClient';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
+import { supabase } from "@/lib/supabaseClient";
 
 interface User {
+  id: string;
   email: string;
   username: string;
 }
@@ -13,7 +19,7 @@ interface AuthContextType {
   register: (
     username: string,
     email: string,
-    password: string
+    password: string,
   ) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
   isAuthenticated: boolean;
@@ -24,7 +30,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };
@@ -39,12 +45,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   useEffect(() => {
     const init = async () => {
       const {
-        data: { session }
+        data: { session },
       } = await supabase.auth.getSession();
       if (session?.user) {
         setUser({
-          email: session.user.email || '',
-          username: (session.user.user_metadata as any)?.username || ''
+          id: session.user.id,
+          email: session.user.email || "",
+          username: (session.user.user_metadata as any)?.username || "",
         });
       }
     };
@@ -52,12 +59,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     init();
 
     const {
-      data: { subscription }
+      data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session?.user) {
         setUser({
-          email: session.user.email || '',
-          username: (session.user.user_metadata as any)?.username || ''
+          id: session.user.id,
+          email: session.user.email || "",
+          username: (session.user.user_metadata as any)?.username || "",
         });
       } else {
         setUser(null);
@@ -72,14 +80,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const login = async (email: string, password: string): Promise<boolean> => {
     const { data, error } = await supabase.auth.signInWithPassword({
       email,
-      password
+      password,
     });
     if (error || !data.user) {
       return false;
     }
     setUser({
-      email: data.user.email || '',
-      username: (data.user.user_metadata as any)?.username || ''
+      id: data.user.id,
+      email: data.user.email || "",
+      username: (data.user.user_metadata as any)?.username || "",
     });
     return true;
   };
@@ -87,21 +96,22 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const register = async (
     username: string,
     email: string,
-    password: string
+    password: string,
   ): Promise<{ success: boolean; error?: string }> => {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        data: { username }
-      }
+        data: { username },
+      },
     });
     if (error || !data.user) {
       return { success: false, error: error?.message };
     }
     setUser({
-      email: data.user.email || '',
-      username
+      id: data.user.id,
+      email: data.user.email || "",
+      username,
     });
     return { success: true };
   };
@@ -109,6 +119,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const logout = async () => {
     await supabase.auth.signOut();
     setUser(null);
+    localStorage.removeItem("cart");
+    localStorage.removeItem("wishlist");
+    window.dispatchEvent(new CustomEvent("cartUpdated"));
   };
 
   const value = {
@@ -116,7 +129,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     login,
     register,
     logout,
-    isAuthenticated: !!user
+    isAuthenticated: !!user,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

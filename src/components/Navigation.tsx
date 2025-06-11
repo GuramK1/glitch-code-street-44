@@ -4,6 +4,7 @@ import { Search, User, ShoppingBag, X, Trash2, Plus, Minus, UserCircle, UserPlus
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useWishlist } from '../contexts/WishlistContext';
+import { supabase } from '@/lib/supabaseClient';
 import SignInModal from './SignInModal';
 import RegisterModal from './RegisterModal';
 import GlitchText from './GlitchText';
@@ -115,7 +116,7 @@ const Navigation = () => {
   };
 
   // Cart functions
-  const updateQuantity = (id: number, size: string, change: number) => {
+  const updateQuantity = async (id: number, size: string, change: number) => {
     const updatedCart = cartItems.map((item: any) => 
       item.id === id && item.size === size
         ? { ...item, quantity: Math.max(0, item.quantity + change) }
@@ -125,13 +126,28 @@ const Navigation = () => {
     setCartItems(updatedCart);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
     window.dispatchEvent(new CustomEvent('cartUpdated'));
+    if (isAuthenticated && user) {
+      const item = updatedCart.find(i => i.id === id && i.size === size);
+      if (item) {
+        await supabase
+          .from('cart')
+          .update({ quantity: item.quantity })
+          .match({ user_id: user.id, product_id: id, size });
+      }
+    }
   };
 
-  const removeItem = (id: number, size: string) => {
+  const removeItem = async (id: number, size: string) => {
     const updatedCart = cartItems.filter((item: any) => !(item.id === id && item.size === size));
     setCartItems(updatedCart);
     localStorage.setItem('cart', JSON.stringify(updatedCart));
     window.dispatchEvent(new CustomEvent('cartUpdated'));
+    if (isAuthenticated && user) {
+      await supabase
+        .from('cart')
+        .delete()
+        .match({ user_id: user.id, product_id: id, size });
+    }
   };
 
   const handleLogout = () => {

@@ -7,6 +7,8 @@ import { useWishlist } from '../contexts/WishlistContext';
 import SizingAssistant from '../components/SizingAssistant';
 import { trackProductView } from '../components/ContinueWhereLeftOff';
 import { useToast } from '@/hooks/use-toast';
+import { useAuth } from '../contexts/AuthContext';
+import { supabase } from '@/lib/supabaseClient';
 
 const ProductDetail = () => {
   const { slug } = useParams();
@@ -17,6 +19,7 @@ const ProductDetail = () => {
   const [backButtonVisible, setBackButtonVisible] = useState(false);
   const [sizingAssistantOpen, setSizingAssistantOpen] = useState(false);
   const { toggleWishlist, isInWishlist } = useWishlist();
+  const { user, isAuthenticated } = useAuth();
   const { toast } = useToast();
 
   // Scroll to top and trigger fade-in animation when component mounts
@@ -140,7 +143,7 @@ const ProductDetail = () => {
       .slice(0, 3);
   };
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (!selectedSize) {
       toast({
         title: "⚠️ Size Required",
@@ -172,8 +175,19 @@ const ProductDetail = () => {
     } else {
       existingCart.push(cartItem);
     }
-    
+
     localStorage.setItem('cart', JSON.stringify(existingCart));
+
+    if (isAuthenticated && user) {
+      await supabase.from('cart').upsert({
+        user_id: user.id,
+        product_id: cartItem.id,
+        size: cartItem.size,
+        quantity: existingItemIndex > -1
+          ? existingCart[existingItemIndex].quantity
+          : cartItem.quantity,
+      });
+    }
     
     // Add to purchased items for rating badge functionality
     const purchasedItems = JSON.parse(localStorage.getItem('purchasedItems') || '[]');
