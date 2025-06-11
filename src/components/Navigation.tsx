@@ -103,24 +103,6 @@ const Navigation = () => {
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isSearchOpen]);
 
-  // Load cart from localStorage on component mount
-  useEffect(() => {
-    const loadCart = () => {
-      const savedCart = JSON.parse(localStorage.getItem('cart') || '[]');
-      setCartItems(savedCart);
-    };
-    
-    loadCart();
-    
-    // Listen for cart updates
-    const handleCartUpdate = () => {
-      loadCart();
-    };
-    
-    window.addEventListener('cartUpdated', handleCartUpdate);
-    return () => window.removeEventListener('cartUpdated', handleCartUpdate);
-  }, []);
-
   // Enhanced search modal close with animation
   const handleCloseSearch = () => {
     setSearchIsClosing(true);
@@ -156,6 +138,7 @@ const Navigation = () => {
   };
 
   const handleWishlistClick = () => {
+    console.log('Wishlist clicked, current state:', isWishlistOpen);
     setIsWishlistOpen(!isWishlistOpen);
     setIsProfileOpen(false);
     setIsCartOpen(false);
@@ -254,7 +237,7 @@ const Navigation = () => {
                 </button>
 
                 {isWishlistOpen && (
-                  <div className="absolute top-full right-0 mt-2 bg-zinc-900 shadow-xl rounded-xl p-4 z-50 w-[300px] sm:w-80 max-w-[calc(100vw-1rem)] border border-zinc-700 animate-fade-in transform -translate-x-[calc(100%-24px)] sm:translate-x-0">
+                  <div className="absolute top-full right-0 mt-2 bg-zinc-900 shadow-xl rounded-xl p-4 z-50 w-72 sm:w-80 border border-zinc-700 animate-fade-in transform translate-x-0 sm:translate-x-0">
                     <h3 className="text-lg font-semibold text-white mb-4">Your Wishlist</h3>
                     
                     {wishlist.length === 0 ? (
