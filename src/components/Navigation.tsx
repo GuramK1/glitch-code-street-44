@@ -237,7 +237,7 @@ const Navigation = () => {
                 </button>
 
                 {isWishlistOpen && (
-                  <div className="absolute top-full right-2 sm:right-0 mt-2 bg-zinc-900 shadow-xl rounded-xl p-4 z-[60] w-80 max-w-[calc(100vw-1rem)] border border-zinc-700 animate-fade-in">
+                  <div className="absolute top-full left-0 mt-2 bg-zinc-900 shadow-xl rounded-xl p-4 z-[60] w-80 max-w-[calc(100vw-1rem)] border border-zinc-700 animate-fade-in">
                     <h3 className="text-lg font-semibold text-white mb-4">Your Wishlist</h3>
                     
                     {wishlist.length === 0 ? (
