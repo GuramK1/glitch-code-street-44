@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import { Search, User, ShoppingBag, X, Trash2, Plus, Minus, UserCircle, UserPlus, Settings, LogOut, Heart } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -19,6 +18,7 @@ const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchIsClosing, setSearchIsClosing] = useState(false);
   const [cartItems, setCartItems] = useState([]);
+  const [wishlistClicked, setWishlistClicked] = useState(false);
   
   const profileRef = useRef<HTMLDivElement>(null);
   const cartRef = useRef<HTMLDivElement>(null);
@@ -140,9 +140,13 @@ const Navigation = () => {
 
   const handleWishlistClick = () => {
     console.log('Wishlist clicked, current state:', isWishlistOpen);
+    setWishlistClicked(true);
     setIsWishlistOpen(!isWishlistOpen);
     setIsProfileOpen(false);
     setIsCartOpen(false);
+    
+    // Reset the clicked state after animation
+    setTimeout(() => setWishlistClicked(false), 200);
   };
 
   const handleWishlistFromProfile = () => {
@@ -227,7 +231,9 @@ const Navigation = () => {
                 <button 
                   data-wishlist-icon
                   onClick={handleWishlistClick}
-                  className="w-6 h-6 flex items-center justify-center text-white hover:text-signal-red transition-all duration-300 hover:scale-110 active:scale-95 relative"
+                  className={`w-6 h-6 flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 relative ${
+                    wishlistClicked ? 'text-signal-red' : 'text-white hover:text-signal-red'
+                  }`}
                 >
                   <Heart className="w-5 h-5" />
                   {wishlist.length > 0 && (
