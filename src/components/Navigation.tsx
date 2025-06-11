@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from 'react';
 import { Search, User, ShoppingBag, X, Trash2, Plus, Minus, UserCircle, UserPlus, Settings, LogOut, Heart } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -102,6 +103,24 @@ const Navigation = () => {
 
     return () => document.removeEventListener('keydown', handleKeyDown);
   }, [isSearchOpen]);
+
+  // Load cart from localStorage on component mount
+  useEffect(() => {
+    const loadCart = () => {
+      const savedCart = JSON.parse(localStorage.getItem('cart') || '[]');
+      setCartItems(savedCart);
+    };
+    
+    loadCart();
+    
+    // Listen for cart updates
+    const handleCartUpdate = () => {
+      loadCart();
+    };
+    
+    window.addEventListener('cartUpdated', handleCartUpdate);
+    return () => window.removeEventListener('cartUpdated', handleCartUpdate);
+  }, []);
 
   // Enhanced search modal close with animation
   const handleCloseSearch = () => {
@@ -236,7 +255,7 @@ const Navigation = () => {
                 </button>
 
                 {isWishlistOpen && (
-                  <div className="absolute top-full right-0 mt-2 bg-zinc-900 shadow-xl rounded-xl p-4 z-50 w-80 border border-zinc-700 animate-fade-in">
+                  <div className="absolute top-full right-0 mt-2 bg-zinc-900 shadow-xl rounded-xl p-4 z-50 w-80 sm:w-80 max-w-[calc(100vw-2rem)] border border-zinc-700 animate-fade-in">
                     <h3 className="text-lg font-semibold text-white mb-4">Your Wishlist</h3>
                     
                     {wishlist.length === 0 ? (
@@ -376,7 +395,7 @@ const Navigation = () => {
                 </button>
 
                 {isCartOpen && (
-                  <div className="absolute top-full right-0 mt-2 bg-zinc-900 shadow-xl rounded-xl p-4 z-50 w-80 border border-zinc-700 animate-fade-in">
+                  <div className="absolute top-full right-0 mt-2 bg-zinc-900 shadow-xl rounded-xl p-4 z-50 w-80 sm:w-80 max-w-[calc(100vw-2rem)] border border-zinc-700 animate-fade-in">
                     <h3 className="text-lg font-semibold text-white mb-4">Your Bag</h3>
                     
                     {cartItems.length === 0 ? (
