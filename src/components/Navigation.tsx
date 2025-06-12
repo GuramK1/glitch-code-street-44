@@ -4,7 +4,7 @@ import { Search, User, ShoppingBag, X, Trash2, Plus, Minus, UserCircle, UserPlus
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useWishlist } from '../contexts/WishlistContext';
-import { supabase } from '@/lib/supabaseClient';
+import { useCart } from '../contexts/CartContext';
 import SignInModal from './SignInModal';
 import RegisterModal from './RegisterModal';
 import GlitchText from './GlitchText';
@@ -19,7 +19,7 @@ const Navigation = () => {
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [searchIsClosing, setSearchIsClosing] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
+  const { cartItems, updateQuantity, removeFromCart } = useCart();
   const [wishlistClicked, setWishlistClicked] = useState(false);
   
   const profileRef = useRef<HTMLDivElement>(null);
@@ -33,23 +33,6 @@ const Navigation = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Load cart from localStorage on component mount
-  useEffect(() => {
-    const loadCart = () => {
-      const savedCart = JSON.parse(localStorage.getItem('cart') || '[]');
-      setCartItems(savedCart);
-    };
-    
-    loadCart();
-    
-    // Listen for cart updates
-    const handleCartUpdate = () => {
-      loadCart();
-    };
-    
-    window.addEventListener('cartUpdated', handleCartUpdate);
-    return () => window.removeEventListener('cartUpdated', handleCartUpdate);
-  }, []);
 
   // Mock wishlist items for display
   const mockWishlistItems = [
@@ -116,38 +99,12 @@ const Navigation = () => {
   };
 
   // Cart functions
-  const updateQuantity = async (id: number, size: string, change: number) => {
-    const updatedCart = cartItems.map((item: any) => 
-      item.id === id && item.size === size
-        ? { ...item, quantity: Math.max(0, item.quantity + change) }
-        : item
-    ).filter((item: any) => item.quantity > 0);
-    
-    setCartItems(updatedCart);
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
-    window.dispatchEvent(new CustomEvent('cartUpdated'));
-    if (isAuthenticated && user) {
-      const item = updatedCart.find(i => i.id === id && i.size === size);
-      if (item) {
-        await supabase
-          .from('cart')
-          .update({ quantity: item.quantity })
-          .match({ user_id: user.id, product_id: id, size });
-      }
-    }
+  const handleQuantity = async (id: number, size: string, change: number) => {
+    await updateQuantity(id, size, change);
   };
 
   const removeItem = async (id: number, size: string) => {
-    const updatedCart = cartItems.filter((item: any) => !(item.id === id && item.size === size));
-    setCartItems(updatedCart);
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
-    window.dispatchEvent(new CustomEvent('cartUpdated'));
-    if (isAuthenticated && user) {
-      await supabase
-        .from('cart')
-        .delete()
-        .match({ user_id: user.id, product_id: id, size });
-    }
+    await removeFromCart(id, size);
   };
 
   const handleLogout = () => {
@@ -417,15 +374,15 @@ const Navigation = () => {
                                 <p className="text-sm font-medium text-white truncate">{item.name}</p>
                                 <p className="text-xs text-zinc-400">Size: {item.size}</p>
                                 <div className="flex items-center space-x-2 mt-1">
-                                  <button 
-                                    onClick={() => updateQuantity(item.id, item.size, -1)}
+                                  <button
+                                    onClick={() => handleQuantity(item.id, item.size, -1)}
                                     className="w-6 h-6 bg-zinc-700 rounded hover:bg-zinc-600 transition-colors duration-200 flex items-center justify-center text-white"
                                   >
                                     <Minus className="w-3 h-3" />
                                   </button>
                                   <span className="text-xs font-medium min-w-[20px] text-center text-white">{item.quantity}</span>
-                                  <button 
-                                    onClick={() => updateQuantity(item.id, item.size, 1)}
+                                  <button
+                                    onClick={() => handleQuantity(item.id, item.size, 1)}
                                     className="w-6 h-6 bg-zinc-700 rounded hover:bg-zinc-600 transition-colors duration-200 flex items-center justify-center text-white"
                                   >
                                     <Plus className="w-3 h-3" />
