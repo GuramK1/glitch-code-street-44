@@ -4,6 +4,7 @@ import Navigation from '../components/Navigation';
 import { Navigate } from 'react-router-dom';
 import { Heart, Package, Clock, User, Eye, Edit, Calendar } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { supabase } from '@/lib/supabaseClient';
 
 const Profile = () => {
   const { user, isAuthenticated } = useAuth();
@@ -28,6 +29,25 @@ const Profile = () => {
       setOrders(JSON.parse(savedOrders));
     }
   }, []);
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      if (user) {
+        const { data, error } = await supabase
+          .from('orders')
+          .select('*')
+          .eq('user_id', user.id);
+        if (error) {
+          console.error('Supabase error:', error);
+        }
+        if (data) {
+          setOrders(data);
+          localStorage.setItem('orders', JSON.stringify(data));
+        }
+      }
+    };
+    fetchOrders();
+  }, [user]);
 
   // Update edit form when user changes
   useEffect(() => {

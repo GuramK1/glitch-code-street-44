@@ -47,10 +47,13 @@ export const WishlistProvider: React.FC<WishlistProviderProps> = ({
   useEffect(() => {
     const fetchWishlist = async () => {
       if (user) {
-        const { data } = await supabase
+        const { data, error } = await supabase
           .from("wishlist")
           .select("product_id")
           .eq("user_id", user.id);
+        if (error) {
+          console.error("Supabase error:", error);
+        }
         if (data) {
           const ids = data.map((item) => item.product_id as number);
           setWishlist(ids);
@@ -75,14 +78,16 @@ export const WishlistProvider: React.FC<WishlistProviderProps> = ({
 
     if (user) {
       if (wasInWishlist) {
-        await supabase
+        const { error } = await supabase
           .from("wishlist")
           .delete()
           .match({ user_id: user.id, product_id: productId });
+        if (error) console.error("Supabase error:", error);
       } else {
-        await supabase
+        const { error } = await supabase
           .from("wishlist")
           .upsert({ user_id: user.id, product_id: productId });
+        if (error) console.error("Supabase error:", error);
       }
     }
   };
@@ -94,10 +99,11 @@ export const WishlistProvider: React.FC<WishlistProviderProps> = ({
       return newWishlist;
     });
     if (user) {
-      await supabase
+      const { error } = await supabase
         .from("wishlist")
         .delete()
         .match({ user_id: user.id, product_id: productId });
+      if (error) console.error("Supabase error:", error);
     }
   };
 

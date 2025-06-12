@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { WishlistProvider } from "./contexts/WishlistContext";
+import { CartProvider } from "./contexts/CartContext";
 import ScrollToTop from "./components/ScrollToTop";
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -47,7 +48,8 @@ const App = () => {
       <TooltipProvider>
         <ThemeProvider>
           <AuthProvider>
-            <WishlistProvider>
+            <CartProvider>
+              <WishlistProvider>
               <Toaster />
               <Sonner />
               <BrowserRouter>
@@ -76,7 +78,8 @@ const App = () => {
                 </Routes>
                 <BackToTopButton />
               </BrowserRouter>
-            </WishlistProvider>
+              </WishlistProvider>
+            </CartProvider>
           </AuthProvider>
         </ThemeProvider>
       </TooltipProvider>

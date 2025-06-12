@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useCart } from '../contexts/CartContext';
 import { supabase } from '@/lib/supabaseClient';
 import Navigation from '../components/Navigation';
 import { Minus, Plus, Trash2, CreditCard, Truck, ShieldCheck } from 'lucide-react';
@@ -9,7 +10,7 @@ import { createPageTransition } from '../utils/pageTransitions';
 const Checkout = () => {
   const { isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
-  const [cartItems, setCartItems] = useState([]);
+  const { cartItems, updateQuantity, removeFromCart, clearCart } = useCart();
   const [isPageLoaded, setIsPageLoaded] = useState(false);
   const [shippingInfo, setShippingInfo] = useState({
     fullName: '',
@@ -40,46 +41,14 @@ const Checkout = () => {
     return <Navigate to="/" replace />;
   }
 
-  // Load cart items
-  useEffect(() => {
-    const savedCart = JSON.parse(localStorage.getItem('cart') || '[]');
-    setCartItems(savedCart);
-  }, []);
-
   // Update cart item quantity
-  const updateQuantity = async (id: number, size: string, change: number) => {
-    const updatedCart = cartItems.map((item: any) => 
-      item.id === id && item.size === size
-        ? { ...item, quantity: Math.max(0, item.quantity + change) }
-        : item
-    ).filter((item: any) => item.quantity > 0);
-    
-    setCartItems(updatedCart);
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
-    window.dispatchEvent(new CustomEvent('cartUpdated'));
-    if (isAuthenticated && user) {
-      const item = updatedCart.find(i => i.id === id && i.size === size);
-      if (item) {
-        await supabase
-          .from('cart')
-          .update({ quantity: item.quantity })
-          .match({ user_id: user.id, product_id: id, size });
-      }
-    }
+  const handleQuantity = async (id: number, size: string, change: number) => {
+    await updateQuantity(id, size, change);
   };
 
   // Remove item from cart
   const removeItem = async (id: number, size: string) => {
-    const updatedCart = cartItems.filter((item: any) => !(item.id === id && item.size === size));
-    setCartItems(updatedCart);
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
-    window.dispatchEvent(new CustomEvent('cartUpdated'));
-    if (isAuthenticated && user) {
-      await supabase
-        .from('cart')
-        .delete()
-        .match({ user_id: user.id, product_id: id, size });
-    }
+    await removeFromCart(id, size);
   };
 
   // Calculate totals
@@ -117,19 +86,16 @@ const Checkout = () => {
       localStorage.setItem('orders', JSON.stringify(existingOrders));
 
       if (user) {
-        await supabase.from('orders').insert({
+        const { error } = await supabase.from('orders').insert({
           user_id: user.id,
           items: cartItems,
           total,
           status: 'Processing'
         });
-        await supabase.from('cart').delete().eq('user_id', user.id);
+        if (error) console.error('Supabase error:', error);
       }
 
-      // Clear cart
-      localStorage.removeItem('cart');
-      setCartItems([]);
-      window.dispatchEvent(new CustomEvent('cartUpdated'));
+      await clearCart();
 
       setIsProcessing(false);
       alert(`Order placed successfully! Order ID: #${orderId}`);
@@ -303,17 +269,17 @@ const Checkout = () => {
                         <p className="text-sm font-medium text-white truncate">{item.name}</p>
                         <p className="text-xs text-zinc-400">Size: {item.size}</p>
                         <div className="flex items-center space-x-2 mt-2">
-                          <button 
+                          <button
                             type="button"
-                            onClick={() => updateQuantity(item.id, item.size, -1)}
+                            onClick={() => handleQuantity(item.id, item.size, -1)}
                             className="w-6 h-6 bg-zinc-700 rounded hover:bg-zinc-600 transition-colors duration-200 flex items-center justify-center text-white"
                           >
                             <Minus className="w-3 h-3" />
                           </button>
                           <span className="text-xs font-medium min-w-[20px] text-center text-white">{item.quantity}</span>
-                          <button 
+                          <button
                             type="button"
-                            onClick={() => updateQuantity(item.id, item.size, 1)}
+                            onClick={() => handleQuantity(item.id, item.size, 1)}
                             className="w-6 h-6 bg-zinc-700 rounded hover:bg-zinc-600 transition-colors duration-200 flex items-center justify-center text-white"
                           >
                             <Plus className="w-3 h-3" />

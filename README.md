@@ -62,9 +62,17 @@ This project is built with:
 
 ## Supabase configuration
 
-This project now uses [Supabase](https://supabase.com/) for authentication.
-Create a `.env` file based on `.env.example` and provide your `VITE_SUPABASE_URL`
-and `VITE_SUPABASE_ANON_KEY` values.
+This project now uses [Supabase](https://supabase.com/) for authentication and
+persistence. Create a `.env` file based on `.env.example` and provide your
+`VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` values.
+
+### Required tables
+
+- **cart** – `user_id`, `product_id`, `size`, `quantity`
+- **orders** – `user_id`, `items`, `total`, `status`
+- **wishlist** – `user_id`, `product_id`
+
+Be sure not to commit your `.env` file to version control.
 
 ## How can I deploy this project?
 
