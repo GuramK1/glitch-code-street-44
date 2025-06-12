@@ -1,5 +1,6 @@
 
 import { useState } from 'react';
+import { supabase } from '@/lib/supabaseClient';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
 import { Button } from '../components/ui/button';
@@ -20,10 +21,21 @@ const Contact = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    // Handle form submission here
+    const { error } = await supabase.from('messages').insert({
+      name: formData.name,
+      email: formData.email,
+      subject: formData.subject,
+      message: formData.message
+    });
+    if (error) {
+      console.error('Supabase error:', error);
+      alert('Failed to send message. Please try again later.');
+    } else {
+      setFormData({ name: '', email: '', subject: '', message: '' });
+      alert('Message sent successfully!');
+    }
   };
 
   return (

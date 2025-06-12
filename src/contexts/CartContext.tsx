@@ -94,8 +94,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     const fetchCart = async () => {
-      if (user) {
-        const { data, error } = await supabase
+      if (!user) return;
+      const { data, error } = await supabase
           .from("cart")
           .select("product_id,size,quantity")
           .eq("user_id", user.id);
@@ -122,9 +122,6 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
           localStorage.setItem("cart", JSON.stringify(mapped));
           window.dispatchEvent(new CustomEvent("cartUpdated"));
         }
-      } else {
-        setCartItems([]);
-      }
     };
     fetchCart();
   }, [user]);

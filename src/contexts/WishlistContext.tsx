@@ -46,21 +46,18 @@ export const WishlistProvider: React.FC<WishlistProviderProps> = ({
 
   useEffect(() => {
     const fetchWishlist = async () => {
-      if (user) {
-        const { data, error } = await supabase
-          .from("wishlist")
-          .select("product_id")
-          .eq("user_id", user.id);
-        if (error) {
-          console.error("Supabase error:", error);
-        }
-        if (data) {
-          const ids = data.map((item) => item.product_id as number);
-          setWishlist(ids);
-          localStorage.setItem("wishlist", JSON.stringify(ids));
-        }
-      } else {
-        setWishlist([]);
+      if (!user) return;
+      const { data, error } = await supabase
+        .from("wishlist")
+        .select("product_id")
+        .eq("user_id", user.id);
+      if (error) {
+        console.error("Supabase error:", error);
+      }
+      if (data) {
+        const ids = data.map((item) => item.product_id as number);
+        setWishlist(ids);
+        localStorage.setItem("wishlist", JSON.stringify(ids));
       }
     };
     fetchWishlist();
